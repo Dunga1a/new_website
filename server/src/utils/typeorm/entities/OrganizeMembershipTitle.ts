@@ -8,6 +8,6 @@ export class OrganizeMembershipTitle {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: true })
   status: boolean;
 }

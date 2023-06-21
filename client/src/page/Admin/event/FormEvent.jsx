@@ -1,55 +1,93 @@
 import React, { useState } from "react";
 import ReactQuillEditor from "../../../components/ReactQuill";
 import { useForm } from "react-hook-form";
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import Modal from "../../../components/Modal/Modal";
+
 import Button from "../../../components/Buttons/Button";
 
-import UploadImage from "./UploadImage";
 import { BsFillTrashFill } from "react-icons/bs";
 
-import { supabase } from "../../../libs/supbase";
-const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
+import axios from "axios";
 
 const FormEvent = ({ initValue, onSave }) => {
-  // console.log(initValue);
   const [content, setContent] = useState(initValue.content);
   const [isContentError, setIsContentError] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState(
+    initValue.file_pdf ? initValue.file_pdf.split(",") : []
+  );
+  const [chooseFile, setChooseFile] = useState(
+    initValue.file_pdf ? initValue.file_pdf.split(",") : []
+  );
+  const [selectedPdf, setSelectedPdf] = useState([]);
 
-  const [openChildModal, setOpenChildModal] = useState(false);
-  const [selectedImages, setSelectedImages] = useState(initValue.image);
+  const [isChangeFile, setIsChangeFile] = useState(false);
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const fileNames = files.map((file) => file.name);
-    setSelectedFiles((prev) => [...prev, fileNames]);
+  const handleFileChange = async (e) => {
+    try {
+      const files = Array.from(e.target.files);
+      console.log("vao day: ", files);
+
+      const fileNames = files.map((file) => file.name);
+
+      setSelectedFiles((prev) => [...prev, ...fileNames]);
+      setSelectedPdf((prev) => [...prev, ...files]);
+      setIsChangeFile(true);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  const onSubmit = (data) => {
-    const strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
+  const onSubmit = async (data) => {
+    try {
+      const strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
+      console.log("tren: ", selectedPdf);
 
-    if (strippedContent === "") {
-      // Nếu nội dung sau khi loại bỏ các thẻ HTML và khoảng trắng trống,
-      // hiển thị thông báo lỗi hoặc thực hiện các xử lý khác
-      alert("Vui lòng nhập nội dung");
-      return;
+      if (strippedContent === "") {
+        // Nếu nội dung sau khi loại bỏ các thẻ HTML và khoảng trắng trống,
+        // hiển thị thông báo lỗi hoặc thực hiện các xử lý khác
+        alert("Vui lòng nhập nội dung");
+        return;
+      }
+      let file_pdf = null;
+      let choose_file = chooseFile;
+      if (isChangeFile) {
+        const formData = new FormData();
+        for (let i = 0; i < selectedPdf.length; i++) {
+          formData.append("pdfs", selectedPdf[i]);
+        }
+        const result = await axios.post(
+          "http://localhost:3001/api/event/pdfs",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        console.log(
+          `kiểu của dữ liệu trả về: ${typeof result.data}. Dữ liệu là: ${
+            result.data
+          }`
+        );
+        file_pdf = result.data.join(", ");
+
+        choose_file = [...chooseFile, file_pdf];
+      }
+
+      await onSave({
+        ...data,
+        content: content,
+
+        selectedFiles: selectedFiles,
+        file_pdf: choose_file.join(","),
+        chooseFile: chooseFile,
+        choose_file: choose_file,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
-    // console.log({ ...data, content: content });
-    onSave({
-      ...data,
-      content: content,
-      image: selectedImages,
-      selectedFiles: selectedFiles,
-    });
   };
 
   const handleContentChange = (value) => {
@@ -57,53 +95,17 @@ const FormEvent = ({ initValue, onSave }) => {
     setIsContentError(false);
   };
 
-  const handleImageChange = async (e) => {
-    const files = Array.from(e.target.files);
-    const imagePreviews = [];
-
-    const uploadPromises = files.map(async (file) => {
-      const { data, error } = await supabase.storage
-        .from(SUPABASE_BUCKET)
-        .upload(`images/${new Date().getTime()}_${file.name}`, file);
-
-      if (error) {
-        console.error("Error uploading file:", error.message);
-      } else {
-        console.log("File uploaded successfully:", data);
-
-        const imageUrl = `https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/${data.path}`;
-        imagePreviews.push(imageUrl);
-      }
-    });
-
-    await Promise.all(uploadPromises);
-
-    setSelectedImages((prevImages) => prevImages.concat(imagePreviews));
-    console.log(selectedImages);
-  };
-
-  const handleClick = (image) => {
-    // const imageUrl = URL.createObjectURL(image);
-    // console.log(image);
-    const imageUrl = `upload/${image}`;
-    const imageElement = `<img src="${image}" alt="Selected Image" />`;
-    setContent((prevEditorHtml) => prevEditorHtml + imageElement);
-  };
-
   const handleDeleteFilePdf = (index) => {
-    // const file_name = watch("file_name")
     setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-
-    // setValue("file_name", formFileName);
-    // setValue("file_name", formFileName, { shouldDirty: true });
+    setSelectedPdf((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setChooseFile((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
   return (
     <div>
       <form className="text-start" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12">
-          <div className="border-b border-gray-900/10 pb-12">
+          <div className="border-b border-gray-900/10 pb-4">
             <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
-              {/* <img src="https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/images/1684918979237_mu-bo-4.jpg" /> */}
               <div className="col-span-2">
                 <label
                   htmlFor="title"
@@ -177,58 +179,6 @@ const FormEvent = ({ initValue, onSave }) => {
                     {...register("date_end", {})}
                     defaultValue={initValue.date_end}
                   />
-                </div>
-              </div>
-
-              <div className="col-span-1">
-                <label
-                  htmlFor="date-start"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Thời gian bắt đầu
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="time"
-                    name="time-start"
-                    id="time-start"
-                    className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    {...register("time_start", {
-                      required: "Không được bỏ trống trường này",
-                    })}
-                    defaultValue={initValue.time_start}
-                  />
-                  {errors.time_start && (
-                    <span className="text-sm text-red-500">
-                      {errors.time_start.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-span-1">
-                <label
-                  htmlFor="time_end"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Thời gian kết thúc
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="time"
-                    name="time_end"
-                    id="time_end"
-                    className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    {...register("time_end", {
-                      required: "Không được bỏ trống trường này",
-                    })}
-                    defaultValue={initValue.time_end}
-                  />
-                  {errors.time_end && (
-                    <span className="text-sm text-red-500">
-                      {errors.time_end.message}
-                    </span>
-                  )}
                 </div>
               </div>
 
@@ -357,37 +307,6 @@ const FormEvent = ({ initValue, onSave }) => {
 
               <div className="col-span-2">
                 <label
-                  htmlFor="title"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Upload ảnh phục vụ cho Nội dung
-                </label>
-                <div className="mt-2" onClick={() => setOpenChildModal(true)}>
-                  <AiOutlineCloudUpload />
-                </div>
-
-                <Modal open={openChildModal} setOpen={setOpenChildModal}>
-                  <UploadImage handleImageChange={handleImageChange} />
-                </Modal>
-                <div className="flex flex-wrap gap-1">
-                  {selectedImages?.map((imageUrl, index) => (
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={`Image ${index}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                      }}
-                      onClick={() => handleClick(imageUrl)}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="col-span-2">
-                <label
                   htmlFor="content"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
@@ -395,9 +314,6 @@ const FormEvent = ({ initValue, onSave }) => {
                 </label>
                 <div className="mt-2">
                   <ReactQuillEditor
-                    // {...register("content", {
-                    //   required: "Vui long khong de trong",
-                    // })}
                     content={content}
                     setContent={handleContentChange}
                   />

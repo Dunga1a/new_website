@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
-import { useNavigate } from "react-router-dom";
-const events = [
-  {
-    event_id: 1,
-    eventName: "HỘI NGHỊ XÚC TIẾN ĐẦU TƯ VÀO THÀNH PHỐ HỒ CHÍ MINH NĂM 2019",
-    timeStart: "7:30 - 11:30",
-    dayStart: "16/04/2019",
-  },
-  {
-    event_id: 2,
-    eventName:
-      "Hội nghị Lãnh đạo thành phố gặp gỡ chuyên gia tri thức, doanh nhân kiều bào hiến kế xây dựng Thành phố Hồ Chí Minh trở thành ' Trung tâm Tài chính ' và ' Đô thị Sáng tạo ' của khu vực",
-    timeStart: "Cả ngày",
-    dayStart: "25/03/2019 - 30/03/2019",
-  },
-];
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import dayjs from "dayjs";
+import PaginationV2 from "../../components/Pagination/PaginationV2";
 const PageEvents = () => {
   const navigate = useNavigate();
+  const [eventList, setEventList] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [count, setCount] = useState();
+  const page = searchParams.get("page") || 1;
+  const searchKey = searchParams.get("searchKey") || "";
+  const dateStart = searchParams.get("dateStart") || "";
+  const dateEnd = searchParams.get("dateEnd") || "";
+  const queryParams = {
+    page,
+  };
+  const fetchData = async () => {
+    try {
+      const sheet = page ? page : 1;
+      const search = searchKey ? searchKey : "";
+      const date_start = dateStart ? dateStart : "";
+      const date_end = dateEnd ? dateEnd : "";
+      const result = await axios.get(
+        `http://localhost:3001/api/event/getAllEvent?page=${sheet}&searchKey=${search}&dateStart=${date_start}&dateEnd=${date_end}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setEventList(result.data.eventList);
+      setCount(result.data.countEvent);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  const handleChangePage = async (page) => {
+    setSearchParams({ ...queryParams, page: page.toString() });
+  };
+
+  console.log(eventList);
   return (
     <div className="bg-white pt-6">
       <Breadcrumbs title={"Sự kiện"} />
@@ -28,37 +53,48 @@ const PageEvents = () => {
             <h1 className="text-xl my-3 text-red-500 font-medium border-b border-b-slate-500">
               Sự Kiện
             </h1>
-            <table className="w-full text-center border text-[#080808]">
-              <thead className="border ">
-                <tr>
-                  <th className="border border-slate-400 py-2 text-[16px]">
-                    Thời gian diễn ra
-                  </th>
-                  <th className="border border-slate-400 py-2 text-[16px]">
-                    Sự kiện
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {events.map((event) => (
-                  <tr className="border border-slate-400" key={event.event_id}>
-                    <td className="border border-slate-400">
-                      {event.dayStart} <br /> {event.timeStart}
-                    </td>
-                    <td className="border border-slate-400 cursor-pointer">
-                      <span
-                        className="text-blue-700 font-medium hover:underline"
-                        onClick={() =>
-                          navigate(`/events-page/${event.event_id}`)
-                        }
-                      >
-                        {event.eventName}
-                      </span>
-                    </td>
+            {eventList ? (
+              <table className="w-full text-center border text-[#080808]">
+                <thead className="border ">
+                  <tr>
+                    <th className="border border-slate-400 py-2 text-[16px] w-[110px]">
+                      Thời gian diễn ra
+                    </th>
+                    <th className="border border-slate-400 py-2 text-[16px]">
+                      Sự kiện
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {eventList.map((event) => (
+                    <tr className="border border-slate-400" key={event.id}>
+                      <td className="border border-slate-400">
+                        {dayjs(event.date_start).format("DD/MM/YYYY")}{" "}
+                        {event.date_end
+                          ? `- ${dayjs(event.date_end).format("DD/MM/YYYY")}`
+                          : ""}
+                        <br />
+                        {event.time}
+                      </td>
+                      <td className="border border-slate-400 cursor-pointer">
+                        <span
+                          className="text-blue-700 font-medium hover:underline"
+                          onClick={() => navigate(`/events-page/${event.id}`)}
+                        >
+                          {event.title}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : null}
+            <PaginationV2
+              total={count}
+              current={searchParams.get("page") || 1}
+              pageSize="8"
+              onChange={handleChangePage}
+            />
           </div>
         </div>
         <div>

@@ -32,13 +32,13 @@ export class Member {
   @Column()
   code_company: string;
 
-  @Column()
+  @Column({ nullable: true })
   image_person: string;
 
-  @Column()
+  @Column({ nullable: true })
   image_company: string;
 
-  @Column()
+  @Column({ nullable: true })
   website: string;
 
   @Column()
@@ -50,6 +50,6 @@ export class Member {
   @Column()
   slug: string;
 
-  @Column()
+  @Column({ default: 0 })
   status: number;
 }
