@@ -9,6 +9,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import entities from './utils/typeorm';
+import { NewscategoryModule } from './newscategory/newscategory.module';
+import { EventModule } from './event/event.module';
+import { OrganizeMembershipTitleModule } from './organize-membership-title/organize-membership-title.module';
+import { BusinessAreasModule } from './business-areas/business-areas.module';
+import { MemberModule } from './member/member.module';
+import { CommentModule } from './comment/comment.module';
 
 let envFilePath = '.env.development';
 if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
@@ -22,16 +28,22 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
     ConfigModule.forRoot({ envFilePath }),
     PassportModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
+      type: 'mysql',
+      host: process.env.MYSQL_DB_HOST,
+      port: parseInt(process.env.MYSQL_DB_PORT),
+      username: process.env.MYSQL_DB_USERNAME,
+      password: process.env.MYSQL_DB_PASSWORD,
+      database: process.env.MYSQL_DB_NAME,
       synchronize: true,
       entities,
       logging: false,
     }),
+    NewscategoryModule,
+    EventModule,
+    OrganizeMembershipTitleModule,
+    BusinessAreasModule,
+    MemberModule,
+    CommentModule,
   ],
   controllers: [],
 })

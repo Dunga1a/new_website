@@ -18,15 +18,11 @@ export enum StatusAccount {
 }
 
 export type CreateUserDetails = {
-  lastname?: string;
-  firstname: string;
-  username: string;
+  username?: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  gender: Gender;
-  birthday: Date;
-  signature?: string;
-  status: StatusAccount;
 };
 
 export type ValidateUserDetails = {
@@ -73,4 +69,63 @@ export type dataUploadProfile = {
   birthday: Date;
   signature: string;
   // image: Image;
+};
+
+export type CreateEventDetails = {
+  date_start: Date;
+  time: string;
+  title: string;
+  address: string;
+  leader: string;
+  content: string;
+};
+
+export type EditEventDetails = {
+  id: number;
+  date_start: Date;
+  date_end?: Date;
+  file_pdf?: string;
+  status?: number;
+  time: string;
+  title: string;
+  address: string;
+  leader: string;
+  content: string;
+};
+
+export type CreateOrganizationDetails = {
+  name: string;
+};
+
+export type CreateMemberDetails = {
+  name_company: string;
+  role_name: string;
+  representative: string;
+  phone: string;
+  email: string;
+  code_company: string;
+  address: string;
+  intro: string;
+  slug: string;
+};
+
+export type NewsCategoryDetails = {
+  news_category_id?: number;
+  father_id?: number;
+  name: string;
+  slug: string;
+};
+
+export type BusinessAreasDetails = {
+  id_business_areas?: number;
+  name: string;
+  slug: string;
+  intro: string;
+  status?: number;
+};
+
+export type OrganizationDetails = {
+  id_organize_membership?: number;
+  name: string;
+  status?: boolean;
 };

@@ -5,7 +5,7 @@ export class NewsCategory {
   @PrimaryGeneratedColumn()
   news_category_id: number;
 
-  @Column()
+  @Column({ nullable: true })
   father_id: number;
 
   @Column()
