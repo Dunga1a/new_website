@@ -12,15 +12,15 @@ export class Comment {
   @ManyToOne(() => User)
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   father_id: number;
 
   @Column()
   content: string;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @Column()
+  @Column({ default: 1 })
   status: number;
 }

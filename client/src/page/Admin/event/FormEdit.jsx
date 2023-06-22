@@ -1,24 +1,45 @@
 import React from "react";
 import FormEvent from "./FormEvent";
 import { useState } from "react";
+import dayjs from "dayjs";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const FormEdit = () => {
+const FormEdit = ({ eventItem, setOpen, fetchData }) => {
   const [value, setValue] = useState({
-    title: "Fetch Data o day ",
-    address: "aaaa",
-    leader: "bbbbb",
-    date_start: "2023-05-26",
-    date_end: "2023-05-27",
-    time_start: "16:10",
-    time_end: "16:10",
-    content: "2:30",
-    image: [
-      "https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/images/1684919651801_mu1.jpg",
-    ],
+    id: eventItem.id,
+    title: eventItem.title,
+    address: eventItem.address,
+    leader: eventItem.leader,
+    date_start: dayjs(eventItem.date_start).format("YYYY-MM-DD"),
+    date_end: eventItem.date_end
+      ? dayjs(eventItem.date_end).format("YYYY-MM-DD")
+      : "",
+    time: eventItem.time,
+    content: eventItem.content,
+    image: [],
+    file_pdf: eventItem.file_pdf,
   });
+  console.log("vao day: ", eventItem);
 
-  const onSave = (data) => {
-    console.log("vao day: ", data);
+  const onSave = async (data) => {
+    try {
+      const { image, selectedFiles, ...values } = data;
+      // console.log(data);
+      const result = await axios.post(
+        "http://localhost:3001/api/event/editEvent",
+        { ...values, id: eventItem.id },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(result);
+      setOpen(false);
+      fetchData();
+      toast.success("Sửa sự kiện thành công");
+    } catch (error) {
+      toast.error("Sửa sự kiện thất bại");
+    }
   };
   return (
     <div>

@@ -1,64 +1,76 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 const MemberDetail = () => {
-  const { id } = useParams();
+  const { state } = useLocation();
+  console.log(state);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="bg-white pt-6">
       <Breadcrumbs title={"Hội viên"} link={"/member"} />
       <div className=" pb-14 grid grid-cols-4 gap-4 pt-4 px-6">
-        <div className="pt-4 col-span-3 phone:col-span-4 desktop:col-span-3 tablet:col-span-4 laptop:col-span-3">
-          ID: {id}
-          <div className=" flex flex-col mb-4 bg-white border border-gray-200 rounded-lg shadow desktop:flex-row desktop:max-w-full">
+        <div className="pt-4 col-span-3 phone:col-span-4">
+          <div className=" cursor-pointer flex flex-col mb-4 bg-white border border-gray-200 rounded-lg shadow desktop:flex-row desktop:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
             <img
               className="object-cover w-full rounded-t-lg h-96 desktop:h-auto desktop:w-48 desktop:rounded-none desktop:rounded-l-lg"
-              src="http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+              src={`${
+                state.image_company
+                  ? `/uploads/${state.image_company}`
+                  : "http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+              }`}
               alt=""
             />
-            <div className="flex flex-col justify-between p-4 pl-8 leading-normal">
+            <div className="flex flex-col justify-between pl-8 leading-normal">
               <p className="mb-1 tracking-tight text-gray-900 dark:text-white">
                 <span className="font-semibold text-[#333333] text-[14px]">
                   Tên doanh nghiệp:{" "}
                 </span>
-                Công ty TNHH Thương mại và dịch vụ số 1 Minh Châu
+                {state.name_company}
               </p>
 
               <p>
                 <span className="font-semibold text-[#333333] text-[14px]">
                   SĐT :{" "}
                 </span>
-                0'977910112
+                {state.phone}
               </p>
               <p>
                 <span className="font-semibold text-[#333333] text-[14px]">
                   Email:{" "}
                 </span>
-                anhminh050581@gmail.com
+                {state.email}
               </p>
               <p>
                 <span className="font-semibold text-[#333333] text-[14px]">
                   Lĩnh vực hoạt động:{" "}
                 </span>
-                Vòng bi - dây curoa
+                {state.id_business_areas.name}
               </p>
               <p>
                 <span className="font-semibold text-[#333333] text-[14px]">
-                  Website:{" "}
+                  Website: {state.website ? state.website : null}
                 </span>
               </p>
               <p>
                 <span className="font-semibold text-[#333333] text-[14px]">
                   Địa chỉ:{" "}
                 </span>
-                484 Trần Phú - Phường Ba Đình- TPTH
+                {state.address}
               </p>
             </div>
           </div>
-          <div className=" flex flex-col mb-4 bg-white border border-gray-200 rounded-lg shadow desktop:flex-row desktop:max-w-full">
+          <div className=" cursor-pointer flex flex-col mb-4 bg-white border border-gray-200 rounded-lg shadow desktop:flex-row desktop:max-w-full hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
             <img
               className="object-cover w-full rounded-t-lg h-96 desktop:h-auto desktop:w-48 desktop:rounded-none desktop:rounded-l-lg"
-              src="http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+              src={`${
+                state.image_person
+                  ? `/uploads/${state.image_person}`
+                  : "http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+              }`}
               alt=""
             />
             <div className=" p-4 pl-8 leading-normal">
@@ -66,10 +78,10 @@ const MemberDetail = () => {
                 <span className="font-semibold text-[#333333] text-[14px]">
                   Người đại diện :{" "}
                 </span>
-                Nguyễn Ngọc Bắc
+                {state.representative}
               </p>
               <p class="mt-3 font-semibold text-red-600 dark:text-gray-400">
-                Hội viên
+                {state.id_role_associations.name}
               </p>
             </div>
           </div>
@@ -77,7 +89,11 @@ const MemberDetail = () => {
             <h2 className="font-medium text-xl my-2 mt-4">
               Giới thiệu về doanh nghiệp
             </h2>
-            <p className="text-black mb-1">
+            <p>
+              {/* <div />. */}
+              <div dangerouslySetInnerHTML={{ __html: state.intro }} />
+            </p>
+            {/* <p className="text-black mb-1">
               Công ty thương mại và dịch vụ số 1 Minh Châu: là công ty thương
               mại chuyên cung cấp vòng bi , dây curoa , nhông xích , que hàn,
               phớt và các phụ tùng máy công nhiệp, nông nghiệp . Sản phẩm được
@@ -96,11 +112,13 @@ const MemberDetail = () => {
               khách có nhu cầu về vòng bi , dây curoa ,… hãy liên hệ với chúng
               tôi . Đó sẽ là vinh dự lớn của chúng tôi để hợp tác kinh doanh với
               quý khách hàng .
-            </p>
+            </p> */}
           </div>
         </div>
         <div>
-          <RightBar />
+          <div>
+            <RightBar />
+          </div>
         </div>
       </div>
     </div>

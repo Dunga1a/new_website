@@ -3,10 +3,10 @@ import ReactQuillEditor from "../../../components/ReactQuill";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Toggle from "../../../components/Toggle/Toggle";
+import slugify from "slugify";
 
 const FormBusinessArea = ({ initValue, onSave }) => {
-  console.log("init value: ", initValue);
-  const [content, setContent] = useState(initValue.content);
+  const [content, setContent] = useState(initValue.intro);
   const [isContentError, setIsContentError] = useState(false);
   const [isPublic, setIsPublic] = useState(initValue.status);
 
@@ -31,10 +31,22 @@ const FormBusinessArea = ({ initValue, onSave }) => {
       alert("Vui lòng nhập nội dung");
       return;
     }
+    const slug = slugify(data.name, {
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+      strict: false, // strip special characters except replacement, defaults to `false`
+      locale: "vi", // language code of the locale to use
+      trim: true, // trim leading and trailing replacement chars, defaults to `true`
+    });
+
     // console.log("vao day");
     onSave({
       ...data,
       intro: content,
+      slug,
+      status: isPublic,
+      id_business_areas: initValue.id_business_areas,
     });
   };
 
@@ -42,7 +54,7 @@ const FormBusinessArea = ({ initValue, onSave }) => {
     <div>
       <form className="text-start" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12">
-          <div className="border-b border-gray-900/10 pb-12">
+          <div className="border-b border-gray-900/10 pb-4">
             <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="col-span-2">
                 <label
@@ -58,14 +70,14 @@ const FormBusinessArea = ({ initValue, onSave }) => {
                     id="title"
                     autoComplete="given-name"
                     className="block w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    {...register("title", {
+                    {...register("name", {
                       required: "Không được bỏ trống trường này",
                       minLength: {
-                        value: 10,
+                        value: 5,
                         message: `Vui lòng nhập ít nhất 10 ký tự`,
                       },
                     })}
-                    defaultValue={initValue.title}
+                    defaultValue={initValue.name}
                   />
                   {errors.title && (
                     <span className="text-sm text-red-500">

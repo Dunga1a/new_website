@@ -50,6 +50,12 @@ const navigation = [
     current: false,
   },
   {
+    name: "Quản Lý Chức Vụ Hội Viên",
+    href: `${prevHref}/organize`,
+    icon: MdCardMembership,
+    current: false,
+  },
+  {
     name: "Quản Lý Hội Viên",
     href: `${prevHref}/member`,
     icon: MdCardMembership,

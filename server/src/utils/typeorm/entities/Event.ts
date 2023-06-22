@@ -8,7 +8,7 @@ export class Event {
   @Column()
   date_start: Date;
 
-  @Column()
+  @Column({ nullable: true })
   date_end: Date;
 
   @Column()
@@ -23,12 +23,12 @@ export class Event {
   @Column()
   leader: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   content: string;
 
-  @Column()
+  @Column({ nullable: true })
   file_pdf: string;
 
-  @Column()
+  @Column({ default: 0 })
   status: number;
 }

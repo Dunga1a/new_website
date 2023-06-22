@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,15 @@ import {
 import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
+import axios from "axios";
+import slugify from "slugify";
+import FormDeleteCategory from "./FormDeleteCategory";
+import Modal from "../../../components/Modal/Modal";
+import FormEditCategory from "./FormEditCategory";
+import { useSearchParams } from "react-router-dom";
+import PaginationV2 from "../../../components/Pagination/PaginationV2";
+import CategoryList from "./CategoryList";
+
 const options = [
   { label: "Tin tức hoạt động", value: "tin-tuc-hoat-dong" },
   { label: "Tin tức Xứ Thanh", value: "tin-tuc-xu-thanh" },
@@ -18,27 +27,203 @@ const options = [
   { label: "Hoạt động", value: "hoat-dong" },
 ];
 
-// const options_role = [
-//   { value: "admin", label: "Admin" },
-//   { value: "hoi_vien", label: "Hội viên" },
-//   { value: "nguoi_dung", label: "Người dùng" },
-// ];
 const CategoryManager = () => {
   const [open, setOpen] = useState(false);
+  const [openOne, setOpenOne] = useState();
+
+  const [openDeleteForm, setOpenDeleteForm] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [newsCategory, setNewsCategory] = useState([]);
+  const [newsCategoryDelete, setNewsCategoryDelete] = useState([]);
+  const [newsCategoryEdit, setNewsCategoryEdit] = useState();
+  const [arr, setArr] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+  const [count, setCount] = useState();
+  const queryParams = {
+    page,
+  };
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm({ criteriaMode: "all" });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const slug = slugify(data.category, {
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+      strict: false, // strip special characters except replacement, defaults to `false`
+      locale: "vi", // language code of the locale to use
+      trim: true, // trim leading and trailing replacement chars, defaults to `true`
+    });
+    const values = { name: data.category, slug };
+    // console.log(values);
+
+    const results = await axios.post(
+      "http://localhost:3001/api/newscategory/createNewsCategory",
+      values,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(results);
+    reset({ category: "" });
+    fetchData();
+    // setNewsCategory((prev) => [...prev, results.data]);
+  };
 
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const groupCommentsByFatherId = (comments) => {
+    const commentMap = {};
+    const topLevelComments = [];
+
+    // Tạo một map để ánh xạ các comment theo id
+    for (const comment of comments) {
+      const commentId = comment.news_category_id;
+
+      if (!commentMap[commentId]) {
+        commentMap[commentId] = {
+          ...comment,
+          children: [],
+        };
+      }
+
+      const mappedComment = commentMap[commentId];
+
+      // Kiểm tra nếu có father_id, thêm comment hiện tại vào danh sách con của cha tương ứng
+      if (comment.father_id) {
+        if (!commentMap[comment.father_id]) {
+          commentMap[comment.father_id] = {
+            children: [],
+          };
+        }
+
+        commentMap[comment.father_id].children.push(mappedComment);
+      } else {
+        topLevelComments.push(mappedComment);
+      }
+
+      // Kiểm tra nếu comment hiện tại đã có con trong map, thì gán danh sách con của nó vào comment hiện tại
+      if (commentMap[commentId].children.length > 0) {
+        mappedComment.children = commentMap[commentId].children;
+      }
+    }
+
+    return topLevelComments;
+  };
+
+  const fetchData = async () => {
+    try {
+      const sheet = page ? page : 1;
+      const category = await axios.get(
+        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const group = groupCommentsByFatherId(category.data.newsCategories);
+      console.log(group);
+      setArr(group);
+      setNewsCategory(category.data.newsCategories);
+      setCount(category.data.countCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  const handleChangePage = async (page) => {
+    // console.log({ ...queryParams, page: page });
+    // navigate(`/admin/member?page=${page}`);
+    // navigate("/admin/member", { query: { ...queryParams, page: page } });
+    setSearchParams({ ...queryParams, page: page.toString() });
+  };
+
+  console.log("vap day: ", arr);
+
+  const handleDelete = async (item) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3001/api/newscategory/getOneCategory/${item.news_category_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setNewsCategoryDelete(result.data);
+      setOpenDeleteForm(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleEdit = async (item) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3001/api/newscategory/getCategory/${item.news_category_id}`
+      );
+      console.log(result.data);
+      setNewsCategoryEdit(result.data);
+      setOpenEditForm(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const [isCheckedAll, setIsCheckedAll] = useState(false);
+  const [isCheckedItems, setIsCheckedItems] = useState([]);
+  useEffect(() => {
+    // Kiểm tra nếu tất cả các checkbox phụ đã được chọn
+    const isAllChecked = newsCategory?.every((item) =>
+      isCheckedItems.includes(item.news_category_id)
+    );
+    setIsCheckedAll(isAllChecked);
+  }, [newsCategory, isCheckedItems]);
+
+  const handleCheckAll = (event) => {
+    const isChecked = event.target.checked;
+    setIsCheckedAll(isChecked);
+
+    if (isChecked) {
+      // Chọn tất cả các checkbox phụ
+      const allItemIds = newsCategory.map((item) => item.news_category_id);
+      setIsCheckedItems(allItemIds);
+    } else {
+      // Bỏ chọn tất cả các checkbox phụ
+      setIsCheckedItems([]);
+    }
+  };
+  const handleCheckItem = (event, itemId) => {
+    const isChecked = event.target.checked;
+    let updatedCheckedItems = [...isCheckedItems];
+
+    if (isChecked) {
+      // Chọn checkbox phụ
+      updatedCheckedItems.push(itemId);
+    } else {
+      // Bỏ chọn checkbox phụ
+      updatedCheckedItems = updatedCheckedItems.filter((id) => id !== itemId);
+    }
+
+    setIsCheckedItems(updatedCheckedItems);
+  };
+
+  const handleDeleteItems = async (items) => {
+    // Call Api delete many category tại đây
+    console.log(items);
+  };
+
   return (
     <Card title={"Quản lý danh mục"} className="overflow-visible">
       <Card.Content>
-        <div className="grid grid-cols-3 gap-4">
+        {/* <div className="grid grid-cols-3 gap-4">
           <Select
             options={options}
             className="col-span-2"
@@ -47,90 +232,101 @@ const CategoryManager = () => {
           <button className="py-2 px-4 font-semibold text-base bg-gray-500 rounded text-white hover:bg-primaryColor">
             Tìm kiếm
           </button>
-        </div>
-        <table className="border border-blue-400 w-full mt-10 bg-white">
-          <thead>
-            <tr>
-              <th scope="col" className="p-4 border border-blue-400">
-                <div class="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label for="checkbox-all-search" class="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </th>
-              <th className="border border-blue-400">Danh mục</th>
-              <th className="border border-blue-400">Tổng số bài viết</th>
-              <th className="border border-blue-400">Chức năng</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="w-4 p-4 text-center">
-                <div className="flex items-center">
-                  <input
-                    id="checkbox-table-search-1"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label for="checkbox-table-search-1" class="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </td>
-              <td className="text-center">Tin hoạt động</td>
-              <td className="text-center">3</td>
-              <td className="flex items-center justify-center p-2">
-                <Button
-                  colorText={"text-white"}
-                  colorBgr={"bg-blue-600"}
-                  colorHover={"bg-blue-700"}
-                  icon={<TbEdit className="text-[18px]" />}
-                />
-                <Button
-                  colorText={"text-white"}
-                  colorBgr={"bg-red-700"}
-                  colorHover={"bg-red-800"}
-                  icon={<AiOutlineDelete className="text-[18px]" />}
-                />
-              </td>
-            </tr>
-            <tr className="h-4">
-              <td className="w-4 p-4 text-center">
-                <div className="flex items-center">
-                  <input
-                    id="checkbox-table-search-1"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label htmlFor="checkbox-table-search-1" className="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </td>
-              <td className="text-center">Tin hoạt động</td>
-              <td className="text-center">3</td>
-              <td className="flex items-center justify-center p-2">
-                <Button
-                  colorText={"text-white"}
-                  colorBgr={"bg-blue-600"}
-                  colorHover={"bg-blue-700"}
-                  icon={<TbEdit className="text-[18px]" />}
-                />
-                <Button
-                  colorText={"text-white"}
-                  colorBgr={"bg-red-700"}
-                  colorHover={"bg-red-800"}
-                  icon={<AiOutlineDelete className="text-[18px]" />}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </div> */}
+        {/* {newsCategory ? (
+          <table className="border border-blue-400 w-full mt-10 bg-white">
+            <thead>
+              <tr>
+                <th scope="col" className="p-4 border border-blue-400">
+                  <div class="flex items-center">
+                    <input
+                      id="checkbox-all-search"
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      checked={isCheckedAll}
+                      onChange={handleCheckAll}
+                    />
+                    <label for="checkbox-all-search" class="sr-only">
+                      checkbox
+                    </label>
+                  </div>
+                </th>
+                <th className="border border-blue-400">Danh mục</th>
+                <th className="border border-blue-400">Tổng số bài viết</th>
+                <th className="border border-blue-400">Chức năng</th>
+              </tr>
+            </thead>
+            <tbody>
+              {newsCategory.map((item) => {
+                return (
+                  <tr>
+                    <td className="w-4 p-4 text-center">
+                      <div className="flex items-center">
+                        <input
+                          checked={isCheckedItems.includes(
+                            item.news_category_id
+                          )}
+                          onChange={(event) =>
+                            handleCheckItem(event, item.news_category_id)
+                          }
+                          id="checkbox-table-search-1"
+                          type="checkbox"
+                          classNmae="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label for="checkbox-table-search-1" class="sr-only">
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <td className="text-center">{item.name}</td>
+                    <td className="text-center">{item.postCount}</td>
+                    <td className="flex items-center justify-center p-2">
+                      <Button
+                        onClick={() => handleEdit(item)}
+                        colorText={"text-white"}
+                        colorBgr={"bg-blue-600"}
+                        colorHover={"bg-blue-700"}
+                        icon={<TbEdit className="text-[18px]" />}
+                      />
+                      <Button
+                        onClick={() => handleDelete(item)}
+                        colorText={"text-white"}
+                        colorBgr={"bg-red-700"}
+                        colorHover={"bg-red-800"}
+                        icon={<AiOutlineDelete className="text-[18px]" />}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : null}
+        {newsCategoryDelete ? (
+          <Modal
+            open={openDeleteForm}
+            setOpen={setOpenDeleteForm}
+            title="Xóa danh mục"
+          >
+            <FormDeleteCategory
+              newsCategoryDelete={newsCategoryDelete}
+              setOpenDeleteForm={setOpenDeleteForm}
+              fetchData={fetchData}
+            />
+          </Modal>
+        ) : null}
+
+        <Modal
+          open={openEditForm}
+          setOpen={setOpenEditForm}
+          title="Sửa danh mục"
+        >
+          <FormEditCategory
+            newsCategoryEdit={newsCategoryEdit}
+            setOpen={setOpenEditForm}
+            fetchData={fetchData}
+          />
+        </Modal>
 
         <div className="mt-5">
           <div className="flex">
@@ -155,6 +351,7 @@ const CategoryManager = () => {
               colorBgr={"bg-red-500"}
               colorText={"text-white"}
               colorHover={"bg-red-800"}
+              onClick={() => handleDeleteItems(isCheckedItems)}
             />
           </div>
 
@@ -208,6 +405,20 @@ const CategoryManager = () => {
             </form>
           )}
         </div>
+        <PaginationV2
+          total={count}
+          current={searchParams.get("page") || 1}
+          pageSize="10"
+          onChange={handleChangePage}
+        /> */}
+        {arr ? (
+          <CategoryList
+            comments={arr}
+            setOpen={setOpenOne}
+            open={openOne}
+            fetchData={fetchData}
+          />
+        ) : null}
       </Card.Content>
     </Card>
   );
