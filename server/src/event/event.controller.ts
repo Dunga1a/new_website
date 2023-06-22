@@ -28,7 +28,7 @@ export class EventController {
   @UseInterceptors(
     FilesInterceptor('pdfs', null, {
       storage: diskStorage({
-        destination: '../app_news/public/uploads/pdf', // Đường dẫn thư mục lưu trữ file
+        destination: '../client/public/uploads/pdf', // Đường dẫn thư mục lưu trữ file
         filename: (req, file, callback) => {
           const randomName = Date.now();
           const originalName = file.originalname;

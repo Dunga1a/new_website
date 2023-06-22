@@ -84,7 +84,7 @@ import NewsDetail from "./page/Admin/news/NewsDetail";
 import MembersDetail from "./page/Admin/member/MembersDetail";
 
 import BusinessArea from "./page/Admin/businessArea/BusinessArea";
-
+import Organize from "./page/Admin/organizeMembership/Organize";
 
 const prevHref = "/admin";
 
@@ -111,6 +111,8 @@ const AppLayout = ({ currentUser }) => {
             path={`${prevHref}/contact/:id`}
             element={<ContactManagerDetail />}
           />
+          <Route path={`${prevHref}/organize`} element={<Organize />} />
+
           <Route path={`${prevHref}/user/:id`} element={<UserDetail />} />
           <Route path={`${prevHref}/news/:id`} element={<NewsDetail />} />
           <Route path={`${prevHref}/member/:id`} element={<MembersDetail />} />

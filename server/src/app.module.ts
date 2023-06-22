@@ -11,6 +11,12 @@ import { ContactModule } from './contact/contact.module';
 import { RelyModule } from './rely/rely.module';
 import { PostsModule } from './posts/posts.module';
 import { MailModule } from './mail/mail.module';
+import { NewscategoryModule } from './newscategory/newscategory.module';
+import { EventModule } from './event/event.module';
+import { OrganizeMembershipTitleModule } from './organize-membership-title/organize-membership-title.module';
+import { BusinessAreasModule } from './business-areas/business-areas.module';
+import { MemberModule } from './member/member.module';
+import { CommentModule } from './comment/comment.module';
 
 let envFilePath = '.env.development';
 if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
@@ -37,6 +43,12 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
     RelyModule,
     PostsModule,
     MailModule,
+    NewscategoryModule,
+    EventModule,
+    OrganizeMembershipTitleModule,
+    BusinessAreasModule,
+    MemberModule,
+    CommentModule,
   ],
   controllers: [],
 })

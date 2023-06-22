@@ -37,7 +37,7 @@ export class MemberController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: '../app_news/public/uploads',
+        destination: '../client/public/uploads',
         filename: (req, file, callback) => {
           const randomName = Array(4)
             .fill(null)
@@ -56,7 +56,7 @@ export class MemberController {
   @UseInterceptors(
     FilesInterceptor('images', null, {
       storage: diskStorage({
-        destination: '../app_news/public/uploads',
+        destination: '../client/public/uploads',
         filename: (req, file, callback) => {
           const randomName = Array(4)
             .fill(null)
