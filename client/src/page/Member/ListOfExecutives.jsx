@@ -3,6 +3,7 @@ import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import PaginationV2 from "../../components/Pagination/PaginationV2";
 const listMembers = [
   {
     id: 1,
@@ -123,6 +124,9 @@ const ListOfExecutives = () => {
     fetchData();
   }, [page, roleAssociationParam, businessIdParam, memberStatus]);
   const navigate = useNavigate();
+  const handleChangePage = async (page) => {
+    setSearchParams({ ...queryParams, page: page.toString() });
+  };
   return (
     <div className="bg-white pt-6">
       <Breadcrumbs title={"Ban chấp hành hiệp hội"} />
@@ -163,6 +167,12 @@ const ListOfExecutives = () => {
                 ))
               : null}
           </div>
+          <PaginationV2
+            total={count}
+            current={searchParams.get("page") || 1}
+            pageSize="5"
+            onChange={handleChangePage}
+          />
         </div>
         <div>
           <div>
