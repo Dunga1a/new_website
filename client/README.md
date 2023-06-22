@@ -6,8 +6,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm start`
+### `Sử dụng nodejs^12 trở lên`
 
+### `npm install(https://docs.npmjs.com/cli/v8/commands/npm-install)`
+### ` hoặc yarn install(https://yarnpkg.com/getting-started/install)`
+Để cài đặt project
+
+### `npm start`
+Để run app
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
