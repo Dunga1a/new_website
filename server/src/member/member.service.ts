@@ -109,6 +109,78 @@ export class MemberService implements IMemberService {
     return memberOne;
   }
 
+  async getMemberByRole(queryParams: any) {
+    const pageSize = 6;
+    const page = Number(queryParams.page);
+    const roleAssociationParam = Number(queryParams.roleAssociationParam);
+    const businessIdParam = Number(queryParams.businessIdParam);
+    const memberStatus = queryParams.memberStatus;
+
+    const query = this.memberRepository
+      .createQueryBuilder('member')
+      .leftJoinAndSelect('member.id_role_associations', 'role_association')
+      .leftJoinAndSelect('member.id_business_areas', 'business_area')
+      .where('member.id_role_associations <> 1')
+      .skip((page - 1) * pageSize)
+      .take(pageSize);
+
+    if (roleAssociationParam) {
+      query.andWhere(
+        'role_association.id_organize_membership = :id_organize_membership',
+        {
+          id_organize_membership: roleAssociationParam,
+        },
+      );
+    }
+
+    if (businessIdParam) {
+      query.andWhere('business_area.id_business_areas = :id_business_areas', {
+        id_business_areas: businessIdParam,
+      });
+    }
+
+    if (memberStatus) {
+      query.andWhere('member.status = :status', {
+        status: memberStatus,
+      });
+    }
+
+    const queryCount = this.memberRepository
+      .createQueryBuilder('member')
+      .leftJoinAndSelect('member.id_role_associations', 'role_association')
+      .leftJoinAndSelect('member.id_business_areas', 'business_area')
+      .where('member.id_role_associations <> 1');
+
+    if (roleAssociationParam) {
+      queryCount.andWhere(
+        'role_association.id_organize_membership = :id_organize_membership',
+        {
+          id_organize_membership: roleAssociationParam,
+        },
+      );
+    }
+
+    if (businessIdParam) {
+      queryCount.andWhere(
+        'business_area.id_business_areas = :id_business_areas',
+        {
+          id_business_areas: businessIdParam,
+        },
+      );
+    }
+    if (memberStatus || memberStatus === 0) {
+      queryCount.andWhere('member.status = :status', {
+        status: memberStatus,
+      });
+    }
+
+    const memberList = await query.getMany();
+
+    const countMemberList = await queryCount.getCount();
+
+    return { memberList, countMemberList };
+  }
+
   async confirmOneMember(userMemberDetails: any) {
     const values = {
       member: userMemberDetails.member,
@@ -203,16 +275,26 @@ export class MemberService implements IMemberService {
 
   async deleteManyMember(idMembers: number[]) {
     // console.log(idMembers);
-    return 'this is function delete many member';
+    // return 'this is function delete many member';
     // const repositoryMember = getRepository(Member);
+
     // const deletedMayMember = await repositoryMember
     //   .createQueryBuilder()
     //   .delete()
-    //   .where('id IN (:...idMembers)', { idMembers });
-    // if (deletedMayMember) {
-    //   console.log('Bản ghi đã được xóa.');
-    // } else {
-    //   console.log('Không tìm thấy bản ghi hoặc xóa thất bại.');
-    // }
+    //   .where('id IN (:...idMembers)', { idMembers })
+    //   .execute();
+    const deletedManyMember = await this.memberRepository
+      .createQueryBuilder()
+      .delete()
+      .where('id IN (:...idMembers)', {
+        idMembers,
+      })
+      .execute();
+
+    if (deletedManyMember) {
+      console.log('Bản ghi đã được xóa.');
+    } else {
+      console.log('Không tìm thấy bản ghi hoặc xóa thất bại.');
+    }
   }
 }

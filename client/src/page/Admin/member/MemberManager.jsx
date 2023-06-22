@@ -52,11 +52,13 @@ const MemberManager = () => {
 
   const fetchDataStatic = async () => {
     try {
+      const search = "";
+
       const result = await axios.get(
         "http://localhost:3001/api/business-areas/getListBusinessArea"
       );
       const resultTwo = await axios.get(
-        "http://localhost:3001/api/organize-membership-title"
+        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
       );
 
       const data = result.data.map((item) => {
@@ -72,6 +74,8 @@ const MemberManager = () => {
           value: item.id_organize_membership,
         };
       });
+
+      console.log(dataTwo);
 
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);
@@ -222,6 +226,10 @@ const MemberManager = () => {
 
   const handleDeleteItems = async (items) => {
     try {
+      const option = window.confirm("Bạn chắc chắn muốn xóa?");
+      if (!option) {
+        return;
+      }
       console.log(items);
       const result = await axios.delete(
         "http://localhost:3001/api/member/deleteManyMember",
@@ -232,6 +240,7 @@ const MemberManager = () => {
         }
       );
       console.log(result);
+      fetchData();
     } catch (error) {
       console.log(error.message);
     }
@@ -395,13 +404,13 @@ const MemberManager = () => {
                         />
                       )}
 
-                      <Button
+                      {/* <Button
                         colorText={"text-white"}
                         colorBgr={"bg-red-700"}
                         colorHover={"bg-red-800"}
                         icon={<AiOutlineDelete className="text-[18px]" />}
                         onClick={() => handleDeleteMember(item.id)}
-                      />
+                      /> */}
                     </td>
                   </tr>
                 );
@@ -414,12 +423,6 @@ const MemberManager = () => {
 
         <div className="mt-5">
           <div className="flex">
-            <Button
-              icon={<AiOutlineCheckCircle className="text-[18px]" />}
-              title={"Duyệt các lựa chọn"}
-              colorBgr={"bg-green-400 hover:bg-green-600"}
-              colorText={"text-white"}
-            />
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Xóa các lựa chọn"}

@@ -236,28 +236,6 @@ const MemberFormRegister = ({
 
   return (
     <div className="bg-white py-6">
-      {/* <div>
-        <input type="file" onChange={(e) => handleFileChange(e, "firstImg")} />
-        <input type="file" onChange={(e) => handleFileChange(e, "secondImg")} /> 
-
-  <button onClick={() => fileInputRef.current.click()}>
-          Choose Files
-        </button>
-
-        <input type="file" multiple onChange={handleUploadImages} />
-
-        {images &&
-          images.map((item) => {
-            return <img src={`/uploads/${item.imageUrl}`} />;
-          })}
-
-        /* {imageUrl && (
-          <img src={`/uploads/${imageUrl.firstImg}`} alt="Uploaded Image" />
-        )}
-        {imageUrl && (
-          <img src={`/uploads/${imageUrl.secondImg}`} alt="Uploaded Image" />
-        )}
-      </div> */}
       <form
         className="grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -473,7 +451,7 @@ const MemberFormRegister = ({
             type="submit"
             className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
           >
-            Đăng ký
+            Lưu
           </button>
         </div>
       </form>
