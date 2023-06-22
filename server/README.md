@@ -1,6 +1,4 @@
-# Chat Platform API
 
-This is the backend for the [Chat Platform React](https://github.com/stuyy/chat-platform-react) project.
 
 # Installation & Setup
 
@@ -13,8 +11,21 @@ This is the backend for the [Chat Platform React](https://github.com/stuyy/chat-
 ## Setting up the Backend
 
 1. Clone the repository.
-2. Run `yarn install` to install dependencies.
-3. Create a `.env.development` file in the root directory and paste the following:
+2. Run `yarn install` or `npm install` to install dependencies.
+3. Create a `environment.d.ts` file in the root directory and paste the following:
+  ```
+  declare namespace NodeJS {
+    export interface ProcessEnv {
+      MYSQL_DB_HOST?: string;
+      MYSQL_DB_NAME?: string;
+      MYSQL_DB_PORT?: string;
+      MYSQL_DB_PASSWORD?: string;
+      MYSQL_DB_USERNAME?: string;
+      COOKIE_SECRET: string;
+    }
+  }
+  ```
+4. Create a `.env.development` file in the root directory and paste the following:
 
    ```
    PORT=
@@ -36,6 +47,7 @@ This is the backend for the [Chat Platform React](https://github.com/stuyy/chat-
    - **`MYSQL_DB_NAME`** The name of your database (be sure to create it first otherwise an error will be thrown).
    - **`COOKIE_SECRET`** Can be any string that can be used to encrypt & decrypt your cookie.
 
-4. Run `yarn start:dev` or `npm run start:dev` depending on which package manager you use to start the project in development mode.
+
+6. Run `yarn start:dev` or `npm run start:dev` depending on which package manager you use to start the project in development mode.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
