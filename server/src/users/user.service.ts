@@ -40,9 +40,12 @@ export class UserService implements IUserService {
   }
 
   async findByUsername(username: string) {
-    const user = await this.userRepository.findOne({
-      username: username,
-    });
+    const user = await this.userRepository.findOne(
+      {
+        username: username,
+      },
+      { relations: ['member'] },
+    );
     if (!user) {
       throw new HttpException(
         'Tên đăng nhập không tồn tại ',

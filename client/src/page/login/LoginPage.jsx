@@ -11,21 +11,39 @@ import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 const LoginPage = ({ className }) => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(watch(data));
+  const onSubmit = async (data) => {
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/api/auth/login",
+        data,
+        { withCredentials: true }
+      );
+      // login(result.data.user);
+      setUser(result.data.user);
+      toast.success("Đăng nhập thành công");
+      // navigate("/user/editinfo/basic");
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response.data.message);
+
+      console.log(error.message);
+    }
+  };
   const resetFields = () => {
     reset();
   };
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );

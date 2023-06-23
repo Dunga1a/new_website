@@ -11,6 +11,7 @@ const EventsDetail = () => {
   const fetchData = async () => {
     try {
       const result = await axios.get(`http://localhost:3001/api/event/${id}`);
+
       setEventItem(result.data);
     } catch (error) {
       console.log(error.message);
@@ -67,7 +68,7 @@ const EventsDetail = () => {
                   {eventItem.file_pdf.split(",").map((item) => {
                     return (
                       <>
-                        <a href={`/uploads/pdf/${item}`} download>
+                        <a href={`/uploads/pdf/${item.trim()}`} download>
                           {item.substring(item.indexOf("-") + 1).trim()}
                         </a>
                         <br />

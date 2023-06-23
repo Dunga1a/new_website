@@ -5,6 +5,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@hookform/error-message": "^2.0.1",
+    "@nivo/pie": "^0.83.0",
     "@supabase/supabase-js": "^2.21.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
