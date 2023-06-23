@@ -2,10 +2,11 @@ import React from "react";
 import NavbarArr from "./NavbarArr";
 import { IoHome } from "react-icons/io5";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { AiFillCaretDown } from "react-icons/ai";
 import SideBar from "./Sidebar";
+import axios from "axios";
 
 const contentArr = [
   [
@@ -72,6 +73,18 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [openOne, setOpenOne] = useState();
+
+  const [openDeleteForm, setOpenDeleteForm] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [newsCategory, setNewsCategory] = useState([]);
+  const [newsCategoryDelete, setNewsCategoryDelete] = useState([]);
+  const [newsCategoryEdit, setNewsCategoryEdit] = useState();
+  const [arr, setArr] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+  const [count, setCount] = useState();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -83,6 +96,77 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [inputRef]);
+
+  const groupCommentsByFatherId = (comments) => {
+    const commentMap = {};
+    const topLevelComments = [];
+
+    // Tạo một map để ánh xạ các comment theo id
+    for (const comment of comments) {
+      const commentId = comment.news_category_id;
+
+      if (!commentMap[commentId]) {
+        commentMap[commentId] = {
+          ...comment,
+          children: [],
+        };
+      }
+
+      const mappedComment = commentMap[commentId];
+
+      // Kiểm tra nếu có father_id, thêm comment hiện tại vào danh sách con của cha tương ứng
+      if (comment.father_id) {
+        if (!commentMap[comment.father_id]) {
+          commentMap[comment.father_id] = {
+            children: [],
+          };
+        }
+
+        commentMap[comment.father_id].children.push(mappedComment);
+      } else {
+        topLevelComments.push(mappedComment);
+      }
+
+      // Kiểm tra nếu comment hiện tại đã có con trong map, thì gán danh sách con của nó vào comment hiện tại
+      if (commentMap[commentId].children.length > 0) {
+        mappedComment.children = commentMap[commentId].children;
+      }
+    }
+
+    return topLevelComments;
+  };
+
+  const fetchData = async () => {
+    try {
+      const sheet = page ? page : 1;
+      const category = await axios.get(
+        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const group = groupCommentsByFatherId(category.data.newsCategories);
+      console.log(group);
+      setArr(group);
+      setNewsCategory(category.data.newsCategories);
+      setCount(category.data.countCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  // console.log(arr);
+  const handleClick = (item) => {
+    navigate(`/news/${item.slug}`, { state: { item } });
+  };
+
+  const handleSubItemClick = (subItem) => {
+    navigate(`/news/${subItem.slug}`, { state: { item: subItem } });
+  };
   return (
     <div className="max-w-[1080px] m-auto">
       <div className=" laptop:flex desktop:flex tablet:hidden phone:hidden relative bg-[#0083eb] flex items-center justify-between z-30">
@@ -200,7 +284,47 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <NavbarArr arr={contentArr[0]} />
+            {/* <NavbarArr arr={arr} /> */}
+            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+              {arr &&
+                arr.map((item, idx) => {
+                  return (
+                    <li
+                      key={idx}
+                      onClick={() => {
+                        handleClick(item);
+                      }}
+                      className={`cursor-pointer relative ${
+                        item.children ? "a" : ""
+                      }`}
+                    >
+                      {" "}
+                      <div className="cursor-pointer truncate block py-[6px] pl-[8px] font-light hover:bg-yellow-300 hover:text-[#fff] hover:font-bold transition duration-0 hover:duration-150 ease-in-out">
+                        {item.name}
+                      </div>{" "}
+                      <ul
+                        className={`absolute right-[-75%] top-0 ${
+                          item.children ? "b" : ""
+                        } bg-[#ccc]  w-[150px]  drop-shadow-xl  text-black group-hover:block transition duration-350 ease-in-out`}
+                      >
+                        {item.children &&
+                          item.children.map((subItem, idx) => (
+                            <li
+                              className="cursor-pointer truncate block py-[6px] pl-[8px] pr-[8px] font-light hover:bg-yellow-300 hover:text-[#fff] hover:font-bold transition duration-0 hover:duration-150 ease-in-out"
+                              key={idx}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSubItemClick(subItem);
+                              }}
+                            >
+                              {subItem.name}
+                            </li>
+                          ))}
+                      </ul>
+                    </li>
+                  );
+                })}
+            </ul>
           </li>
 
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">

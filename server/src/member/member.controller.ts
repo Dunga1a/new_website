@@ -80,6 +80,12 @@ export class MemberController {
     return memberList;
   }
 
+  @Get('getMemberByRole')
+  async getMemberByRole(@Query() queryParams: any) {
+    const memberList = await this.memberService.getMemberByRole(queryParams);
+    return memberList;
+  }
+
   @Post('sendEmail')
   async sendEmail(@Body() sendEmailDetail: any) {
     await this.emailService.sendEmail(sendEmailDetail);
@@ -114,6 +120,8 @@ export class MemberController {
 
   @Delete('deleteManyMember')
   async deleteManyMember(@Body() deletedManyMember: number[]) {
+    // console.log(deletedManyMember);
+    // return 'this is func';
     const result = await this.memberService.deleteManyMember(deletedManyMember);
     return result;
   }
