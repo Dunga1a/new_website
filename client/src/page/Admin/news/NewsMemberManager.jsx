@@ -28,7 +28,7 @@ const options_post = [
   { value: 0, label: "Chưa duyệt" },
   { value: 1, label: "Đã duyệt" },
 ];
-const NewsManager = () => {
+const NewsMemberManager = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -91,7 +91,7 @@ const NewsManager = () => {
         url += `status=${selectTwo.value || null}&`;
       }
       url += `page=${page || 1}&`;
-      url += `id=2&`;
+      url += `id=1&`;
 
       const res = await axios.get(url);
       console.log(res);
@@ -252,7 +252,7 @@ const NewsManager = () => {
                       </td>
 
                       <td className="text-center">
-                        {item.user.member ? item.user.member.name_company : ""}
+                        {item.user.member.name_company}
                       </td>
 
                       <td className="text-center line-clamp-1 w-[200px]">
@@ -525,4 +525,4 @@ const NewsManager = () => {
   );
 };
 
-export default NewsManager;
+export default NewsMemberManager;

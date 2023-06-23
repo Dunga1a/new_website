@@ -25,8 +25,9 @@ const Basic = () => {
         className="desktop:w-[75%] phone:w-full laptop:w-[75%] m-auto"
       >
         <div className="flex items-center">
-          <p className="w-[23%] text-end mr-2 text-[14px]">Họ và tên đêm</p>
+          <p className="w-[23%] text-end mr-2 text-[14px]">Họ và tên đệm</p>
           <input
+            {...register("firstName")}
             type="text"
             className={`w-[66%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
           />
@@ -56,15 +57,30 @@ const Basic = () => {
 
           <div className="flex bg-white items-center gap-2 w-[66%] px-3 py-2 mt-2 my-2 rounded-md shadow-lg border-[1px] border-[#ccc] ">
             <label htmlFor="" className="flex items-center gap-1">
-              <input type="radio" name="gender" value="N" />
+              <input
+                type="radio"
+                {...register("radio")}
+                //name="gender"
+                value="N/A"
+              />
               <span className="text-sm">N/A</span>
             </label>
             <label htmlFor="" className="flex items-center gap-1">
-              <input type="radio" name="gender" value="N" />
+              <input
+                type="radio"
+                {...register("radio")}
+                //name="gender"
+                value="Nam"
+              />
               <span className="text-sm">Nam</span>
             </label>
             <label htmlFor="" className="flex items-center gap-1">
-              <input type="radio" name="gender" value="N" />
+              <input
+                {...register("radio")}
+                //name="gender"
+                type="radio"
+                value="Nữ"
+              />
               <span className="text-sm">Nữ</span>
             </label>
           </div>
@@ -95,6 +111,7 @@ const Basic = () => {
         <div className="flex items-center">
           <p className="w-[23%] text-end mr-2 text-[14px]">Chữ ký</p>
           <textarea
+            {...register("signature")}
             type="text"
             className={`w-[66%] outline-none h-full px-3  mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
           />
@@ -104,12 +121,11 @@ const Basic = () => {
           <p className="w-[23%] text-end mr-2 text-[14px]">Hiển thị Email</p>
 
           <select
-            name=""
-            id=""
+            {...register("statusemail")}
             className={`w-[27%] outline-none h-full px-3 py-0  mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
           >
-            <option value="">Có</option>
-            <option value="">Không</option>
+            <option value="Có">Có</option>
+            <option value="Không">Không</option>
           </select>
         </div>
 

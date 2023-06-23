@@ -77,4 +77,29 @@ export class UserService implements IUserService {
 
     return user;
   }
+
+  async updateUserEmail(email: string, userId: string) {
+    console.log('đây là', userId);
+    console.log('đây là e', email);
+    const user = await this.userRepository.findOne(userId);
+    console.log(user);
+
+    user.email = email;
+    await this.userRepository.save(user);
+  }
+
+  async changePassword(newPassword: string, id: string) {
+    const user = await this.userRepository.findOne(id);
+    user.password = newPassword;
+
+    await this.userRepository.save(user);
+  }
+
+  // async forgotPassword(email: string) {
+  //   console.log(email);
+  //   const user = await this.userRepository.findOne({
+  //     where: email,
+  //   });
+  //   console.log(user);
+  // }
 }

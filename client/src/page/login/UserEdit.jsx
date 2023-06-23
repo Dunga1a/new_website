@@ -7,10 +7,10 @@ const arrContent = [
   { title: "Hình đại điện", slug: "avatar" },
   { title: "Email", slug: "email" },
   { title: "Mật khẩu", slug: "password" },
-  { title: "Xác thực hai bước", slug: "two-step-veri" },
-  { title: "Câu hỏi bảo mật", slug: "question" },
-  { title: "Nhóm", slug: "group" },
-  { title: "Chế độ an toàn", slug: "safe-mode" },
+  // { title: "Xác thực hai bước", slug: "two-step-veri" },
+  // { title: "Câu hỏi bảo mật", slug: "question" },
+  // { title: "Nhóm", slug: "group" },
+  // { title: "Chế độ an toàn", slug: "safe-mode" },
 ];
 
 const logOut = () => {
