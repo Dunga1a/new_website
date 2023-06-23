@@ -59,6 +59,7 @@ export class NewsCategoryService implements INewsCategoryService {
   async getAllNewsCategory(queryParams: any) {
     const pageSize = 10;
     const page = Number(queryParams.page);
+    const getListCategory = await this.newsCategoryRepository.find();
     const countCategory = await this.newsCategoryRepository
       .createQueryBuilder('category')
       .getCount();
@@ -75,7 +76,7 @@ export class NewsCategoryService implements INewsCategoryService {
       newsCategory['postCount'] = count;
     }
 
-    return { newsCategories, countCategory };
+    return { newsCategories, countCategory, getListCategory };
   }
 
   async getOneCategory(id: number) {

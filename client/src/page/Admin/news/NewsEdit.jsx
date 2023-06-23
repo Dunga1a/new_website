@@ -6,10 +6,14 @@ import slugify from "slugify";
 
 const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
   const [item, setItem] = useState(idItem);
-
+  console.log(item);
   const handleFormSubmit = async (data) => {
     // console.log(data);
     try {
+      const formData = new FormData();
+      const { isEdit, ...values } = data;
+      let value = values;
+
       const slug = slugify(data.title, {
         replacement: "-", // replace spaces with replacement character, defaults to `-`
         remove: undefined, // remove characters that match regex, defaults to `undefined`
@@ -18,12 +22,28 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
         locale: "vi", // language code of the locale to use
         trim: true, // trim leading and trailing replacement chars, defaults to `true`
       });
-      const value = { ...data, slug };
+      let image = value.image;
+      if (isEdit) {
+        formData.append("image", data.image[0]);
+        const responseImgPerson = await axios.post(
+          "http://localhost:3001/api/member/uploadFileImage",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        image = `/uploads/${responseImgPerson.data.imageUrl}`;
+      }
+      // const value = { ...values, slug, image };
+      console.log("vao form edit: ", { ...value, slug, image });
+      const postValue = { ...value, slug, image };
       const responre = await axios.put(
         `http://localhost:3001/api/posts/update/${item.id}`,
-        value
+        postValue
       );
-      console.log(responre);
+
       setOpen(false);
       fetchDataWithFilter();
     } catch (error) {
@@ -54,14 +74,14 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
       name: "image",
       label: "Hình ảnh chính",
       type: "file",
-      value: "",
+      value: `${item.image}`,
       // "https://scontent.fhan17-1.fna.fbcdn.net/v/t39.30808-6/354611404_552136603802009_5411184715209704818_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=730e14&_nc_ohc=IlnTWCz5BlQAX_Mp-Oe&_nc_ht=scontent.fhan17-1.fna&oh=00_AfDJ1DdOAzufc1Ui3MBVJ2aRygRiyDLbYsQoJKnC_HwriQ&oe=64961C34",
     },
     {
       name: "content",
       label: "Mô tả",
       type: "react-quill",
-      value: "có khiên",
+      value: item.content,
       col_span: true,
     },
   ];

@@ -91,7 +91,7 @@ const NewsManager = () => {
         url += `status=${selectTwo.value || null}&`;
       }
       url += `page=${page || 1}&`;
-      url += `id=3&`;
+      url += `id=6&`;
 
       const res = await axios.get(url);
       console.log(res);
@@ -252,7 +252,7 @@ const NewsManager = () => {
                       </td>
 
                       <td className="text-center">
-                        {item.user.member.name_company}
+                        {item.user?.member?.name_company}
                       </td>
 
                       <td className="text-center line-clamp-1 w-[200px]">
