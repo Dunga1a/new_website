@@ -17,6 +17,7 @@ const Member = () => {
   const [count, setCount] = useState();
 
   const page = searchParams.get("page") || 1;
+  const memberStatus = searchParams.get("memberStatus") || "";
 
   const handleItemClick = (item) => {
     navigate(`/member/${item.id}`, { state: item });
@@ -33,9 +34,10 @@ const Member = () => {
   const fetchData = async () => {
     try {
       const sheet = page ? page : 1;
+      const status = memberStatus ? memberStatus : "1";
 
       const result = await axios.get(
-        `http://localhost:3001/api/member?page=${sheet}`,
+        `http://localhost:3001/api/member?page=${sheet}&memberStatus=${status}`,
         {
           withCredentials: true,
         }

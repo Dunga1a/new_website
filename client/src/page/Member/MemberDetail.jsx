@@ -4,7 +4,7 @@ import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 const MemberDetail = () => {
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

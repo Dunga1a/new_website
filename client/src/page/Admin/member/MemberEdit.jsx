@@ -9,28 +9,41 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
   const [roleAssociations, setRoleAssociations] = useState([]);
   const fetchDataStatic = async () => {
     try {
+      const search = "";
+
       const result = await axios.get(
         "http://localhost:3001/api/business-areas/getListBusinessArea"
       );
       const resultTwo = await axios.get(
-        "http://localhost:3001/api/organize-membership-title"
+        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
       );
       //   console.log(result.data);
-      const data = result.data.map((item) => {
-        return {
+      // const data = result.data.map((item) => {
+      //   return {
+      //     label: item.name,
+      //     value: item.id_business_areas,
+      //   };
+      // });
+      const data = result.data
+        .filter((item) => item.status === 1) // Lọc chỉ các mục có status = 1
+        .map((item) => ({
           label: item.name,
           value: item.id_business_areas,
-        };
-      });
-
-      const dataTwo = resultTwo.data.map((item) => {
-        return {
+        }));
+      // const dataTwo = resultTwo.data.map((item) => {
+      //   return {
+      //     label: item.name,
+      //     value: item.id_organize_membership,
+      //   };
+      // });
+      const dataTwo = resultTwo.data
+        .filter((item) => item.status === true) // Lọc chỉ các mục có status = 1
+        .map((item) => ({
           label: item.name,
           value: item.id_organize_membership,
-        };
-      });
+        }));
 
-      //   console.log(data);
+      console.log(resultTwo.data);
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);
     } catch (error) {
@@ -43,6 +56,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
   }, []);
 
   const onSave = async (data) => {
+    // console.log(data);
     try {
       const result = await axios.put(
         "http://localhost:3001/api/member/updateMember",
