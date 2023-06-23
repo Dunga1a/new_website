@@ -90,7 +90,7 @@ import NewsMemberManager from "./page/Admin/news/NewsMemberManager";
 const prevHref = "/admin";
 
 const AppLayout = ({ currentUser }) => {
-  if (currentUser) {
+  if (currentUser && currentUser.roles.some((item) => item.name === "admin")) {
     return (
       <Routes>
         <Route path="/admin" element={<LayoutAdmin />}>
@@ -267,7 +267,6 @@ const AppLayout = ({ currentUser }) => {
         <Route path="/member/:id" element={<MemberDetail />} />
 
         <Route path="/search" element={<SearchPage />} />
-        <Route path="*" element={<NotFound />} />
 
         <Route path="/news" element={<NewsPage />} />
         <Route path="/news/:slug" element={<NewDetail />} />
@@ -289,6 +288,7 @@ const AppLayout = ({ currentUser }) => {
 
         {/* <Route path="/page" element={<Page />} /> */}
         <Route path="/:slug" element={<ContentDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   );
