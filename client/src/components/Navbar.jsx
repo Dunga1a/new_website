@@ -354,19 +354,7 @@ const Navbar = () => {
               className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
             >
               <span>Liên hệ</span>
-              <span className="text-[12px] ml-[3px]">
-                <AiFillCaretDown />
-              </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
-              <li className="block">
-                {" "}
-                <div className="block py-[6px] px-[8px] font-light truncate hover:bg-yellow-300 hover:text-[#fff] hover:font-bold transition duration-0 hover:duration-150 ease-in-out">
-                  Ban biên tập Cổng thông tin điện tử Hội Doanh Nhân Thanh Hóa
-                  Tại Hà Nội
-                </div>{" "}
-              </li>
-            </ul>
           </li>
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
@@ -374,6 +362,16 @@ const Navbar = () => {
               onClick={() => navigate("/search")}
             >
               <span>Tìm kiếm</span>
+            </div>
+          </li>
+
+          {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
+          <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+            <div
+              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              onClick={() => navigate("/memberManager/newsPost")}
+            >
+              <span>Quản lí bài viết</span>
             </div>
           </li>
         </ul>

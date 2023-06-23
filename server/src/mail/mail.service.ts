@@ -3,7 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContactService } from 'src/contact/contact.service';
-import { Contact, Reply } from 'src/utils/typeorm';
+import { Contact, Reply, User } from 'src/utils/typeorm';
+import * as crypto from 'crypto';
+
 function generateRandomString(length) {
   let result = '';
   const characters = '56789';
@@ -15,6 +17,7 @@ function generateRandomString(length) {
 
   return result;
 }
+
 @Injectable()
 export class MailService {
   constructor(
@@ -56,5 +59,14 @@ export class MailService {
       html: `<h2>Mật khẩu mới của bạn là: <b>${password}</b></h2>`,
     });
     return password;
+  }
+  sendEmailConfirmation(email: string, verificationCode: string) {
+    console.log(verificationCode);
+
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Verification Code',
+      text: `Your verification code is: ${verificationCode}`,
+    });
   }
 }

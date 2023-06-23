@@ -6,12 +6,17 @@ import Select from "react-select";
 import ReactQuillEditor from "../ReactQuill";
 import { useState } from "react";
 const Form = ({ formFields, onSubmit }) => {
+  const [isEdit, setIsEdit] = useState(false);
+
+  const imageValue = formFields.filter((item) => item.name === "image");
+  // console.log("xuong day: ", imageValue[0].value);
   const [imageDeputy, setImageDeputy] = useState({
-    firstImage: null,
+    firstImage: `/uploads/${imageValue[0].value}`,
     secondImage: null,
   });
   const { register, handleSubmit, setValue, watch, getValues } = useForm();
   const contentQuill = formFields.find((item) => item.type === "react-quill");
+  console.log(contentQuill);
   useEffect(() => {
     //console.log(contentQuill);
     const imageField = formFields.find((item) => item.name === "image");
@@ -44,13 +49,13 @@ const Form = ({ formFields, onSubmit }) => {
 
   //const values = watch();
   const handleFormSubmit = (data) => {
-    console.log("day", data);
+    console.log("day", { ...data, isEdit });
     // const formData = {
     //   ...data,
     //   file: imageURL || (imageURL && imageDeputy),
     // };
 
-    onSubmit(data);
+    onSubmit({ ...data, isEdit });
   };
 
   const handleSelectChange = (selectedOption, fieldName) => {
@@ -61,6 +66,7 @@ const Form = ({ formFields, onSubmit }) => {
     const file = e.target.files[0];
     console.log(file);
     if (file) {
+      setIsEdit(true);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageDeputy((prevState) => ({
@@ -112,10 +118,12 @@ const Form = ({ formFields, onSubmit }) => {
     }
 
     if (field.type === "file" && field.name === "image") {
+      console.log(imageDeputy.firstImage);
       return (
         <div className={field.col_span ? "col-span-2" : ""} key={field.name}>
           <label>
             <span className="block font-semibold text-sm">{field.label}</span>
+
             {imageDeputy.firstImage ? (
               <div>
                 <img
@@ -130,11 +138,7 @@ const Form = ({ formFields, onSubmit }) => {
               <div>
                 <img
                   width={200}
-                  src={
-                    field.label === "Hình đại diện"
-                      ? "https://scontent.fhan17-1.fna.fbcdn.net/v/t39.30808-6/347567248_1488831868525963_752115650059248371_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5cd70e&_nc_ohc=oSSU2GSFFFsAX_zdckb&_nc_ht=scontent.fhan17-1.fna&oh=00_AfDoE18anvSitq-n8VVv__b3uKMndjGbXEBo-IqSb_6nJg&oe=6479B2B3"
-                      : ""
-                  }
+                  src={field.value !== "null" ? `/uploads/${field.value}` : ""}
                   alt="Uploaded"
                   style={{ width: "200px" }}
                   className="object-cover"

@@ -10,12 +10,8 @@ import { MailService } from 'src/mail/mail.service';
 import { ContactModule } from 'src/contact/contact.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User, Role, Contact]),
-    RoleModule,
-    MailModule,
-    ContactModule,
-  ],
+  imports: [TypeOrmModule.forFeature([User, Role]), RoleModule, MailModule],
+
   controllers: [UsersController],
   providers: [
     {

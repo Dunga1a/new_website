@@ -6,5 +6,9 @@ export interface IUserService {
   findByUsername(userName: string): Promise<User>;
   findById(id: string): Promise<User>;
   editUser(editUser: editUser): Promise<User>;
+
   forgetPassword(email: Useremail);
+
+  updateUserEmail(email: string, userId: string);
+  changePassword(newPassword: string, id: string);
 }
