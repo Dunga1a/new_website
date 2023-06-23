@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Form from "../../../components/Form";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
 import Button from "../../../components/Buttons/Button";
+import { useSearchParams } from "react-router-dom";
 const NewsInsert = ({ fetchData, setOpen }) => {
   const handleFormSubmit = async (data) => {
     // Xử lý logic khi submit form
     try {
+      const formData = new FormData();
+
       const slug = slugify(data.title, {
         replacement: "-", // replace spaces with replacement character, defaults to `-`
         remove: undefined, // remove characters that match regex, defaults to `undefined`
@@ -16,16 +19,61 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         locale: "vi", // language code of the locale to use
         trim: true, // trim leading and trailing replacement chars, defaults to `true`
       });
-      const value = { ...data, slug };
-      //console.log(value);
+      console.log(data);
+      let image = null;
+      if (data.image) {
+        formData.append("image", data.image[0]);
+        const responseImgPerson = await axios.post(
+          "http://localhost:3001/api/member/uploadFileImage",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        image = `/uploads/${responseImgPerson.data.imageUrl}`;
+      }
+      const value = { ...data, slug, image };
+      console.log(value);
       const res = await axios.post("http://localhost:3001/api/posts/", value);
-      // console.log(res.data);
+      console.log(res.data);
       setOpen(false);
       fetchData();
     } catch (error) {
       console.log(error.message);
     }
   };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [listCategory, setListCategory] = useState([]);
+  const page = searchParams.get("page") || 1;
+
+  const fetchDataStatic = async () => {
+    try {
+      const sheet = page ? page : 1;
+      const result = await axios.get(
+        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const data = result.data.getListCategory.map((item) => {
+        return {
+          value: item.news_category_id,
+          label: item.name,
+        };
+      });
+      setListCategory(data);
+      console.log(result.data.getListCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataStatic();
+  }, [page]);
+  console.log(listCategory);
   const newsFormFields = [
     { name: "title", label: "Tiêu đề", type: "text", col_span: true },
     {
@@ -38,12 +86,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
       name: "categoryId",
       label: "Category",
       type: "select",
-      options: [
-        { value: 1, label: "Tin Hoạt Động" },
-        { value: 2, label: "Tin Hội Viên" },
-        { value: "tin_tuc_thanh_hoa", label: "Tin Tức Thanh Hóa" },
-        { value: "phuong_huong_hoat_dong", label: "Phương Hướng Hoạt Động" },
-      ],
+      options: listCategory,
     },
     { name: "image", label: "Hình ảnh chính", type: "file", value: "" },
     {
