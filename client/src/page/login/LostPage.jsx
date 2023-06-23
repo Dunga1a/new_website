@@ -6,7 +6,8 @@ import { BsFillCaretRightFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import generateCaptcha from "../../uitls";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import axios from "axios";
 const LostPage = () => {
   const {
     register,
@@ -17,7 +18,27 @@ const LostPage = () => {
   } = useForm();
   const [captcha, setCaptcha] = useState(generateCaptcha);
   const navigate = useNavigate();
-  const onSubmit = (data) => console.log(watch(data));
+  const onSubmit = async (data) => {
+    const value = {
+      email: data.email,
+    };
+    try {
+      await toast.promise(
+        axios.post("http://localhost:3001/api/users/getOneUser", value, {
+          withCredentials: true,
+        }),
+        {
+          pending: "Đang gửi mật khẩu về email của bạn",
+          success: "Gửi mật khẩu thành công 👌",
+          error: "Email không đúng 🤯",
+        }
+      );
+      reset();
+      setCaptcha(generateCaptcha);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const checkCaptcha = watch("checkCaptcha");
 
   const resetCaptcha = (data) => {

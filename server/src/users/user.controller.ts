@@ -1,14 +1,28 @@
-import { Controller, Get, Inject, Param, Put, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Put,
+  Body,
+  Post,
+} from '@nestjs/common';
 import { Routes, Services } from '../utils/constants';
 import { IUserService } from './users';
 import { User } from 'src/utils/typeorm';
 import { editUser } from 'src/utils/types';
+import { UserEmail } from './dtos/UserProfile.dto';
 
 @Controller(Routes.USERS)
 export class UsersController {
   constructor(
     @Inject(Services.USERS) private readonly userService: IUserService,
   ) {}
+
+  @Post('getOneUser')
+  async forgetPassword(@Body() email: UserEmail): Promise<User> {
+    return this.userService.forgetPassword(email);
+  }
 
   @Get(':username')
   async getUserByName(@Param('username') username: string): Promise<User> {

@@ -20,6 +20,10 @@ export type ValidateUserDetails = {
   password: string;
 };
 
+export type Useremail = {
+  email: string;
+};
+
 export type PayloadgenerateToken = {
   username: string;
 };
