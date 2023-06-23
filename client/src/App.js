@@ -85,6 +85,7 @@ import MembersDetail from "./page/Admin/member/MembersDetail";
 
 import BusinessArea from "./page/Admin/businessArea/BusinessArea";
 import Organize from "./page/Admin/organizeMembership/Organize";
+import NewsMemberManager from "./page/Admin/news/NewsMemberManager";
 
 const prevHref = "/admin";
 
@@ -120,7 +121,10 @@ const AppLayout = ({ currentUser }) => {
 
         <Route path="/" element={<Layout />}>
           {/* Các route và component cho layout của admin */}
-
+          <Route
+            path={`/memberManager/newsPost`}
+            element={<NewsMemberManager />}
+          />
           <Route path="/feeds" element={<RssFeeds />} />
           <Route path="/feeds/:slug" element={<RssDetail />} />
           <Route path="/" element={<HomePage />} />

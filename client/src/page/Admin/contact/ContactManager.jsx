@@ -24,6 +24,7 @@ const ContactManager = () => {
   const [openStatus, setOpenStatus] = useState(false);
   const [closeStatus, setCloseStatus] = useState(false);
   const page = searchParams.get("page");
+  const [openModalError, setOpenModalError] = useState(false);
   //Checkox
 
   const fetchData = async () => {
@@ -235,19 +236,37 @@ const ContactManager = () => {
           {/* <PaginationV2 /> */}
           <div className="flex gap-2 mt-3">
             <Button
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                if (isCheckedItems.length === 0) {
+                  setOpenModalError(true);
+                } else {
+                  setOpen(true);
+                }
+              }}
               icon={<BiTrash />}
               title={"Xoá Chọn"}
               colorText={"border hover:bg-gray-200 border-slate-600 gap-2"}
             />
             <Button
-              onClick={() => setCloseStatus(true)}
+              onClick={() => {
+                if (isCheckedItems.length === 0) {
+                  setOpenModalError(true);
+                } else {
+                  setCloseStatus(true);
+                }
+              }}
               icon={<HiOutlineMail />}
               title={"Đánh Dấu Là Chưa Đọc"}
               colorText={"border hover:bg-gray-200 border-slate-600 gap-2"}
             />
             <Button
-              onClick={() => setOpenStatus(true)}
+              onClick={() => {
+                if (isCheckedItems.length === 0) {
+                  setOpenModalError(true);
+                } else {
+                  setOpenStatus(true);
+                }
+              }}
               icon={<HiOutlineMailOpen />}
               title={"Đánh Dấu Là Đã Đọc"}
               colorText={"border hover:bg-gray-200 border-slate-600 gap-2"}
@@ -313,6 +332,12 @@ const ContactManager = () => {
             onClick={handleTickOpen}
           ></Button>
         </div>
+      </Modal>
+
+      <Modal title={"Lỗi!!!"} open={openModalError} setOpen={setOpenModalError}>
+        <h2 className="text-xl font-semibold text-red-600">
+          Bạn chưa lựa chọn! Xin vui lòng thử lại...
+        </h2>
       </Modal>
     </>
   );

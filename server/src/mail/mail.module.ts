@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { Contact } from 'src/utils/typeorm';
+import { Contact, User } from 'src/utils/typeorm';
 import { ContactModule } from 'src/contact/contact.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -18,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       },
     }),
-    TypeOrmModule.forFeature([Contact]),
+    TypeOrmModule.forFeature([Contact, User]),
   ],
   providers: [MailService],
   exports: [MailService],

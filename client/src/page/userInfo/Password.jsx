@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
+import axios from "axios";
 
 const Password = () => {
   const {
@@ -15,17 +16,31 @@ const Password = () => {
     reset();
   };
   const { currentUser } = useContext(AuthContext);
-  //const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const onChangeSubmit = (data) => {
+  const onChangeSubmit = async (data) => {
     let passConfirm = data.confirmPassword;
     let passNew = data.passwordNew;
-    if ("kiểm tra mật khẩu cũ") {
+    if (currentUser.password === data.passwordOld) {
       if (passConfirm !== passNew) {
         alert("Mật khẩu nhập lại không khớp. Vui lòng nhập lại");
-        //setConfirmPassword("");
+        setConfirmPassword("");
+      }
+      setConfirmPassword(passConfirm);
+      try {
+        await axios.post(
+          `http://localhost:3001/api/users/change-password/${currentUser.id}`,
+          { newPassword: confirmPassword }
+        );
+        alert("Bạn đã thay đổi mật khẩu thành công");
+        reset();
+      } catch (error) {
+        console.log(error.message);
       }
       reset(watch(passConfirm));
+    } else {
+      //Sai
+      alert("Mật khẩu cũ của bạn chưa đúng");
     }
   };
   return (
