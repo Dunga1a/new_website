@@ -78,7 +78,10 @@ const HomePage = () => {
             {data &&
               data.length > 0 &&
               data.slice(0, 3).map((item) => (
-                <li className="h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3">
+                <li
+                  key={item.id}
+                  className="h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
+                >
                   <a
                     href=""
                     title={`${item.title}`}

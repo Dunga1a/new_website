@@ -2,12 +2,15 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
 import { ErrorMessage } from "@hookform/error-message";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Email = () => {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     reset,
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
@@ -15,7 +18,40 @@ const Email = () => {
     reset();
   };
   const { currentUser } = useContext(AuthContext);
-  const onSubmit = () => {};
+  const onSubmit = async (data) => {
+    try {
+      const value = {
+        email: data.email,
+        verificationCode: data.veriCode,
+      };
+      console.log(value);
+      await axios.post(
+        `http://localhost:3001/api/users/${useContext.id}`,
+        value
+      );
+      toast.success("Email đã được thay đổi");
+    } catch (error) {
+      toast.error("Lỗi chưa thay đổi được email");
+    }
+  };
+
+  const handleSendVerifiCode = async () => {
+    console.log(watch("password"));
+    //if (currentUser.password === watch("password")) {
+    try {
+      const value = {
+        currentEmail: currentUser.email,
+        newEmail: watch("email"),
+      };
+
+      await axios.post("http://localhost:3001/api/users/change-email", value);
+      toast.success("Đã gửi mã thành công! Vui lòng kiểm tra");
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    //}
+  };
   return (
     <div>
       <div className="text-[14px] p-[10px] bg-gray-50 border-[1px] border-gray-400 rounded-md">
@@ -119,7 +155,10 @@ const Email = () => {
               className={`w-[34%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-l-md shadow-lg`}
               // defaultValue={currentUser ? currentUser.displayName : ""}
             />
-            <div className="text-[13px] py-[6px] px-[12px] bg-[#F0AD4E] rounded-r-md text-white cursor-pointer hover:opacity-90">
+            <div
+              onClick={handleSendVerifiCode}
+              className="text-[13px] py-[6px] px-[12px] bg-orange-500 rounded-r-md text-white cursor-pointer hover:bg-orange-700"
+            >
               Gửi mã xác minh
             </div>
           </div>

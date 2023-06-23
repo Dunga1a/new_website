@@ -1,12 +1,7 @@
 import React from "react";
 
 const HomePage = () => {
-  return (
-    <div>
-      <button onClick={() => console.log("click duoc khong")}>Click</button>
-      <input type="text" />
-    </div>
-  );
+  return <div>Admin Dashboard</div>;
 };
 
 export default HomePage;
