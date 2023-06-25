@@ -30,7 +30,7 @@ const LoginPage = ({ className }) => {
       // login(result.data.user);
       setUser(result.data.user);
       toast.success("Đăng nhập thành công");
-      // navigate("/user/editinfo/basic");
+      // navigate("/user/editinfo");
       window.location.reload();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -51,7 +51,7 @@ const LoginPage = ({ className }) => {
     signInWithPopup(auth, provider).then((data) => {
       setUser(data.user);
       login(data.user);
-      window.location.reload();
+      // window.location.reload();
     });
   };
 

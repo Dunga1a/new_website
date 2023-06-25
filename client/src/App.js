@@ -90,7 +90,11 @@ import NewsMemberManager from "./page/Admin/news/NewsMemberManager";
 const prevHref = "/admin";
 
 const AppLayout = ({ currentUser }) => {
-  if (currentUser && currentUser.roles.some((item) => item.name === "admin")) {
+  if (
+    currentUser &&
+    currentUser.roles &&
+    currentUser.roles.some((item) => item.name === "admin")
+  ) {
     return (
       <Routes>
         <Route path="/admin" element={<LayoutAdmin />}>
