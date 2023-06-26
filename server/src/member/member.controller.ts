@@ -120,8 +120,6 @@ export class MemberController {
 
   @Delete('deleteManyMember')
   async deleteManyMember(@Body() deletedManyMember: number[]) {
-    // console.log(deletedManyMember);
-    // return 'this is func';
     const result = await this.memberService.deleteManyMember(deletedManyMember);
     return result;
   }

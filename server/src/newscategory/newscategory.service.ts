@@ -100,9 +100,6 @@ export class NewsCategoryService implements INewsCategoryService {
       newsCategoryDB,
     );
 
-    console.log(newsCategoryDB);
-    console.log(newsCategoryDetails);
-
     return savedNewsCategory;
   }
 
