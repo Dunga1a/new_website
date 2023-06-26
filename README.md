@@ -15,6 +15,11 @@ git push -uf origin main
 - Là một trang web dưới dạng đọc và giới thiệu về Hội Doanh Nhân, người dùng có thể đọc, tìm kiếm, đưa ra các ý kiến, phản hồi để biết thông tin nhiều hơn về các tin tức, sự kiện, lãnh đạo của Hội Doanh Nhân.
 - `Project gồm 2 source client và server`
 
+## Requirements
+
+1. npm version >= 8.19.4
+2. nodejs version >= 16.20.1
+3. mysql version >= 5.7.33
 
 ## Installation
 - Phần mềm sử dụng 
