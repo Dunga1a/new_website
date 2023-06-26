@@ -10,3 +10,9 @@ export class UserProfileDto {
   @MaxLength(200)
   about?: string;
 }
+
+export class UserEmail {
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+}

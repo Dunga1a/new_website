@@ -3,16 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hashPassword } from '../utils/helpers';
 import { Role, User } from '../utils/typeorm';
-import { CreateUserDetails, editUser } from '../utils/types';
+import { CreateUserDetails, Useremail, editUser } from '../utils/types';
 import { IUserService } from './users';
 import { Services } from 'src/utils/constants';
 import { IRoleService } from 'src/role/role';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService implements IUserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @Inject(Services.ROLE) private readonly roleService: IRoleService,
+    private readonly mailService: MailService,
   ) {}
 
   async createUser(userDetails: CreateUserDetails) {
@@ -78,6 +80,23 @@ export class UserService implements IUserService {
     return user;
   }
 
+  async forgetPassword(email: Useremail) {
+    const findUserByEmail = await this.userRepository.findOne({
+      where: email,
+    });
+    if (!findUserByEmail) {
+      throw new HttpException('Không thấy người dùng', HttpStatus.NOT_FOUND);
+    }
+
+    const pass = await this.mailService.sendEmailForgetPassword(email);
+    const password = await hashPassword(pass);
+    findUserByEmail.password = password;
+    await this.userRepository.save(findUserByEmail);
+    return findUserByEmail;
+
+    // return findUserByEmail;
+  }
+
   async updateUserEmail(email: string, userId: string) {
     console.log('đây là', userId);
     console.log('đây là e', email);
@@ -94,12 +113,4 @@ export class UserService implements IUserService {
 
     await this.userRepository.save(user);
   }
-
-  // async forgotPassword(email: string) {
-  //   console.log(email);
-  //   const user = await this.userRepository.findOne({
-  //     where: email,
-  //   });
-  //   console.log(user);
-  // }
 }

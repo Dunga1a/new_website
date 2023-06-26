@@ -5,6 +5,19 @@ import { Repository } from 'typeorm';
 import { ContactService } from 'src/contact/contact.service';
 import { Contact, Reply, User } from 'src/utils/typeorm';
 import * as crypto from 'crypto';
+
+function generateRandomString(length) {
+  let result = '';
+  const characters = '56789';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+
+  return result;
+}
+
 @Injectable()
 export class MailService {
   constructor(
@@ -38,6 +51,15 @@ export class MailService {
     console.log(reply);
   }
 
+  async sendEmailForgetPassword(email: any) {
+    const password = generateRandomString(8);
+    await this.mailerService.sendMail({
+      to: email.email,
+      subject: 'Thư cấp lại mật khẩu',
+      html: `<h2>Mật khẩu mới của bạn là: <b>${password}</b></h2>`,
+    });
+    return password;
+  }
   sendEmailConfirmation(email: string, verificationCode: string) {
     console.log(verificationCode);
 

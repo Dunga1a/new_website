@@ -11,6 +11,9 @@ import { Routes, Services } from '../utils/constants';
 import { IUserService } from './users';
 import { User } from 'src/utils/typeorm';
 import { editUser } from 'src/utils/types';
+
+import { UserEmail } from './dtos/UserProfile.dto';
+
 import { randomBytes } from 'crypto';
 import { ChangeEmailDto } from './dtos/ChangeEmail.dto';
 import { ConfirmEmailDto } from './dtos/ConfirmEmail.dto';
@@ -25,6 +28,11 @@ export class UsersController {
     @Inject(Services.USERS) private readonly userService: IUserService,
     private readonly mailService: MailService,
   ) {}
+
+  @Post('getOneUser')
+  async forgetPassword(@Body() email: UserEmail): Promise<User> {
+    return this.userService.forgetPassword(email);
+  }
 
   @Get(':username')
   async getUserByName(@Param('username') username: string): Promise<User> {
