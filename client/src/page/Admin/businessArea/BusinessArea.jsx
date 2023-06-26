@@ -218,14 +218,14 @@ const BusinessArea = () => {
             </table>
           ) : null}
           <div className="mt-5 flex gap-1">
-            <Button
+            {/* <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Xóa các lựa chọn"}
               colorBgr={"bg-red-500"}
               colorText={"text-white"}
               colorHover={"bg-red-800"}
               onClick={() => handleDeleteManyItems(isCheckedItems)}
-            />
+            /> */}
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Bật Trạng Thái Các Lựa Chọn"}

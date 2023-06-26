@@ -19,8 +19,6 @@ export class EventService implements IEventService {
   }
 
   async getAllEvent(queryParams: any) {
-    console.log('vao day: ', queryParams.searchKey);
-
     const page = Number(queryParams.page);
     const pageSize = 8;
 
@@ -38,7 +36,6 @@ export class EventService implements IEventService {
       query.andWhere('event.title LIKE :searchKey', {
         searchKey: `%${searchKey}%`,
       });
-      console.log('vao day');
     }
 
     if (dateStart) {

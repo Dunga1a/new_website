@@ -20,8 +20,6 @@ export class BusinessAreasService implements IBusinessAreasService {
   async getAllBusinessAreas(queryParams: any) {
     const pageSize = 3;
     const searchKey = String(queryParams.searchKey);
-    // console.log(searchKey.length);
-    // console.log('xuong serive: ', queryParams);
 
     const page = Number(queryParams.page);
     const query = this.businessAreasRepository
@@ -49,9 +47,6 @@ export class BusinessAreasService implements IBusinessAreasService {
   }
 
   async createBusinessAreas(createBusinessDetails: BusinessAreasDetails) {
-    // const createBusinessAreas = await this.businessAreasRepository.create(
-    //   createBusinessDetails,
-    // );
     const findBusinessAreas = await this.businessAreasRepository.findOne({
       slug: createBusinessDetails.slug,
     });
@@ -65,7 +60,6 @@ export class BusinessAreasService implements IBusinessAreasService {
       createBusinessDetails,
     );
     const saved = await this.businessAreasRepository.save(createBusinessArea);
-    // console.log(createBusinessDetails);
 
     return saved;
   }
@@ -76,7 +70,6 @@ export class BusinessAreasService implements IBusinessAreasService {
   }
 
   async editOneBusinessAreas(editBusinessDetails: BusinessAreasDetails) {
-    console.log(editBusinessDetails);
     const businessArea = await this.businessAreasRepository.findOne(
       editBusinessDetails.id_business_areas,
     );
@@ -86,12 +79,7 @@ export class BusinessAreasService implements IBusinessAreasService {
         HttpStatus.NOT_FOUND,
       );
     }
-    // const findBusinessAreaBySlug = await this.businessAreasRepository.findOne({
-    //   slug: editBusinessDetails.slug,
-    // });
-    // if (findBusinessAreaBySlug) {
-    //   throw new HttpException('Lĩnh vực này đã tồn tại', HttpStatus.CONFLICT);
-    // }
+
     businessArea.name = editBusinessDetails.name;
     businessArea.intro = editBusinessDetails.intro;
     businessArea.slug = editBusinessDetails.slug;
@@ -104,7 +92,6 @@ export class BusinessAreasService implements IBusinessAreasService {
   }
 
   async updateStatusOnManyBusinessArea(ids: number[]) {
-    console.log(ids);
     const updatedStatusOn = await this.businessAreasRepository
       .createQueryBuilder()
       .update(BusinessAreas)

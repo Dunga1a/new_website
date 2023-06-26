@@ -1,9 +1,27 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 const FormReply = ({ value, user, fetchData, setOpen }) => {
-  // console.log(value);
+  // console.log("value: ", user);
+  const [post, setPost] = useState(null);
+  const { slug } = useParams();
+  const fetchDataStatic = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3001/api/posts/details-slug/" + slug
+      );
+      console.log(res.data);
+      setPost(res.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataStatic();
+  }, []);
   const {
     register,
     handleSubmit,
@@ -18,8 +36,8 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
         ...data,
         father_id: value.id,
         // TODO: cần lấy theo id của người đăng nhập
-        user: 6,
-        post: 1,
+        user: user.id,
+        post: post.id,
       };
       const result = await axios.post(
         "http://localhost:3001/api/comment/createComment",
@@ -36,10 +54,12 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
       console.log(error.message);
     }
   };
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   return (
     <div>
       <form
-        className="mt-4 grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
+        className="my-4 grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
@@ -50,7 +70,8 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
                            "border-red-500 border-[1px]"
                         `}
               {...register("username", {})}
-              // defaultValue={memberItem.name_company}
+              defaultValue={user.username}
+              readOnly
             />
           </div>
         </div>
@@ -65,6 +86,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
                 required: true,
               })}
               defaultValue={user.email}
+              readOnly
             />
           </div>
         </div>
@@ -82,11 +104,10 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
             />
           </div>
         </div>
-
         <div className="col-span-2 text-center">
           <button
             type="submit"
-            className="px-7 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
+            className="px-7 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500 hidden"
           >
             Phản hồi
           </button>

@@ -274,15 +274,6 @@ export class MemberService implements IMemberService {
   }
 
   async deleteManyMember(idMembers: number[]) {
-    // console.log(idMembers);
-    // return 'this is function delete many member';
-    // const repositoryMember = getRepository(Member);
-
-    // const deletedMayMember = await repositoryMember
-    //   .createQueryBuilder()
-    //   .delete()
-    //   .where('id IN (:...idMembers)', { idMembers })
-    //   .execute();
     const deletedManyMember = await this.memberRepository
       .createQueryBuilder()
       .delete()
