@@ -51,7 +51,6 @@ const ContentDetail = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(postItem);
 
   const onSubmit = async (data) => {
     try {
@@ -115,7 +114,7 @@ const ContentDetail = () => {
   const fetchDataCmt = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/comment/getCommentByPost/1`,
+        `http://localhost:3001/api/comment/getCommentByPost/${postItem.id}`,
         {
           withCredentials: true,
         }
@@ -131,7 +130,7 @@ const ContentDetail = () => {
   useEffect(() => {
     // fetchDataTwo();
     fetchDataCmt();
-  }, []);
+  }, [postItem]);
 
   // TODO fetch data ở đây
   return (
@@ -184,66 +183,67 @@ const ContentDetail = () => {
                 open={open}
                 currentUser={currentUser}
                 fetchData={fetchData}
+                postItem={postItem}
               />
             ) : null}
             {currentUser &&
               (currentUser.member ||
                 (currentUser.roles &&
-                  currentUser.roles.some((item) => item.name === "admin") && (
-                    <form
-                      className="mt-4 grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
-                      onSubmit={handleSubmit(onSubmit)}
-                    >
-                      <div className="phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
-                        <div className="">
-                          <input
-                            type="text"
-                            className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                  currentUser.roles.some((item) => item.name === "admin"))) && (
+                <form
+                  className="mt-4 grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <div className="phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
+                    <div className="">
+                      <input
+                        type="text"
+                        className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-                            {...register("username", {})}
-                            defaultValue={currentUser.username}
-                          />
-                        </div>
-                      </div>
-                      <div className="phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
-                        <div className="">
-                          <input
-                            type="text"
-                            className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                        {...register("username", {})}
+                        defaultValue={currentUser.username}
+                      />
+                    </div>
+                  </div>
+                  <div className="phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
+                    <div className="">
+                      <input
+                        type="text"
+                        className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-                            {...register("email", {
-                              required: true,
-                            })}
-                            defaultValue={currentUser.email}
-                          />
-                        </div>
-                      </div>
-                      <div className="phone:col-span-2 desktop:col-span-2 laptop:col-span-2 tablet:col-span-2">
-                        <div className="">
-                          <input
-                            type="text"
-                            className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                        {...register("email", {
+                          required: true,
+                        })}
+                        defaultValue={currentUser.email}
+                      />
+                    </div>
+                  </div>
+                  <div className="phone:col-span-2 desktop:col-span-2 laptop:col-span-2 tablet:col-span-2">
+                    <div className="">
+                      <input
+                        type="text"
+                        className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-                            {...register("content", {
-                              required: true,
-                            })}
-                          />
-                        </div>
-                      </div>
+                        {...register("content", {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                  </div>
 
-                      <div className="col-span-2 text-center">
-                        <button
-                          type="submit"
-                          className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
-                        >
-                          Gửi bình luận
-                        </button>
-                      </div>
-                    </form>
-                  )))}
+                  <div className="col-span-2 text-center">
+                    <button
+                      type="submit"
+                      className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
+                    >
+                      Gửi bình luận
+                    </button>
+                  </div>
+                </form>
+              )}
           </div>
         )}
         <div className="phone:hidden laptop:block desktop:block tablet:hidden">

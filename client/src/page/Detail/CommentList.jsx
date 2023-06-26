@@ -5,8 +5,18 @@ import FormReply from "./FormReply";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-const CommentItem = ({ comment, setOpen, open, currentUser, fetchData }) => {
+const CommentItem = ({
+  comment,
+  setOpen,
+  open,
+  currentUser,
+  fetchData,
+  postItem,
+}) => {
   const [hidden, setHidden] = useState(true);
+  const handleReplyClick = (commentId) => {
+    setOpen(commentId);
+  };
   return (
     <div>
       {comment.father_id === null ? (
@@ -49,7 +59,7 @@ const CommentItem = ({ comment, setOpen, open, currentUser, fetchData }) => {
                   {dayjs(comment.created_at).format("DD/MM/YYYY HH:mm")}
                 </p>
                 <button
-                  onClick={() => setOpen(comment.id)}
+                  onClick={() => handleReplyClick(comment.id)}
                   className="flex gap-1 items-center"
                 >
                   <BsFillReplyFill />
@@ -64,6 +74,7 @@ const CommentItem = ({ comment, setOpen, open, currentUser, fetchData }) => {
               user={currentUser}
               fetchData={fetchData}
               setOpen={setOpen}
+              postItem={postItem}
             />
           )}
           {comment.children.length > 0 && (
@@ -86,19 +97,28 @@ const CommentItem = ({ comment, setOpen, open, currentUser, fetchData }) => {
   );
 };
 
-const CommentList = ({ comments, setOpen, open, currentUser, fetchData }) => {
+const CommentList = ({
+  comments,
+  setOpen,
+  open,
+  currentUser,
+  fetchData,
+  postItem,
+}) => {
   return (
     <div className={`p-[5px] border border-gray-300`}>
-      {comments.map((comment) => (
-        <CommentItem
-          key={comment.id}
-          comment={comment}
-          setOpen={setOpen}
-          open={open}
-          currentUser={currentUser}
-          fetchData={fetchData}
-        />
-      ))}
+      {postItem &&
+        comments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            setOpen={setOpen}
+            open={open}
+            currentUser={currentUser}
+            fetchData={fetchData}
+            postItem={postItem}
+          />
+        ))}
     </div>
   );
 };

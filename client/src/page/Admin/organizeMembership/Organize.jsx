@@ -272,9 +272,9 @@ const Organize = () => {
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Tắt Trạng Thái Các Lựa Chọn"}
-              colorBgr={"bg-blue-500"}
+              colorBgr={"bg-yellow-500"}
               colorText={"text-white"}
-              colorHover={"bg-blue-800"}
+              colorHover={"bg-yellow-800"}
               onClick={() => handleChangeStatusOff(isCheckedItems)}
             />
           </div>
