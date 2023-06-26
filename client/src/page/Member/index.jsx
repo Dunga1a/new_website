@@ -77,7 +77,7 @@ const Member = () => {
                   alt=""
                 />
 
-                <div className="flex flex-col justify-between  leading-normal ">
+                <div className="flex flex-col justify-between  leading-normal mx-3">
                   <p className=" tracking-tight text-gray-900 dark:text-white mt-2">
                     <span className="font-semibold text-[#333333] text-[14px]">
                       Tên doanh nghiệp:{" "}

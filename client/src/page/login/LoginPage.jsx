@@ -148,13 +148,13 @@ const LoginPage = ({ className }) => {
 
                 <div className="text-center text-[13px]">
                   <button
-                    className="bg-gray-100 p-2 mr-4 rounded-lg"
+                    className="bg-gray-100 p-2 mr-4 rounded-lg hover:bg-gray-300"
                     onClick={resetFields}
                   >
                     Thiết lập lại
                   </button>
                   <button
-                    className="bg-[#428bca] p-2 rounded-lg text-white"
+                    className="bg-[#428bca] p-2 rounded-lg text-white hover:bg-blue-600"
                     type="submit"
                   >
                     Đăng nhập
@@ -174,13 +174,13 @@ const LoginPage = ({ className }) => {
 
                 <ul className="flex justify-center gap-3 mt-3 text-[13px]">
                   <li
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center cursor-pointer hover:opacity-80"
                     onClick={() => navigate("/user/register")}
                   >
                     <BsFillCaretRightFill />
                     <span>Đăng ký</span>
                   </li>
-                  <li className="flex items-center cursor-pointer">
+                  <li className="flex items-center cursor-pointer hover:opacity-80">
                     <BsFillCaretRightFill />
                     <span>Khôi phục mật khẩu</span>
                   </li>
