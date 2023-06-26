@@ -3,8 +3,7 @@
 ## Setting up the Backend
 
 1. Clone the repository.
-2. Run `yarn install` or `npm install` to install dependencies.
-3. Create a `.env.development` file in the root directory and paste the following:
+2. Create a `.env.development` file in the root directory and paste the following:
 
    ```
    PORT=
@@ -26,7 +25,7 @@
    - **`MYSQL_DB_NAME`** The name of your database (be sure to create it first otherwise an error will be thrown).
    - **`COOKIE_SECRET`** Can be any string that can be used to encrypt & decrypt your cookie.
 
-
-4. Run `yarn start:dev` or `npm run start:dev` depending on which package manager you use to start the project in development mode.
+3. Run `npm install` or `npm i --legacy-peer-deps`.
+4. Run `npm run start:dev` 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
