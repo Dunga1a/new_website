@@ -140,11 +140,11 @@ const ListOfExecutives = () => {
                     onClick={() =>
                       navigate("/member/" + member.id, { state: member })
                     }
-                    class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
+                    className="bg-white border cursor-pointer hover:bg-gray-100 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
                   >
                     <div>
                       <img
-                        class=" max-h-[250px] max-w-full object-cover m-auto"
+                        className=" max-h-[250px] max-w-full object-cover m-auto"
                         src={
                           member.image_person
                             ? `/uploads/${member.image_person}`
@@ -154,12 +154,12 @@ const ListOfExecutives = () => {
                       />
                     </div>
 
-                    <div class="p-5 text-center">
-                      <h5 class="mb-2 text-xl font-bold uppercase tracking-tight text-gray-900 dark:text-white">
+                    <div className="p-5 text-center">
+                      <h5 className="mb-2 text-xl font-bold uppercase tracking-tight text-gray-900 dark:text-white">
                         {member.name_company}
                       </h5>
 
-                      <p class="mb-3 font-semibold text-red-700 dark:text-gray-400">
+                      <p className="mb-3 font-semibold text-red-700 dark:text-gray-400">
                         {member.id_role_associations.name}
                       </p>
                     </div>

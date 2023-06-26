@@ -20,7 +20,7 @@ const MemberDetail = () => {
               src={`${
                 state.image_company
                   ? `/uploads/${state.image_company}`
-                  : "http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+                  : "https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
               }`}
               alt=""
             />
@@ -69,7 +69,7 @@ const MemberDetail = () => {
               src={`${
                 state.image_person
                   ? `/uploads/${state.image_person}`
-                  : "http://dntpthanhhoa.vn/wp-content/uploads/2020/09/96385e1d7e0e8150d81f-150x150.jpg"
+                  : "https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
               }`}
               alt=""
             />
@@ -80,7 +80,7 @@ const MemberDetail = () => {
                 </span>
                 {state.representative}
               </p>
-              <p class="mt-3 font-semibold text-red-600 dark:text-gray-400">
+              <p className="mt-3 font-semibold text-red-600 dark:text-gray-400">
                 {state.id_role_associations.name}
               </p>
             </div>
