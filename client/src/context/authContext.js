@@ -3,6 +3,10 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const protocol = window.location.protocol;
+  const domain = window.location.hostname;
+  const PORT = process.env.REACT_APP_PORT;
+  const url = `${protocol}//${domain}:${PORT}`;
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
@@ -16,7 +20,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login, url }}>
       {children}
     </AuthContext.Provider>
   );

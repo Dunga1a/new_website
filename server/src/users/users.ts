@@ -11,4 +11,5 @@ export interface IUserService {
 
   updateUserEmail(email: string, userId: string);
   changePassword(newPassword: string, id: string);
+  registerUser(createUser: any);
 }

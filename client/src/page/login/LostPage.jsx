@@ -8,6 +8,7 @@ import generateCaptcha from "../../uitls";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const LostPage = () => {
   const {
     register,
@@ -24,7 +25,7 @@ const LostPage = () => {
     };
     try {
       await toast.promise(
-        axios.post("http://localhost:3001/api/users/getOneUser", value, {
+        axios.post(`${DOMAIN}/api/users/getOneUser`, value, {
           withCredentials: true,
         }),
         {

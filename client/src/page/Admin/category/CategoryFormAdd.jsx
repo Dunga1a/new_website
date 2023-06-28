@@ -1,16 +1,17 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
+import { AuthContext } from "../../../context/authContext";
 
 const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
+
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
   const onSubmit = async (data) => {
@@ -28,7 +29,7 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
       //   console.log(values);
 
       const results = await axios.post(
-        "http://localhost:3001/api/newscategory/createNewsCategoryChildren",
+        `${DOMAIN}/api/newscategory/createNewsCategoryChildren`,
         values,
         {
           withCredentials: true,

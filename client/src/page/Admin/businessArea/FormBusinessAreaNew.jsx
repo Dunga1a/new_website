@@ -9,16 +9,13 @@ const initValue = {
 };
 
 const FormBusinessAreaNew = ({ setOpen, fetchData }) => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const onSave = async (data) => {
     try {
-      console.log("form business are new: ", data);
-      const result = await axios.post(
-        "http://localhost:3001/api/business-areas",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      const result = await axios.post(`${DOMAIN}/api/business-areas`, data, {
+        withCredentials: true,
+      });
       console.log(result);
       fetchData();
       setOpen(false);

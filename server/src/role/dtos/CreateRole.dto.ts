@@ -5,3 +5,12 @@ export class CreateRoleDto {
   @IsString()
   name: string;
 }
+
+export class EditRoleDto {
+  @IsNotEmpty()
+  id: number;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+}

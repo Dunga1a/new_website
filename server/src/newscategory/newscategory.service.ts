@@ -113,19 +113,39 @@ export class NewsCategoryService implements INewsCategoryService {
   }
 
   async deletedOneNewsCategory(idNewsCategory: number) {
-    const deletedNewsCategory = await this.newsCategoryRepository.delete(
-      idNewsCategory,
-    );
-    return deletedNewsCategory;
+    // const deleteManyPostByCategoryId = await this.newsPostRepository
+    //   .createQueryBuilder()
+    //   .delete()
+    //   .where('newsCategory = :newsCategory)', {
+    //     newsCategory: idNewsCategory,
+    //   })
+    //   .execute();
+    // const deletedNewsCategory = await this.newsCategoryRepository.delete(
+    //   idNewsCategory,
+    // );
+    const postsToDelete = await this.newsPostRepository.find({
+      where: { newsCategory: { id: idNewsCategory } },
+    });
+    console.log(postsToDelete);
+
+    // return deletedNewsCategory;
   }
 
   async deleteManyNewsCategory(idNewsCategories: number[]) {
-    const deletedMayMember = await this.newsCategoryRepository
+    const deleteManyPostByCategoryId = await this.newsPostRepository
+      .createQueryBuilder()
+      .delete()
+      .where('newsCategory IN (:...idNewsCategories)', {
+        idNewsCategories,
+      })
+      .execute();
+
+    const deletedMayCategory = await this.newsCategoryRepository
       .createQueryBuilder()
       .delete()
       .where('news_category_id IN (:...idNewsCategories)', { idNewsCategories })
       .execute();
-    if (deletedMayMember) {
+    if (deletedMayCategory) {
       console.log('Bản ghi đã được xóa.');
     } else {
       console.log('Không tìm thấy bản ghi hoặc xóa thất bại.');

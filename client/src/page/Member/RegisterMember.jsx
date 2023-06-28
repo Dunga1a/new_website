@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuillEditor from "../../components/ReactQuill";
 import axios from "axios";
 import Select from "react-select";
 import slugify from "slugify";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/authContext";
 const RegisterMember = () => {
+  const { url } = useContext(AuthContext);
+  console.log(url);
   const [selectedImages, setSelectedImages] = useState({
     firstImg: null,
     secondImg: null,
@@ -61,7 +64,7 @@ const RegisterMember = () => {
       if (imageUrl.firstImg) {
         formData.append("image", imageUrl.firstImg);
         const responseImgPerson = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${url}/api/member/uploadFileImage`,
           formData,
           {
             headers: {
@@ -74,7 +77,7 @@ const RegisterMember = () => {
       if (imageUrl.secondImg) {
         formDataTwo.append("image", imageUrl.secondImg);
         const responseImgCompany = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${url}/api/member/uploadFileImage`,
           formDataTwo,
           {
             headers: {
@@ -99,7 +102,7 @@ const RegisterMember = () => {
       };
       console.log(values);
       const result = await axios.post(
-        "http://localhost:3001/api/member/createMember",
+        `${url}/api/member/createMember`,
         values,
         {
           withCredentials: true,
@@ -123,7 +126,7 @@ const RegisterMember = () => {
   const fetchData = async () => {
     try {
       const result = await axios.get(
-        "http://localhost:3001/api/business-areas/getListBusinessArea"
+        `${url}/api/business-areas/getListBusinessArea`
       );
       // console.log(result.data);
       const data = result.data
@@ -142,59 +145,14 @@ const RegisterMember = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  // console.log(data);
+
   const handleChangeContent = (value) => {
     setIntro(value);
   };
 
-  // const handleFileChange = async (e, imgName) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   // setFile(e.target.files[0]);
-
-  //   const formData = new FormData();
-  //   // formData.append("image", file);
-  //   formData.append("image", e.target.files[0]);
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setSelectedImages((prevState) => ({
-  //         ...prevState,
-  //         [imgName]: reader.result,
-  //       }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3001/api/member/uploadFileImage",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     setImageUrl((prev) => ({
-  //       ...prev,
-  //       [imgName]: response.data.imageUrl,
-  //     }));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleChangeFile = (e) => {
-  //   console.log(e.target.files);
-  // };
-
   const selectedOption = businessAreas.find(
     (option) => option.value === Number(idBusinessAreas)
   );
-
-  // console.log(selectedOption);
 
   return (
     <div className="bg-white py-6">
@@ -331,7 +289,6 @@ const RegisterMember = () => {
               <input
                 type="file"
                 placeholder="Chưa...chọn"
-                // onChange={(e) => handleFileChange(e, "firstImg")}
                 onChange={(e) => handleImageChange(e, "firstImg")}
               />
               {selectedImages && (
@@ -347,20 +304,6 @@ const RegisterMember = () => {
                   />
                 </div>
               )}
-
-              {/* {imageUrl && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      imageUrl.firstImg
-                        ? `/uploads/${imageUrl.firstImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )} */}
             </div>
           </div>
           <div>
@@ -372,7 +315,6 @@ const RegisterMember = () => {
               <input
                 type="file"
                 placeholder="Chưa...chọn"
-                // onChange={(e) => handleFileChange(e, "secondImg")}
                 onChange={(e) => handleImageChange(e, "secondImg")}
               />
               {selectedImages && (
@@ -388,19 +330,6 @@ const RegisterMember = () => {
                   />
                 </div>
               )}
-              {/* {imageUrl && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      imageUrl.secondImg
-                        ? `/uploads/${imageUrl.secondImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )} */}
             </div>
           </div>
         </div>

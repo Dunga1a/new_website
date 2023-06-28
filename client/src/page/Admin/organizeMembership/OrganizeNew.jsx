@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import OrganizeForm from "./OrganizeForm";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 
 const initValue = {
   name: "",
@@ -9,12 +10,15 @@ const initValue = {
 };
 
 const OrganizeNew = ({ setOpen, fetchData }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const onSave = async (data) => {
     console.log(data);
     try {
       console.log("formNew: ", data);
       const result = await axios.post(
-        "http://localhost:3001/api/organize-membership-title",
+        `${DOMAIN}/api/organize-membership-title`,
         data,
         { withCredentials: true }
       );

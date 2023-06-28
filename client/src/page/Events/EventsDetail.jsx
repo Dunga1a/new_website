@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
+import { AuthContext } from "../../context/authContext";
 const EventsDetail = () => {
   const { id } = useParams();
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
+  // const { url } = useContext(AuthContext);
   const [eventItem, setEventItem] = useState();
   const fetchData = async () => {
     try {
-      const result = await axios.get(`http://localhost:3001/api/event/${id}`);
+      const result = await axios.get(`${DOMAIN}/api/event/${id}`);
 
       setEventItem(result.data);
     } catch (error) {

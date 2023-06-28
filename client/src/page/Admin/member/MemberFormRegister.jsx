@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Select from "react-select";
 import slugify from "slugify";
 import ReactQuillEditor from "../../../components/ReactQuill";
 import axios from "axios";
+import { AuthContext } from "../../../context/authContext";
 
 const optionsStatus = [
   { label: "Đã kích hoạt", value: 1 },
@@ -16,6 +17,9 @@ const MemberFormRegister = ({
   roleAssociations,
   onSave,
 }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [selectedImages, setSelectedImages] = useState({
     firstImg: memberItem.image_person
       ? `/uploads/${memberItem.image_person}`
@@ -46,6 +50,7 @@ const MemberFormRegister = ({
     memberItem.id_role_associations.id_organize_membership
   );
   const [isPublic, setIsPublic] = useState(memberItem.status);
+  const [editEmail, setEditEmail] = useState(false);
 
   const {
     register,
@@ -54,20 +59,6 @@ const MemberFormRegister = ({
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
 
-  //const content = watch("content", "");
-  // const handleImageChange = (e, inputName) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setSelectedImages((prevState) => ({
-  //         ...prevState,
-  //         [inputName]: reader.result,
-  //       }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
   const handleImageChange = (e, inputName) => {
     const file = e.target.files[0];
     if (file) {
@@ -106,7 +97,7 @@ const MemberFormRegister = ({
         const formData = new FormData();
         formData.append("image", imageUrl.firstImg);
         const responseImgPerson = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${DOMAIN}/api/member/uploadFileImage`,
           formData,
           {
             headers: {
@@ -120,7 +111,7 @@ const MemberFormRegister = ({
         const formDataTwo = new FormData();
         formDataTwo.append("image", imageUrl.secondImg);
         const responseImgCompany = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${DOMAIN}/api/member/uploadFileImage`,
           formDataTwo,
           {
             headers: {
@@ -140,13 +131,9 @@ const MemberFormRegister = ({
         status: isPublic,
         image_person: image_person,
         image_company: image_company,
-        // image: imageUrl,
-        // isChangImage: isChangImage,
-        // image_person: imageUrl.firstImg,
-        // image_company: imageUrl.secondImg,
+        editEmail: editEmail,
       };
-      console.log(values);
-
+      // console.log("editEmail: ", editEmail);
       onSave(values);
     } catch (error) {
       console.log(error.message);
@@ -156,83 +143,6 @@ const MemberFormRegister = ({
   const handleChangeContent = (value) => {
     setIntro(value);
   };
-
-  // const [file, setFile] = useState(null);
-
-  // const handleFileChange = async (e, imgName) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   // setFile(e.target.files[0]);
-
-  //   const formData = new FormData();
-  //   // formData.append("image", file);
-  //   formData.append("image", e.target.files[0]);
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setSelectedImages((prevState) => ({
-  //         ...prevState,
-  //         [imgName]: reader.result,
-  //       }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3001/api/member/uploadFileImage",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     // console.log(response);
-  //     // setImageUrl(response.data.imageUrl);
-  //     setImageUrl((prev) => ({
-  //       ...prev,
-  //       [imgName]: response.data.imageUrl,
-  //     }));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const [images, setImages] = useState([]);
-  // const fileInputRef = useRef(null);
-  // const handleUploadImages = async (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   const files = Array.from(e.target.files);
-
-  //   const formData = new FormData();
-  //   for (let i = 0; i < files.length; i++) {
-  //     formData.append("images", files[i]);
-  //   }
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3001/api/member/uploadMultipleImages",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //         onUploadProgress: (progressEvent) => {
-  //           const percentCompleted = Math.round(
-  //             (progressEvent.loaded * 100) / progressEvent.total
-  //           );
-  //           console.log("Upload progress:", percentCompleted);
-  //           // Cập nhật tiến trình upload cho giao diện người dùng
-  //         },
-  //       }
-  //     );
-  //     console.log("vao day: ", response.data);
-  //     setImages(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <div className="bg-white py-6">
@@ -300,6 +210,7 @@ const MemberFormRegister = ({
                 required: true,
               })}
               defaultValue={memberItem.email}
+              onChange={() => setEditEmail(true)}
             />
           </div>
           <div className="my-4">
@@ -388,19 +299,6 @@ const MemberFormRegister = ({
                   />
                 </div>
               )}
-              {/* {imageUrl && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      imageUrl.firstImg
-                        ? `/uploads/${imageUrl.firstImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )} */}
             </div>
           </div>
           <div>
@@ -427,19 +325,6 @@ const MemberFormRegister = ({
                   />
                 </div>
               )}
-              {/* {imageUrl && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      imageUrl.secondImg
-                        ? `/uploads/${imageUrl.secondImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )} */}
             </div>
           </div>
         </div>

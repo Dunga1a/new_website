@@ -10,7 +10,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { TbTimelineEventText } from "react-icons/tb";
 
 import { IoLogOutOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { IoIosBusiness } from "react-icons/io";
 import { ToastContainer } from "react-toastify";
@@ -89,6 +89,20 @@ export default function LayoutAdmin() {
   const navigate = useNavigate();
   const [openAlert, setOpenAlert] = useState(false);
   const [openUser, setOpenUser] = useState(false);
+  const url = window.location.href;
+  const path = new URL(url).pathname;
+  const [pathCurrent, setPathCurrent] = useState(path);
+
+  useEffect(() => {
+    if (pathCurrent !== "") {
+      navigate(pathCurrent);
+    }
+  }, [pathCurrent]);
+
+  const handleClick = (item) => {
+    setPathCurrent(item.href);
+  };
+
   return (
     <>
       <div
@@ -116,10 +130,10 @@ export default function LayoutAdmin() {
                     {navigation.map((item) => (
                       <li key={item.name}>
                         <button
-                          onClick={() => navigate(item.href)}
+                          onClick={() => handleClick(item)}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            item.href === pathCurrent
                               ? "bg-gray-800 text-white"
                               : "text-gray-400 hover:text-white hover:bg-gray-800",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"

@@ -7,15 +7,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const FormBusinessAreaEdit = ({ businessAreaItem, setOpen, fetchData }) => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const onSave = async (data) => {
     try {
-      await axios.put(
-        "http://localhost:3001/api/business-areas/editOne",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`${DOMAIN}/api/business-areas/editOne`, data, {
+        withCredentials: true,
+      });
       fetchData();
       setOpen(false);
       toast.success("Sửa lĩnh vực hoạt động thành công.");
