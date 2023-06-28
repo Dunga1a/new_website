@@ -32,7 +32,11 @@ export class UserService implements IUserService {
       throw new HttpException('Email đã tồn tại', HttpStatus.CONFLICT);
 
     const password = await hashPassword(userDetails.password);
-    const params = { ...userDetails, password };
+    const params = {
+      ...userDetails,
+      password,
+      status: 1,
+    };
 
     const newUser = await this.userRepository.create(params);
 
@@ -112,5 +116,37 @@ export class UserService implements IUserService {
     user.password = newPassword;
 
     await this.userRepository.save(user);
+  }
+
+  async registerUser(createUser: any) {
+    const exisUser = await this.userRepository.findOne({
+      email: createUser.email,
+    });
+    if (exisUser) {
+      throw new HttpException('Email này đã được đăng ký', HttpStatus.CONFLICT);
+    }
+    const exisUserByName = await this.userRepository.findOne({
+      username: createUser.username,
+    });
+    if (exisUserByName) {
+      throw new HttpException(
+        'Tên người dùng đã được sử dụng',
+        HttpStatus.CONFLICT,
+      );
+    }
+    const password = await hashPassword(createUser.password);
+    const registerUser = await this.userRepository.create({
+      ...createUser,
+      password,
+    });
+
+    const savedUser = await this.userRepository.save(registerUser);
+
+    await this.editUser({
+      username: createUser.username,
+      roleId: String(3),
+    });
+
+    return savedUser;
   }
 }

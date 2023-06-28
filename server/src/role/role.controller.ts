@@ -1,10 +1,18 @@
 /*
 https://docs.nestjs.com/controllers#controllers
 */
-import { Controller, Get, Inject, Param, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Body,
+  Put,
+} from '@nestjs/common';
 import { Routes, Services } from 'src/utils/constants';
 import { IRoleService } from './role';
-import { CreateRoleDto } from './dtos/CreateRole.dto';
+import { CreateRoleDto, EditRoleDto } from './dtos/CreateRole.dto';
 
 @Controller(Routes.ROLE)
 export class RoleController {
@@ -22,5 +30,17 @@ export class RoleController {
   async getAllRole() {
     const roles = await this.roleService.getAllRole();
     return roles;
+  }
+
+  @Post('getUserByRole')
+  async getUserByRole(@Body() item: any) {
+    const result = await this.roleService.getUserByRole(item);
+    return result;
+  }
+
+  @Put('editRole')
+  async editRole(@Body() editRoleDetails: EditRoleDto) {
+    const editedRole = await this.roleService.editRole(editRoleDetails);
+    return editedRole;
   }
 }

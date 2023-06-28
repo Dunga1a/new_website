@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import OrganizeForm from "./OrganizeForm";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const OrganizeEdit = ({ organizeItem, setOpen, fetchData }) => {
-  console.log(organizeItem);
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const onSave = async (data) => {
     try {
       const values = {
@@ -12,7 +14,7 @@ const OrganizeEdit = ({ organizeItem, setOpen, fetchData }) => {
         id_organize_membership: organizeItem.id_organize_membership,
       };
       const result = await axios.put(
-        "http://localhost:3001/api/organize-membership-title/editOne",
+        `${DOMAIN}/api/organize-membership-title/editOne`,
         values,
         {
           withCredentials: true,

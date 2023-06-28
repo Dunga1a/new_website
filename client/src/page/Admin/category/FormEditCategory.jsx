@@ -1,14 +1,17 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
+import { AuthContext } from "../../../context/authContext";
 const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
   // console.log(newsCategoryEdit);
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const {
     register,
     formState: { errors },
-    reset,
     handleSubmit,
   } = useForm({ criteriaMode: "all" });
   const onSubmit = async (data) => {
@@ -29,7 +32,7 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
         slug,
       };
       const result = await axios.put(
-        `http://localhost:3001/api/newscategory/editCategory`,
+        `${DOMAIN}/api/newscategory/editCategory`,
         values,
         {
           withCredentials: true,

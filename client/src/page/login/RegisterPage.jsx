@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LayoutLoginPage from "../../Layout/LayoutLoginPage";
 import { useForm } from "react-hook-form";
 import { BsFillCaretRightFill } from "react-icons/bs";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
+import { AuthContext } from "../../context/authContext";
 import Modal from "../../components/Modal/Modal";
 import { useNavigate } from "react-router-dom";
 import generateCaptcha from "../../uitls";
+import axios from "axios";
+import { toast } from "react-toastify";
 const RegisterPage = () => {
+  const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
+  // ${DOMAIN}
   const {
     register,
     handleSubmit,
@@ -19,15 +26,28 @@ const RegisterPage = () => {
   const password = watch("password");
   const [captcha, setCaptcha] = useState(generateCaptcha);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     let username = data.username;
     let password = data.password;
     if (!data) {
       alert("Đăng ký không thành công!");
     } else {
-      localStorage.setItem("user", JSON.stringify(username));
-      localStorage.setItem("user", JSON.stringify(password));
-      navigate("/user/login");
+      try {
+        const { confirmPassword, checkCaptcha, ...values } = data;
+
+        const value = { ...values, status: 1 };
+        await axios.post(`${DOMAIN}/api/users/registerUser`, value, {
+          withCredentials: true,
+        });
+        toast.success("Đăng ký tài khoản thành công.");
+        navigate("/user/login");
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+
+      // localStorage.setItem("user", JSON.stringify(username));
+      // localStorage.setItem("user", JSON.stringify(password));
+      // navigate("/user/login");
     }
   };
   const [open, setOpen] = useState(false);
@@ -49,7 +69,7 @@ const RegisterPage = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="relative">
             <input
-              {...register("firstName", {
+              {...register("firstname", {
                 required: "Trường này không được để trống",
               })}
               placeholder="Họ và tên đệm"
@@ -66,7 +86,7 @@ const RegisterPage = () => {
           {/* include validation with required or other standard HTML validation rules */}
           <div className="relative">
             <input
-              {...register("lastName", {
+              {...register("lastname", {
                 required: "Trường này không được để trống",
               })}
               placeholder="Tên"
@@ -183,7 +203,7 @@ const RegisterPage = () => {
                   required: true,
                 })}
                 type="radio"
-                value="N"
+                value="0"
               />
               <span className="text-sm">N/A</span>
             </label>
@@ -193,7 +213,7 @@ const RegisterPage = () => {
                   required: true,
                 })}
                 type="radio"
-                value="N"
+                value="1"
               />
               <span className="text-sm">Nam</span>
             </label>
@@ -203,7 +223,7 @@ const RegisterPage = () => {
                   required: true,
                 })}
                 type="radio"
-                value="N"
+                value="2"
               />
               <span className="text-sm">Nữ</span>
             </label>
@@ -260,7 +280,7 @@ const RegisterPage = () => {
             </span>
           )}
 
-          <div className="mt-1 flex items-center">
+          {/* <div className="mt-1 flex items-center">
             <input
               type="text"
               name=""
@@ -281,7 +301,7 @@ const RegisterPage = () => {
               className={`w-full outline-none h-full px-3 py-2 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
               placeholder="Trả lời câu hỏi"
             />
-          </div>
+          </div> */}
 
           <div className="mt-1 bg-white shadow-lg border-[1px] border-[#ccc] rounded-sm p-2 flex items-center justify-center gap-2">
             <input type="checkbox" />

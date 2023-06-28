@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../../../components/Buttons/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AuthContext } from "../../../context/authContext";
 
 const FormDelete = ({ eventItem, setOpen, fetchData }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3001/api/event/${eventItem.id}`);
+      await axios.delete(`${DOMAIN}/api/event/${eventItem.id}`);
       setOpen(false);
       fetchData();
       toast.success("Xóa sự kiện thành công");

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 
@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import { AuthContext } from "../../../context/authContext";
 
 const options_status = [
   { value: 0, label: "Chưa kích hoạt" },
@@ -22,8 +23,8 @@ const options_status = [
 ];
 
 const MemberManager = () => {
-  // const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const [member, setMember] = useState([]);
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -55,10 +56,10 @@ const MemberManager = () => {
       const search = "";
 
       const result = await axios.get(
-        "http://localhost:3001/api/business-areas/getListBusinessArea"
+        `${DOMAIN}/api/business-areas/getListBusinessArea`
       );
       const resultTwo = await axios.get(
-        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
+        `${DOMAIN}/api/organize-membership-title?searchKey=${search}`
       );
 
       const data = result.data.map((item) => {
@@ -74,8 +75,6 @@ const MemberManager = () => {
           value: item.id_organize_membership,
         };
       });
-
-      console.log(dataTwo);
 
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);
@@ -99,13 +98,12 @@ const MemberManager = () => {
       const status = memberStatus ? memberStatus : "";
 
       const result = await axios.get(
-        `http://localhost:3001/api/member?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
+        `${DOMAIN}/api/member?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
         {
           withCredentials: true,
         }
       );
 
-      console.log(result.data.memberList);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
     } catch (error) {
@@ -118,8 +116,7 @@ const MemberManager = () => {
 
   const handleEditMember = async (id) => {
     try {
-      console.log(id);
-      const result = await axios.get(`http://localhost:3001/api/member/${id}`, {
+      const result = await axios.get(`${DOMAIN}/api/member/${id}`, {
         withCredentials: true,
       });
       setMemberItem(result.data);
@@ -232,7 +229,7 @@ const MemberManager = () => {
       }
       console.log(items);
       const result = await axios.delete(
-        "http://localhost:3001/api/member/deleteManyMember",
+        `${DOMAIN}/api/member/deleteManyMember`,
 
         {
           data: items,
@@ -323,8 +320,6 @@ const MemberManager = () => {
                     id="checkbox-all-search"
                     type="checkbox"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    // onChange={handleCheckAll}
-                    // checked={isCheckedAll}
                     checked={isCheckedAll}
                     onChange={handleCheckAll}
                   />

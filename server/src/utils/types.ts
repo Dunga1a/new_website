@@ -13,6 +13,7 @@ export type CreateUserDetails = {
   firstName?: string;
   lastName?: string;
   email: string;
+  created_at?: Date;
 };
 
 export type ValidateUserDetails = {
@@ -114,4 +115,9 @@ export type OrganizationDetails = {
   id_organize_membership?: number;
   name: string;
   status?: boolean;
+};
+
+export type EditRole = {
+  id: number;
+  name: string;
 };

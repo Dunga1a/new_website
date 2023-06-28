@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
 import { useSearchParams } from "react-router-dom";
@@ -10,8 +10,12 @@ import Modal from "../../../components/Modal/Modal";
 import OrganizeNew from "./OrganizeNew";
 import OrganizeEdit from "./OrganizeEdit";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 
 const Organize = () => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [openNewForm, setOpenNewForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [organizeItem, setOrganizeItem] = useState();
@@ -34,7 +38,7 @@ const Organize = () => {
     try {
       const search = searchKey ? searchKey : "";
       const result = await axios.get(
-        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
+        `${DOMAIN}/api/organize-membership-title?searchKey=${search}`
       );
       setOrganizeList(result.data);
       //   setCount(result.data.countBusinessAreas);
@@ -100,7 +104,7 @@ const Organize = () => {
         status: status,
       };
       await axios.put(
-        "http://localhost:3001/api/organize-membership-title/updateStatusOn",
+        `${DOMAIN}/api/organize-membership-title/updateStatusOn`,
         data,
         {
           withCredentials: true,
@@ -123,7 +127,7 @@ const Organize = () => {
         status: status,
       };
       await axios.put(
-        "http://localhost:3001/api/organize-membership-title/updateStatusOn",
+        `${DOMAIN}/api/organize-membership-title/updateStatusOn`,
         data,
         {
           withCredentials: true,
@@ -145,7 +149,7 @@ const Organize = () => {
         return;
       }
       await axios.delete(
-        "http://localhost:3001/api/organize-membership-title/deletedManyOrganize",
+        `${DOMAIN}/api/organize-membership-title/deletedManyOrganize`,
         {
           data: items,
           withCredentials: true,
@@ -176,7 +180,6 @@ const Organize = () => {
             placeholder="Tìm kiếm theo tên"
             className="col-span-1 border-[#ccc] rounded-sm mt-2 ml-4"
             onChange={handleSearchName}
-            // value={searchName}
           />
         </div>
         <Card.Content>
