@@ -31,7 +31,7 @@ const NewDetail = () => {
     try {
       const sheet = page ? page : 1;
 
-      let url = "http://localhost:3001/api/posts/allPost?";
+      let url = `${DOMAIN}/api/posts/allPost?`;
       url += `page=${page || 1}`;
       const res = await axios.get(url);
       const result = await axios.get(
@@ -70,10 +70,10 @@ const NewDetail = () => {
           <div className="desktop:pr-5 list phone:pr-0">
             {postList ? (
               postList.length ? (
-                postList.map((post, index) => {
+                postList.map((post) => {
                   return (
                     <div
-                      key={index}
+                      key={post.id}
                       className="block text-[14px] py-8 border-b-[2px] border-[#999999] border-solid item"
                     >
                       <div

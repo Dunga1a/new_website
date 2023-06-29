@@ -14,9 +14,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const LoginPage = ({ className }) => {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
-
   const {
     register,
     handleSubmit,
@@ -25,6 +24,7 @@ const LoginPage = ({ className }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data);
     if (data === null) {
       alert("Bạn chưa có thông tin đăng nhập");
     }
@@ -46,6 +46,7 @@ const LoginPage = ({ className }) => {
       toast.error(error.response.data.message, {
         position: "top-center",
       });
+      reset();
     }
   };
 

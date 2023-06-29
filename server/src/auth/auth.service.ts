@@ -27,7 +27,7 @@ export class AuthService implements IAuthService {
         HttpStatus.NOT_FOUND,
       );
     }
-    if (!user.status) {
+    if (user.status === 2) {
       //console.log('Tài khoản của bạn đã bị khóa');
       throw new HttpException(
         'Tài khoản của bạn đã bị khóa',
@@ -38,7 +38,6 @@ export class AuthService implements IAuthService {
     const isPasswordValidhi = await compareHash('1234567', '1234567');
     const isPassWord = await bcrypt.compare('1234567', '1234567');
     console.log(isPassWord);
-
 
     const isPasswordValid = await compareHash(password, user.password);
     if (!isPasswordValid) {

@@ -22,6 +22,8 @@ import axios from "axios";
 import Select from "react-select";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const options_post = [
   { value: 2, label: "Đã khóa" },
   { value: 1, label: "Đang hoạt động" },
@@ -44,7 +46,7 @@ const UserManager = () => {
   const status = searchParams.get("status");
   const fetchData = async () => {
     try {
-      let url = "http://localhost:3001/api/users?";
+      let url = `${DOMAIN}/api/users?`;
 
       if (selectTwo) {
         url += `status=${selectTwo.value || null}&`;
@@ -110,7 +112,7 @@ const UserManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.put("http://localhost:3001/api/users/approve-close", item);
+      await axios.put(`${DOMAIN}/api/users/approve-close`, item);
 
       toast.success("Đã khóa tài khoản");
       setCloseStatus(false);
@@ -127,7 +129,7 @@ const UserManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.put("http://localhost:3001/api/users/approve-open", item);
+      await axios.put(`${DOMAIN}/api/users/approve-open`, item);
 
       toast.success("Đã mở tài khoản");
       setOpenStatus(false);

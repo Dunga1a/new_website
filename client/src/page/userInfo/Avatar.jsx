@@ -7,6 +7,8 @@ import Modal from "../../components/Modal/Modal.jsx";
 import ImageCrop from "./cropImage/index.jsx";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext.js";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const defaltImg =
   "https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/images/1683254955152-avatar.png";
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
@@ -37,7 +39,7 @@ export default function AvatarUser() {
     // try {
     //   // Send a POST request to upload the image
     //   const response = await axios.post(
-    //     `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+    //     `${DOMAIN}/api/users/uploadFileImage/${currentUser.id}`,
     //     formData,
     //     {
     //       headers: {

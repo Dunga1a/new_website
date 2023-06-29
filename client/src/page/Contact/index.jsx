@@ -21,6 +21,8 @@ import { AuthContext } from "../../context/authContext";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 function ContactPage() {
   const [captcha, setCaptcha] = useState(generateCaptcha);
   const [open, setOpen] = useState(false);
@@ -43,7 +45,7 @@ function ContactPage() {
     }
     try {
       const response = await toast.promise(
-        axios.post("http://localhost:3001/api/contact/", data),
+        axios.post(`${DOMAIN}/api/contact/`, data),
         {
           pending: "Đang xử lý",
           success: "Bạn đã gửi phản hồi thành công 👌",

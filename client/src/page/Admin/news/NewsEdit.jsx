@@ -3,6 +3,7 @@ import Form from "../../../components/Form";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
   const [item, setItem] = useState(idItem);
@@ -26,7 +27,7 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
       if (isEdit) {
         formData.append("image", data.image[0]);
         const responseImgPerson = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${DOMAIN}/api/member/uploadFileImage`,
           formData,
           {
             headers: {
@@ -40,7 +41,7 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
       console.log("vao form edit: ", { ...value, slug, image });
       const postValue = { ...value, slug, image };
       const responre = await axios.put(
-        `http://localhost:3001/api/posts/update/${item.id}`,
+        `${DOMAIN}/api/posts/update/${item.id}`,
         postValue
       );
 

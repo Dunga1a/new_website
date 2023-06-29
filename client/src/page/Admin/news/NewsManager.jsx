@@ -17,6 +17,7 @@ import NewsInsert from "./NewsInsert";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_post = [
   { value: 0, label: "Chưa duyệt" },
@@ -77,7 +78,7 @@ const NewsManager = () => {
   const onSubmit = (data) => console.log(data);
   const fetchDataWithFilter = async () => {
     try {
-      let url = "http://localhost:3001/api/posts?";
+      let url = `${DOMAIN}/api/posts?`;
       if (selectOne) {
         url += `category=${selectOne.value || null}&`;
       }
@@ -114,7 +115,7 @@ const NewsManager = () => {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
       //console.log(typeof itemId);
 
-      await axios.post("http://localhost:3001/api/posts/deletes/", item);
+      await axios.post(`${DOMAIN}/api/posts/deletes/`, item);
       toast.success("Đã xóa thành công");
       setOpenModalDelete(false);
       fetchDataWithFilter();
@@ -146,7 +147,7 @@ const NewsManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.post("http://localhost:3001/api/posts/approve", item);
+      await axios.post(`${DOMAIN}/api/posts/approve`, item);
       toast.success("Đã duyệt thành công");
       setOpenModalStatus(false);
       setIsCheckedItems([]);
@@ -172,7 +173,7 @@ const NewsManager = () => {
     try {
       //const sheet = page ? page : 1;
       const result = await axios.get(
-        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=1`,
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=1`,
         {
           withCredentials: true,
         }
