@@ -3,7 +3,7 @@ import { IMemberService } from './member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getRepository } from 'typeorm';
 import { Member, User } from 'src/utils/typeorm';
-import { CreateMemberDetails } from 'src/utils/types';
+import { CreateMemberDetails, CreateUserDetails } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/users/users';
 
@@ -214,7 +214,9 @@ export class MemberService implements IMemberService {
     return this.memberRepository.save(findMember);
   }
 
-  async editMember(memberEditDetails: Partial<Member>) {
+  async editMember(memberEditDetails: any) {
+    console.log(memberEditDetails);
+
     const findMember = await this.memberRepository.findOne(
       memberEditDetails.id,
     );
@@ -229,9 +231,17 @@ export class MemberService implements IMemberService {
       );
     }
 
-    const findMemberByEmail = await this.memberRepository.findOne({
-      email: memberEditDetails.email,
-    });
+    if (memberEditDetails.editEmail) {
+      const findMemberByEmail = await this.memberRepository.findOne({
+        email: memberEditDetails.email,
+      });
+      if (findMemberByEmail) {
+        throw new HttpException(
+          'Email đã tồn tại, vui lòng chọn email khác',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
 
     if (!findMember) {
       throw new HttpException(
@@ -254,7 +264,7 @@ export class MemberService implements IMemberService {
     findMember.image_person = memberEditDetails.image_person;
     findMember.image_company = memberEditDetails.image_company;
     findUser.email = memberEditDetails.email;
-
+    findUser.status = 1;
     const updatedMember = await this.memberRepository.save(findMember);
     const updatedUser = await this.userRepository.save(findUser);
     return { updatedMember, updatedUser };

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import FormEvent from "./FormEvent";
 import { useState } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 
 const FormEdit = ({ eventItem, setOpen, fetchData }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [value, setValue] = useState({
     id: eventItem.id,
     title: eventItem.title,
@@ -27,7 +31,7 @@ const FormEdit = ({ eventItem, setOpen, fetchData }) => {
       const { image, selectedFiles, ...values } = data;
       // console.log(data);
       const result = await axios.post(
-        "http://localhost:3001/api/event/editEvent",
+        `${DOMAIN}/api/event/editEvent`,
         { ...values, id: eventItem.id },
         {
           withCredentials: true,

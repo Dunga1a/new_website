@@ -7,6 +7,7 @@ import { IAuthService } from './auth';
 import { User } from 'src/utils/typeorm';
 import { compareHash } from 'src/utils/helpers';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -18,6 +19,7 @@ export class AuthService implements IAuthService {
   async validateUser(userDetails: ValidateUserDetails) {
     const { password, username } = userDetails;
     const user = await this.userService.findByUsername(username);
+
     if (!user) {
       //console.log('Tài khoản của bạn đã bị khóa');
       throw new HttpException(
@@ -32,6 +34,12 @@ export class AuthService implements IAuthService {
         HttpStatus.NOT_FOUND,
       );
     }
+
+    const isPasswordValidhi = await compareHash('1234567', '1234567');
+    const isPassWord = await bcrypt.compare('1234567', '1234567');
+    console.log(isPassWord);
+
+
     const isPasswordValid = await compareHash(password, user.password);
     if (!isPasswordValid) {
       throw new HttpException(

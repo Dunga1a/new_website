@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { BsFillCaretRightFill } from "react-icons/bs";
 import Modal from "../../components/Modal/Modal";
@@ -9,22 +9,26 @@ const arrContent = [
   { title: "Hình đại điện", slug: "avatar" },
   { title: "Email", slug: "email" },
   { title: "Mật khẩu", slug: "password" },
-  // { title: "Xác thực hai bước", slug: "two-step-veri" },
-  // { title: "Câu hỏi bảo mật", slug: "question" },
-  // { title: "Nhóm", slug: "group" },
-  // { title: "Chế độ an toàn", slug: "safe-mode" },
 ];
-
-const logOut = () => {
-  //confirm("Are you sure you want to log out?");
-  localStorage.setItem("user", null);
-  window.location.reload();
-};
 
 const UserEdit = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const url = window.location.href;
+  const path = new URL(url).pathname;
+  const lastSegment = path.split("/").pop();
+  const [pathCurrent, setPathCurrent] = useState(lastSegment);
   const [active, setActive] = useState(0);
+  useEffect(() => {
+    if (pathCurrent !== "") {
+      navigate(`/user/editinfo/${pathCurrent}`);
+    }
+  }, [pathCurrent]);
+
+  const handleClick = (item) => {
+    navigate(`/user/editinfo/${item.slug}`);
+    setPathCurrent(item.slug);
+  };
   const logOut = () => {
     //alert("Tài khoản của bạn sẽ đăng xuất?");
     localStorage.setItem("user", null);
@@ -37,13 +41,12 @@ const UserEdit = () => {
         {arrContent.map((item, idx) => (
           <li
             className={`${
-              idx === active ? "bg-[#428bca] text-white" : "hover:bg-gray-100"
+              item.slug === pathCurrent
+                ? "bg-[#428bca] text-white"
+                : "hover:bg-gray-100"
             } px-2 py-1 rounded-md text-[14px] phone:text-[16px] laptop:text-[14px] tablet:text-[14px] mr-1 text-[#494949] cursor-pointer`}
             key={idx}
-            onClick={() => {
-              setActive(idx);
-              navigate(`/user/editinfo/${item.slug}`);
-            }}
+            onClick={() => handleClick(item)}
           >
             {item.title}
           </li>

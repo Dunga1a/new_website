@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CategoryFormAdd from "./CategoryFormAdd";
 import Modal from "../../../components/Modal/Modal";
 import FormEditCategory from "./FormEditCategory";
@@ -6,12 +6,15 @@ import axios from "axios";
 import FormDeleteCategory from "./FormDeleteCategory";
 import { GrAdd } from "react-icons/gr";
 import { AiTwotoneEdit, AiTwotoneDelete } from "react-icons/ai";
+import { AuthContext } from "../../../context/authContext";
 
 const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [openEditForm, setOpenEditForm] = useState(false);
   const [newsCategoryEdit, setNewsCategoryEdit] = useState();
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
-  const [newsCategoryDelete, setNewsCategoryDelete] = useState([]);
+  const [newsCategoryDelete, setNewsCategoryDelete] = useState();
 
   const handleEdit = async (item) => {
     // console.log("vao day: ", item);
@@ -22,7 +25,7 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
   const handleDelete = async (item) => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/newscategory/getOneCategory/${item.news_category_id}`,
+        `${DOMAIN}/api/newscategory/getOneCategory/${item.news_category_id}`,
         {
           withCredentials: true,
         }

@@ -15,6 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 const BusinessArea = () => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
   const [openNewForm, setOpenNewForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
@@ -39,7 +40,7 @@ const BusinessArea = () => {
       const sheet = page ? page : 1;
       const search = searchKey ? searchKey : "";
       const result = await axios.get(
-        `http://localhost:3001/api/business-areas?page=${sheet}&searchKey=${search}`
+        `${DOMAIN}/api/business-areas?page=${sheet}&searchKey=${search}`
       );
       setBusinessAreaList(result.data.businessAreas);
       setCount(result.data.countBusinessAreas);

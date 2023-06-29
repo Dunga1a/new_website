@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import Button from "../../../components/Buttons/Button";
 import Modal from "../../../components/Modal/Modal";
@@ -14,7 +14,11 @@ import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 const EventManager = () => {
+  const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -52,7 +56,7 @@ const EventManager = () => {
       const date_start = dateStart ? dateStart : "";
       const date_end = dateEnd ? dateEnd : "";
       const result = await axios.get(
-        `http://localhost:3001/api/event/getAllEvent?page=${sheet}&searchKey=${search}&dateStart=${date_start}&dateEnd=${date_end}`,
+        `${DOMAIN}/api/event/getAllEvent?page=${sheet}&searchKey=${search}&dateStart=${date_start}&dateEnd=${date_end}`,
         {
           withCredentials: true,
         }
@@ -149,7 +153,7 @@ const EventManager = () => {
       if (!option) {
         return;
       }
-      await axios.delete("http://localhost:3001/api/event/deletedManyEvent", {
+      await axios.delete(`${DOMAIN}/api/event/deletedManyEvent`, {
         data: items,
         withCredentials: true,
       });

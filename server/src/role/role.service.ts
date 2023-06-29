@@ -5,14 +5,16 @@ https://docs.nestjs.com/providers#services
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IRoleService } from './role';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from 'src/utils/typeorm';
+import { Role, User } from 'src/utils/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRoleDto } from './dtos/CreateRole.dto';
+import { EditRole } from 'src/utils/types';
 
 @Injectable()
 export class RoleService implements IRoleService {
   constructor(
     @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   async createRole(role: CreateRoleDto): Promise<Role> {
@@ -30,6 +32,15 @@ export class RoleService implements IRoleService {
 
   async getAllRole(): Promise<Role[]> {
     const roles = await this.roleRepository.find();
+    for (const role of roles) {
+      const count = await this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.roles', 'role')
+        .where('role.id = :id', { id: role.id })
+        .getCount();
+
+      role['count'] = count;
+    }
     return roles;
   }
 

@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
+import { AuthContext } from "../../context/authContext";
 const PageEvents = () => {
   const navigate = useNavigate();
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [eventList, setEventList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState();
@@ -24,7 +28,7 @@ const PageEvents = () => {
       const date_start = dateStart ? dateStart : "";
       const date_end = dateEnd ? dateEnd : "";
       const result = await axios.get(
-        `http://localhost:3001/api/event/getAllEvent?page=${sheet}&searchKey=${search}&dateStart=${date_start}&dateEnd=${date_end}`,
+        `${DOMAIN}/api/event/getAllEvent?page=${sheet}&searchKey=${search}&dateStart=${date_start}&dateEnd=${date_end}`,
         {
           withCredentials: true,
         }
@@ -43,7 +47,6 @@ const PageEvents = () => {
     setSearchParams({ ...queryParams, page: page.toString() });
   };
 
-  console.log(eventList);
   return (
     <div className="bg-white pt-6">
       <Breadcrumbs title={"Sự kiện"} />
@@ -89,12 +92,14 @@ const PageEvents = () => {
                 </tbody>
               </table>
             ) : null}
-            <PaginationV2
-              total={count}
-              current={searchParams.get("page") || 1}
-              pageSize="8"
-              onChange={handleChangePage}
-            />
+            {eventList && (
+              <PaginationV2
+                total={count}
+                current={searchParams.get("page") || 1}
+                pageSize="8"
+                onChange={handleChangePage}
+              />
+            )}
           </div>
         </div>
         <div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,10 @@ import Card from "../../../components/Card/Card";
 import Button from "../../../components/Buttons/Button";
 import { FiAlertCircle } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
+import axios from "axios";
+import Modal from "../../../components/Modal/Modal";
+import ListUserByRole from "./ListUserByRole";
+import FormEditRole from "./FormEditRole";
 const options = [
   { value: "id", label: "Id" },
   { value: "ten_tai_khoan", label: "Tên tài khoản" },
@@ -20,21 +24,61 @@ const options_role = [
   { value: "nguoi_dung", label: "Người dùng" },
 ];
 const RoleManager = () => {
-  const [open, setOpen] = useState(false);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [roleItem, setRoleItem] = useState();
+  const [openUserByRole, setOpenUserByRole] = useState(false);
+
+  const [roleList, setRoleList] = useState([]);
+  const [userByRole, setUserByRole] = useState([]);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({ criteriaMode: "all" });
+  const fetchDataStatic = async () => {
+    try {
+      const result = await axios.get(`${DOMAIN}/api/role/getAll`, {
+        withCredentials: true,
+      });
+      setRoleList(result.data);
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchDataStatic();
+  }, []);
+
   const onSubmit = (data) => console.log(data);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenFormEdit = (item) => {
+    setOpenEditForm(true);
+    setRoleItem(item);
+  };
+
+  const handleClickInfo = async (role) => {
+    try {
+      const value = { ...role };
+      const result = await axios.post(
+        `${DOMAIN}/api/role/getUserByRole`,
+        value,
+        {
+          withCredentials: true,
+        }
+      );
+      setUserByRole(result.data);
+      setOpenUserByRole(true);
+      // console.log(result.data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <Card title={"Quản Lý Chức Vụ"} className="overflow-visible">
       <Card.Content>
-        <div className="grid grid-cols-5 gap-4">
+        {/* <div className="grid grid-cols-5 gap-4">
           <Select
             options={options}
             className="col-span-2"
@@ -48,8 +92,46 @@ const RoleManager = () => {
           <button className="py-2 px-4 font-semibold text-base bg-gray-500 rounded text-white hover:bg-primaryColor">
             Tìm kiếm
           </button>
-        </div>
-        <table className="border border-blue-400 w-full mt-10">
+        </div> */}
+        {roleList ? (
+          <table className="border border-blue-400 w-full bg-white">
+            <thead>
+              <tr>
+                <th className="border border-blue-400">Tên Chức Vụ</th>
+                <th className="border border-blue-400">Số lượng account</th>
+                <th className="border border-blue-400">Chức năng</th>
+              </tr>
+            </thead>
+            <tbody>
+              {roleList.map((item) => {
+                return (
+                  <tr>
+                    <td className="text-center">{item.name}</td>
+                    <td className="text-center">{item.count}</td>
+
+                    <td className="flex items-center justify-center p-2">
+                      <Button
+                        onClick={() => handleClickInfo(item)}
+                        icon={<FiAlertCircle className="text-[18px]" />}
+                        colorBgr={
+                          "bg-yellow-400 text-white hover:bg-yellow-800"
+                        }
+                      />
+                      <Button
+                        onClick={() => handleOpenFormEdit(item)}
+                        colorText={"text-white"}
+                        colorBgr={"bg-blue-600"}
+                        colorHover={"bg-blue-700"}
+                        icon={<TbEdit className="text-[18px]" />}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : null}
+        {/* <table className="border border-blue-400 w-full mt-10">
           <thead>
             <tr>
               <th scope="col" className="p-4 border border-blue-400">
@@ -112,9 +194,9 @@ const RoleManager = () => {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
 
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <button
             onClick={handleOpen}
             type="button"
@@ -172,8 +254,49 @@ const RoleManager = () => {
               </button>
             </form>
           )}
-        </div>
+        </div> */}
       </Card.Content>
+
+      {userByRole && (
+        <Modal
+          open={openUserByRole}
+          setOpen={setOpenUserByRole}
+          classNameChildren={"w-[1000px]"}
+        >
+          <table className="border border-blue-400 w-full bg-white">
+            <thead>
+              <tr>
+                <th className="border border-blue-400">Tên Người Dùng</th>
+                <th className="border border-blue-400">Email</th>
+                <th className="border border-blue-400">Ảnh Đại Diện</th>
+                <th className="border border-blue-400">Trạng Thái Tài Khoản</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {userByRole.map((item) => {
+                return <ListUserByRole item={item} />;
+              })}
+            </tbody>
+          </table>
+          {/* {userByRole.map((item) => (
+          ))} */}
+        </Modal>
+      )}
+
+      {roleItem && (
+        <Modal
+          open={openEditForm}
+          setOpen={setOpenEditForm}
+          title="Sửa chức vụ"
+        >
+          <FormEditRole
+            item={roleItem}
+            fetchData={fetchDataStatic}
+            setOpen={setOpenEditForm}
+          />
+        </Modal>
+      )}
     </Card>
   );
 };

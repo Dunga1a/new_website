@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 const LoginPage = ({ className }) => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const {
     register,
     handleSubmit,
@@ -25,13 +27,16 @@ const LoginPage = ({ className }) => {
       alert("Bạn chưa có thông tin đăng nhập");
     }
     try {
-      const result = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data,
-        { withCredentials: true }
-      );
+      const result = await axios.post(`${DOMAIN}/api/auth/login`, data, {
+        withCredentials: true,
+      });
       // login(result.data.user);
       setUser(result.data.user);
+      if (result.data.user.status !== 1) {
+        return;
+      }
+
+      // if(result.data.user)
       toast.success("Đăng nhập thành công");
       // navigate("/user/editinfo");
       window.location.reload();
@@ -60,13 +65,13 @@ const LoginPage = ({ className }) => {
     });
   };
 
-  const handleLoginWithFB = () => {
-    signInWithPopup(auth, providerFB).then((data) => {
-      setUser(data.user);
-      login(data.user);
-      window.location.reload();
-    });
-  };
+  // const handleLoginWithFB = () => {
+  //   signInWithPopup(auth, providerFB).then((data) => {
+  //     setUser(data.user);
+  //     login(data.user);
+  //     window.location.reload();
+  //   });
+  // };
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -170,10 +175,10 @@ const LoginPage = ({ className }) => {
                   <h3 className="text-center text-sm font-bold mb-2">Or</h3>
                   <div className="flex justify-center gap-4 items-center cursor-pointer">
                     <FcGoogle onClick={handleLogin} className="text-[26px]" />
-                    <BsFacebook
+                    {/* <BsFacebook
                       onClick={handleLoginWithFB}
                       className="text-[26px]"
-                    />
+                    /> */}
                   </div>
                 </div>
 

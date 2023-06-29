@@ -1,3 +1,4 @@
+import { EditRole } from 'src/utils/types';
 import { Role } from '../utils/typeorm';
 import { CreateRoleDto } from './dtos/CreateRole.dto';
 

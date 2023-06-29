@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
-const listMembers = [
-  {
-    id: 1,
-    name: "Lê Minh Công",
-    chuc_vu: "Ban chấp hành",
-    img: "http://dntpthanhhoa.vn/wp-content/uploads/2020/08/%E1%BA%A2nh.png",
-  },
-  {
-    id: 2,
-    name: "Đỗ Thanh Duy",
-    chuc_vu: "Ủy viên Ban chấp hành",
-    img: "http://dntpthanhhoa.vn/wp-content/uploads/2020/08/Logo-Tramexco.jpg",
-  },
-  {
-    id: 3,
-    name: "Đỗ Thanh Duy",
-    chuc_vu: "Ủy viên Ban chấp hành",
-    img: "http://dntpthanhhoa.vn/wp-content/uploads/2020/08/Ho%C3%A0ng-V%C4%83n-Tu%E1%BA%A5n-C%C3%B4ng-ty-TNHh-Ho%C3%A0ng-Tu%E1%BA%A5n.jpg",
-  },
-  {
-    id: 4,
-    name: "Hoàng Thị Hậu",
-    chuc_vu: "Ủy viên Ban chấp hành",
-    img: "http://dntpthanhhoa.vn/wp-content/uploads/2020/08/Ho%C3%A0ng-Th%E1%BB%8B-H%E1%BA%ADu.jpg",
-  },
-  {
-    id: 5,
-    name: "Đỗ Thanh Duy",
-    chuc_vu: "Ủy viên Ban chấp hành",
-    img: "",
-  },
-];
+import { AuthContext } from "../../context/authContext";
+
 const ListOfExecutives = () => {
+  const { url } = useContext(AuthContext);
   const [member, setMember] = useState([]);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openConfirmForm, setOpenConfirmForm] = useState(false);
@@ -63,10 +34,10 @@ const ListOfExecutives = () => {
       const search = "";
 
       const result = await axios.get(
-        "http://localhost:3001/api/business-areas/getListBusinessArea"
+        `${url}/api/business-areas/getListBusinessArea`
       );
       const resultTwo = await axios.get(
-        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
+        `${url}/api/organize-membership-title?searchKey=${search}`
       );
 
       const data = result.data.map((item) => {
@@ -107,7 +78,7 @@ const ListOfExecutives = () => {
       const status = memberStatus ? memberStatus : "";
 
       const result = await axios.get(
-        `http://localhost:3001/api/member/getMemberByRole?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
+        `${url}/api/member/getMemberByRole?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
         {
           withCredentials: true,
         }
@@ -167,12 +138,14 @@ const ListOfExecutives = () => {
                 ))
               : null}
           </div>
-          <PaginationV2
-            total={count}
-            current={searchParams.get("page") || 1}
-            pageSize="5"
-            onChange={handleChangePage}
-          />
+          {member && (
+            <PaginationV2
+              total={count}
+              current={searchParams.get("page") || 1}
+              pageSize="5"
+              onChange={handleChangePage}
+            />
+          )}
         </div>
         <div>
           <div>

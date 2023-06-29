@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MemberFormRegister from "./MemberFormRegister";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 
 const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
-  // console.log(memberItem);
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [businessAreas, setBusinessAreas] = useState([]);
   const [roleAssociations, setRoleAssociations] = useState([]);
   const fetchDataStatic = async () => {
@@ -12,18 +15,12 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
       const search = "";
 
       const result = await axios.get(
-        "http://localhost:3001/api/business-areas/getListBusinessArea"
+        `${DOMAIN}/api/business-areas/getListBusinessArea`
       );
       const resultTwo = await axios.get(
-        `http://localhost:3001/api/organize-membership-title?searchKey=${search}`
+        `${DOMAIN}/api/organize-membership-title?searchKey=${search}`
       );
-      //   console.log(result.data);
-      // const data = result.data.map((item) => {
-      //   return {
-      //     label: item.name,
-      //     value: item.id_business_areas,
-      //   };
-      // });
+
       const data = result.data
         .filter((item) => item.status === 1) // Lọc chỉ các mục có status = 1
         .map((item) => ({
@@ -59,7 +56,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
     // console.log(data);
     try {
       const result = await axios.put(
-        "http://localhost:3001/api/member/updateMember",
+        `${DOMAIN}/api/member/updateMember`,
         data,
         {
           withCredentials: true,

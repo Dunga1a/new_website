@@ -1,9 +1,17 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+
 import dayjs from "dayjs";
+
+import { AuthContext } from "../../../context/authContext";
+
+
 const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const {
     register,
     handleSubmit,
@@ -27,14 +35,14 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
       };
 
       const result = await axios.post(
-        "http://localhost:3001/api/member/createUserFromMember",
+        `${DOMAIN}/api/member/createUserFromMember`,
         values,
         {
           withCredentials: true,
         }
       );
       const resultTwo = await toast.promise(
-        axios.post("http://localhost:3001/api/member/sendEmail", valuesTwo, {
+        axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {
           withCredentials: true,
         }),
         {

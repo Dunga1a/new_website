@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import {
@@ -8,26 +7,17 @@ import {
   AiOutlineDelete,
   AiOutlineCheckCircle,
 } from "react-icons/ai";
-import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
-import FormDeleteCategory from "./FormDeleteCategory";
-import Modal from "../../../components/Modal/Modal";
-import FormEditCategory from "./FormEditCategory";
 import { useSearchParams } from "react-router-dom";
-import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import CategoryList from "./CategoryList";
-
-const options = [
-  { label: "Tin tức hoạt động", value: "tin-tuc-hoat-dong" },
-  { label: "Tin tức Xứ Thanh", value: "tin-tuc-xu-thanh" },
-  { label: "Tin Hội viên", value: "tin-hoi-vien" },
-  { label: "Hoạt động", value: "hoat-dong" },
-];
+import { AuthContext } from "../../../context/authContext";
 
 const CategoryManager = () => {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [open, setOpen] = useState(false);
   const [openOne, setOpenOne] = useState();
 
@@ -62,7 +52,7 @@ const CategoryManager = () => {
     // console.log(values);
 
     const results = await axios.post(
-      "http://localhost:3001/api/newscategory/createNewsCategory",
+      `${DOMAIN}/api/newscategory/createNewsCategory`,
       values,
       {
         withCredentials: true,
@@ -121,13 +111,12 @@ const CategoryManager = () => {
     try {
       const sheet = page ? page : 1;
       const category = await axios.get(
-        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=${sheet}`,
         {
           withCredentials: true,
         }
       );
       const group = groupCommentsByFatherId(category.data.newsCategories);
-      console.log(group);
       setArr(group);
       setNewsCategory(category.data.newsCategories);
       setCount(category.data.countCategory);
@@ -141,13 +130,8 @@ const CategoryManager = () => {
   }, [page]);
 
   const handleChangePage = async (page) => {
-    // console.log({ ...queryParams, page: page });
-    // navigate(`/admin/member?page=${page}`);
-    // navigate("/admin/member", { query: { ...queryParams, page: page } });
     setSearchParams({ ...queryParams, page: page.toString() });
   };
-
-  console.log("vap day: ", arr);
 
   const handleDelete = async (item) => {
     try {
@@ -169,7 +153,6 @@ const CategoryManager = () => {
       const result = await axios.get(
         `http://localhost:3001/api/newscategory/getCategory/${item.news_category_id}`
       );
-      console.log(result.data);
       setNewsCategoryEdit(result.data);
       setOpenEditForm(true);
     } catch (error) {

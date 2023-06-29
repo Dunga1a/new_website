@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ReactQuillEditor from "../../../components/ReactQuill";
 import { useForm } from "react-hook-form";
 
@@ -7,8 +7,12 @@ import Button from "../../../components/Buttons/Button";
 import { BsFillTrashFill } from "react-icons/bs";
 
 import axios from "axios";
+import { AuthContext } from "../../../context/authContext";
 
 const FormEvent = ({ initValue, onSave }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const [content, setContent] = useState(initValue.content);
   const [isContentError, setIsContentError] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState(
@@ -29,7 +33,6 @@ const FormEvent = ({ initValue, onSave }) => {
   const handleFileChange = async (e) => {
     try {
       const files = Array.from(e.target.files);
-      console.log("vao day: ", files);
 
       const fileNames = files.map((file) => file.name);
 
@@ -59,13 +62,9 @@ const FormEvent = ({ initValue, onSave }) => {
         for (let i = 0; i < selectedPdf.length; i++) {
           formData.append("pdfs", selectedPdf[i]);
         }
-        const result = await axios.post(
-          "http://localhost:3001/api/event/pdfs",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+        const result = await axios.post(`${DOMAIN}/api/event/pdfs`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         console.log(
           `kiểu của dữ liệu trả về: ${typeof result.data}. Dữ liệu là: ${
             result.data

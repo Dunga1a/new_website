@@ -58,7 +58,7 @@ export class User {
   @Column({ nullable: true })
   image: string;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP', nullable: true })
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @Column({ nullable: true })
@@ -70,6 +70,6 @@ export class User {
   @Column({ nullable: true })
   safe: boolean;
 
-  @Column({ default: 1, nullable: true })
+  @Column({ default: 1 })
   status: number;
 }

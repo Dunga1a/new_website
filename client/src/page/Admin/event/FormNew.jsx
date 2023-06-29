@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import FormEvent from "./FormEvent";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 
 const initValue = {
   title: "",
@@ -16,12 +17,14 @@ const initValue = {
 };
 
 const FormNew = ({ setOpen, fetchData }) => {
+  // const { url } = useContext(AuthContext);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+
   const onSave = async (data) => {
     try {
       const { selectedFiles, image, ...values } = data;
-      console.log(data);
       const result = await axios.post(
-        "http://localhost:3001/api/event/createEvent",
+        `${DOMAIN}/api/event/createEvent`,
         values,
         {
           withCredentials: true,
