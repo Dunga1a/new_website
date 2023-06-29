@@ -299,7 +299,7 @@ const MemberManager = () => {
             placeholder={
               selectedOption
                 ? `------ Lọc theo ${selectedOption.label} ------`
-                : "------ Lọc theo lĩnh vực kinh doanh ------"
+                : "----- Lọc theo lĩnh vực kinh doanh -----"
             }
             onChange={(e) => handleChangeBusinessIdParam(e.value)}
             value={selectedOptionBusiness}
@@ -366,7 +366,7 @@ const MemberManager = () => {
                     <td className="text-center">{item.representative}</td>
                     <td className="text-center">{item.role_name}</td>
                     <td className="text-center line-clamp-1 w-[200px]">
-                      <div dangerouslySetInnerHTML={{ __html: item.intro }} />;
+                      <div dangerouslySetInnerHTML={{ __html: item.intro }} />
                     </td>
                     <td className="text-center">{item.phone}</td>
                     <td className="text-center">

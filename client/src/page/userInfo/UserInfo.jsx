@@ -1,17 +1,40 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillCaretRightFill } from "react-icons/bs";
+import dayjs from "dayjs";
+import Modal from "../../components/Modal/Modal";
+import Button from "../../components/Buttons/Button";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const defaltImg =
   "https://doanhnhanthanhhoahanoi.com/themes/default/images/users/no_avatar.png?fbclid=IwAR338fL6RIzbS6D7bPRRwrwdTnvJbePi4du2t5x47ei63BYmnz4CM_-VRfo";
 
 const UserInfo = () => {
+  const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  //console.log(currentUser);
   const logOut = () => {
+    //confirm("Bạn chắc chắn muốn đăng xuất?");
     localStorage.setItem("user", null);
     window.location.reload();
   };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/users/${currentUser.username}`
+      );
+      // console.log(response);
+      setData(response.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="mt-4">
       <div className="border-[1px] border-gray-200 rounded-md p-4">
@@ -19,7 +42,11 @@ const UserInfo = () => {
         <div className="mt-3 flex items-center gap-4">
           <div className="relative">
             <img
-              src={currentUser ? currentUser.photoURL : defaltImg}
+              src={
+                (currentUser && currentUser.photoURL) ||
+                (data && `/uploads/${data.image}`) ||
+                defaltImg
+              }
               alt=""
               className="h-[90px] w-[90px]"
             />
@@ -32,21 +59,19 @@ const UserInfo = () => {
               <AiOutlineRight />
               <p>
                 Tài khoản:{" "}
-                <span className="font-bold">{currentUser?.displayName}</span> (
-                {currentUser.email})
+                <span className="font-bold">
+                  {currentUser?.displayName || (data && data.lastname)}
+                </span>{" "}
+                (
+                {(currentUser && currentUser.email) ||
+                  (data && data.email) ||
+                  ""}
+                )
               </p>
             </li>
             <li className="flex items-center gap-1">
               <AiOutlineRight />
               <p>Đăng nhập theo kiểu thông thường</p>
-            </li>
-            <li className="flex items-center gap-1">
-              <AiOutlineRight />
-              <p>Đăng nhập vào: Thứ tư, 26/04/2023 17:20</p>
-            </li>
-            <li className="flex items-center gap-1">
-              <AiOutlineRight />
-              <p>Bằng IP: 14.177.234.33</p>
             </li>
           </ul>
         </div>
@@ -59,7 +84,8 @@ const UserInfo = () => {
               Họ tên
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
-              {currentUser.displayName}
+              {(currentUser && currentUser.displayName) ||
+                (data && data.firstname + " " + data.lastname)}
             </td>
           </tr>
           <tr>
@@ -68,27 +94,37 @@ const UserInfo = () => {
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
               {" "}
-              04/04/1989
+              {dayjs(currentUser.birthday).format("DD/MM/YYYY") ||
+                (data && dayjs(data.birthday).format("DD/MM/YYYY"))}
             </td>
           </tr>
           <tr className="bg-[#f9f9f9]">
             <td className="border border-slate-400 text-[15px] p-[6px] w-[45%] ">
               Giới tính
             </td>
-            <td className="border border-slate-400 text-[15px] p-[6px]">Nam</td>
-          </tr>
-          <tr>
-            <td className="border border-slate-400 text-[15px] p-[6px] w-[45%]">
-              Hiển thị email
+            <td className="border border-slate-400 text-[15px] p-[6px]">
+              {currentUser.gender === "1"
+                ? "Nam"
+                : currentUser.gender === "2"
+                ? "Nữ"
+                : currentUser.gender === "0"
+                ? "N/A"
+                : "" || (data && data.gender === "1")
+                ? "Nam"
+                : data && data.gender === "2"
+                ? "Nữ"
+                : data && data.gender === "0"
+                ? "N/A"
+                : ""}
             </td>
-            <td className="border border-slate-400 text-[15px] p-[6px]"> Có</td>
           </tr>
+
           <tr className="bg-[#f9f9f9]">
             <td className="border border-slate-400 text-[15px] p-[6px] w-[45%] ">
               Ngày tham gia
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
-              25/04/2023
+              {currentUser.created_at || (data && data.created_at)}
             </td>
           </tr>
           <tr>
@@ -97,35 +133,34 @@ const UserInfo = () => {
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]"> Có</td>
           </tr>
-          <tr className="bg-[#f9f9f9]">
-            <td className="border border-slate-400 text-[15px] p-[6px] w-[45%] ">
-              Xác thực hai bước
-            </td>
-            <td className="border border-slate-400 text-[15px] p-[6px]">
-              Tắt (Thiết lập)
-            </td>
-          </tr>
-          <tr>
-            <td className="border border-slate-400 text-[15px] p-[6px] w-[45%]">
-              Lần truy cập trước
-            </td>
-            <td className="border border-slate-400 text-[15px] p-[6px]">
-              Thứ tư, 26/04/2023 16:45
-            </td>
-          </tr>
         </tbody>
       </table>
 
       <ul className="flex justify-start gap-3  text-[13px] mt-8">
-        <li className="flex items-center cursor-pointer">
+        <li
+          onClick={() => navigate("/user/editinfo/basic")}
+          className="flex items-center cursor-pointer"
+        >
           <BsFillCaretRightFill />
-          <span>Thông tin thành viên</span>
+          <span>Chỉnh sửa thông tin</span>
         </li>
-        <li className="flex items-center cursor-pointer" onClick={logOut}>
+        <li
+          className="flex items-center cursor-pointer"
+          onClick={() => setOpen(true)}
+        >
           <BsFillCaretRightFill />
           <span>Thoát</span>
         </li>
       </ul>
+      <Modal open={open} setOpen={setOpen} title={"Bạn muốn đăng xuất ?"}>
+        <div className=" flex justify-center">
+          <Button
+            title={"Có"}
+            colorBgr={"text-white bg-red-700 hover:bg-red-800 px-8"}
+            onClick={logOut}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavbarArr from "./NavbarArr";
 import { IoHome } from "react-icons/io5";
 import { useState, useRef, useEffect } from "react";
@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { AiFillCaretDown } from "react-icons/ai";
 import SideBar from "./Sidebar";
 import axios from "axios";
+import { AuthContext } from "../context/authContext";
 
 const contentArr = [
   [
@@ -74,13 +75,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [openOne, setOpenOne] = useState();
-
-  const [openDeleteForm, setOpenDeleteForm] = useState(false);
-  const [openEditForm, setOpenEditForm] = useState(false);
   const [newsCategory, setNewsCategory] = useState([]);
-  const [newsCategoryDelete, setNewsCategoryDelete] = useState([]);
-  const [newsCategoryEdit, setNewsCategoryEdit] = useState();
   const [arr, setArr] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
@@ -96,6 +91,7 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [inputRef]);
+  const { currentUser } = useContext(AuthContext);
 
   const groupCommentsByFatherId = (comments) => {
     const commentMap = {};
@@ -366,14 +362,16 @@ const Navbar = () => {
           </li>
 
           {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
-          <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
-            <div
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
-              onClick={() => navigate("/memberManager/newsPost")}
-            >
-              <span>Quản lí bài viết</span>
-            </div>
-          </li>
+          {currentUser && currentUser.member && (
+            <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+              <div
+                className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                onClick={() => navigate("/memberManager/newsPost")}
+              >
+                <span>Quản lí bài viết</span>
+              </div>
+            </li>
+          )}
         </ul>
       </div>
       <div className=" laptop:hidden desktop:hidden phone:block tablet:block">

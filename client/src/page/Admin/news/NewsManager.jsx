@@ -17,12 +17,6 @@ import NewsInsert from "./NewsInsert";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
-const options = [
-  { label: "Tin tức hoạt động", value: 1 },
-  { label: "Tin tức Xứ Thanh", value: 2 },
-  { label: "Tin Hội viên", value: 3 },
-  { label: "Hoạt động", value: 4 },
-];
 
 const options_post = [
   { value: 0, label: "Chưa duyệt" },
@@ -91,7 +85,7 @@ const NewsManager = () => {
         url += `status=${selectTwo.value || null}&`;
       }
       url += `page=${page || 1}&`;
-      url += `id=2&`;
+      url += `id=${currentUser ? currentUser.id : ""}&`;
 
       const res = await axios.get(url);
       console.log(res);
@@ -104,6 +98,7 @@ const NewsManager = () => {
 
   useEffect(() => {
     fetchDataWithFilter();
+    fetchDataStatic();
   }, [page, selectOne, selectTwo, idItem]);
 
   const handleEdit = (item) => {
@@ -169,6 +164,34 @@ const NewsManager = () => {
     setSelectOne("");
     setSelectTwo("");
   };
+
+  const [listCategory, setListCategory] = useState([]);
+  //const list = searchParams.get("page") || 1;
+
+  const fetchDataStatic = async () => {
+    try {
+      //const sheet = page ? page : 1;
+      const result = await axios.get(
+        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=1`,
+        {
+          withCredentials: true,
+        }
+      );
+      const data = result.data.getListCategory.map((item) => {
+        return {
+          value: item.news_category_id,
+          label: item.name,
+        };
+      });
+      setListCategory(data);
+      console.log(result.data.getListCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const options = listCategory;
+  console.log(options);
 
   return (
     <div className="relative transition-all ease-linear">

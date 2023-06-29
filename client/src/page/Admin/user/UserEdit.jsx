@@ -33,15 +33,7 @@ const UserEdit = () => {
       type: "date",
       value: "2023-05-11",
     },
-
-    {
-      name: "image",
-      label: "Hình đại diện",
-      type: "file",
-      value: "",
-      col_span: true,
-    },
-    { name: "email", label: "Email", type: "email", value: "", col_span: true },
+    { name: "email", label: "Email", type: "email", value: "" },
     { name: "password", label: "Mật khẩu", type: "password", value: "" },
     {
       name: "confirm_password",

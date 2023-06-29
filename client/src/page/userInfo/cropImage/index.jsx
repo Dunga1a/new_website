@@ -7,8 +7,11 @@ import { useDebounceEffect } from "./useDebounceEffect";
 
 import "react-image-crop/dist/ReactCrop.css";
 import { supabase } from "../../../libs/supbase";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/authContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
-
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
@@ -43,7 +46,7 @@ export default function ImageCrop({
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const [aspect, setAspect] = useState(16 / 9);
-
+  const { currentUser } = useContext(AuthContext);
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
       setCrop(undefined); // Makes crop preview update between images.
@@ -129,15 +132,31 @@ export default function ImageCrop({
     const dataUrl = canvas.toDataURL("image/png");
     setAvatarPreviewUrl(dataUrl);
     const file = dataURLtoFile(dataUrl, `${Date.now()}-avatar.png`);
-    const { data, error } = await supabase.storage
-      .from(SUPABASE_BUCKET)
-      .upload("images/" + file?.name, file);
-    if (data) {
-      console.log("Thanh cong: ", data);
-    } else {
-      console.log("That bai: ", error);
+    const formData = new FormData();
+    formData.append("image", file);
+    //const values = { ...currentUser, ...formData };
+    try {
+      // Send a POST request to upload the image
+      const response = await axios.post(
+        `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success("Thay đổi ảnh đại diện thành công");
+
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      setOpen(false);
+      //window.location.reload();
+      //console.log(response.data); // The response from the server after uploading
+    } catch (error) {
+      console.error(error);
     }
-    setOpen(false);
+    //setTimeout(() => window.location.reload(), 5000);
   };
 
   return (

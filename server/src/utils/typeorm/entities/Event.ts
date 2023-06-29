@@ -31,4 +31,13 @@ export class Event {
 
   @Column({ default: 0 })
   status: number;
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  // @Column({ default: () => Date.now() })
+  // created_at: number;
+
+  // @Column({ default: Date.now })
+  // create_event: number;
 }

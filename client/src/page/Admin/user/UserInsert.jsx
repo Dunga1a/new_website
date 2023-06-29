@@ -22,19 +22,9 @@ const UserInsert = () => {
       ],
     },
     { name: "birthday", label: "Ngày tháng năm sinh", type: "date" },
-
-    { name: "image", label: "Hình đại diện", type: "file", value: "" },
     { name: "email", label: "Email", type: "email" },
     { name: "password", label: "Mật khẩu", type: "password" },
-    { name: "confirm_password", label: "Nhập lại mật khẩu", type: "password" },
     { name: "signature", label: "Chữ ký", type: "text", col_span: true },
-    {
-      name: "question",
-      label: "Câu hỏi bảo mật",
-      type: "text",
-      col_span: true,
-    },
-    { name: "answer", label: "Câu trả lời", type: "text", col_span: true },
   ];
   return (
     <Card title={"Thêm tài khoản"} className={"py-2 px-3"}>

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from 'src/utils/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Raw } from 'typeorm';
 import { CreateEventDetails, EditEventDetails } from 'src/utils/types';
 import { IEventService } from './event';
 
@@ -110,5 +110,12 @@ export class EventService implements IEventService {
       .where('id IN (:...idEvents)', { idEvents })
       .execute();
     return deletedManyEvent;
+  }
+
+  async getLastestEvent() {
+    return this.eventRepository
+      .createQueryBuilder('Event')
+      .orderBy('Event.created_at', 'DESC')
+      .getOne();
   }
 }

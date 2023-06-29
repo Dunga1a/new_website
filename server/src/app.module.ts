@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import entities from './utils/typeorm';
+import entities, { Role, User } from './utils/typeorm';
 import { ContactModule } from './contact/contact.module';
 import { RelyModule } from './rely/rely.module';
 import { PostsModule } from './posts/posts.module';
@@ -17,6 +17,8 @@ import { OrganizeMembershipTitleModule } from './organize-membership-title/organ
 import { BusinessAreasModule } from './business-areas/business-areas.module';
 import { MemberModule } from './member/member.module';
 import { CommentModule } from './comment/comment.module';
+import { RoleService } from './role/role.service';
+import { UserService } from './users/user.service';
 
 let envFilePath = '.env.development';
 if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
@@ -40,6 +42,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
       entities,
       logging: false,
     }),
+    TypeOrmModule.forFeature([Role, User]),
     RelyModule,
     PostsModule,
     MailModule,
@@ -51,5 +54,6 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
     CommentModule,
   ],
   controllers: [],
+  providers: [RoleService, UserService],
 })
 export class AppModule {}

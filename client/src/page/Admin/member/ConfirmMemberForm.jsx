@@ -2,7 +2,11 @@ import axios from "axios";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+
+import dayjs from "dayjs";
+
 import { AuthContext } from "../../../context/authContext";
+
 
 const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
   // const { url } = useContext(AuthContext);
@@ -17,10 +21,12 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
 
   const onSubmit = async (data) => {
     try {
+      const currentTime = dayjs();
       const values = {
         ...data,
         member: memberItem.id,
         username: memberItem.name_company,
+        created_at: currentTime.format("HH:mm:ss DD/MM/YYYY"),
       };
       const valuesTwo = {
         to: memberItem.email,
