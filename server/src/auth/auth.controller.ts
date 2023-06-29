@@ -42,6 +42,17 @@ export class AuthController {
   ) {
     const payload = { username: user.username };
     const token = await this.authService.generateToken(payload);
+
+    const loggedInUser = request.user;
+
+    // Kiểm tra trạng thái của tài khoản
+    const isActive = await this.userService.checkUserStatus(
+      loggedInUser.username,
+    );
+    if (!isActive) {
+      // Nếu tài khoản không hoạt động, trả về thông báo hoặc ném một ngoại lệ UnauthorizedException
+      return { message: 'Tài khoản của bạn đã bị vô hiệu hóa.' };
+    }
     return { user: request.user, token };
   }
 

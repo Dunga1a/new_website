@@ -7,6 +7,7 @@ import { AiFillStar } from "react-icons/ai";
 import SliderPage from "../components/Slider";
 import Card from "../components/Card";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const slides = [
   {
     id: 1,
@@ -33,6 +34,7 @@ const HomePage = () => {
       console.log(error.message);
     }
   };
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -42,13 +44,14 @@ const HomePage = () => {
   return (
     <div className="max-w-[1080px] m-auto drop-shadow-new">
       <SliderPage slides={slides} />
-      <div className="rounded-b-xl bg-white grid grid-cols-5 relative top-[-5px] gap-4 px-[14px] py-8">
+      <div className="rounded-b-xl bg-white grid grid-cols-5 relative top-[-5px] gap-3 px-[14px] py-8">
         {data &&
           data.length > 0 &&
           data.slice(0, 1).map((item) => (
             <div
               className="col-span-2 desktop:col-span-2 phone:col-span-5 laptop:col-span-2"
               key={item.id}
+              onClick={() => navigate(`/${item.slug}`)}
             >
               <div className="bg-gray-200 w-[110%] phone:w-full">
                 <img
@@ -68,7 +71,7 @@ const HomePage = () => {
               </div>
             </div>
           ))}
-        <div className="col-span-2 desktop:col-span-2 px-5 phone:hidden laptop:col-span-2 desktop:block laptop:block">
+        <div className="col-span-2 desktop:col-span-2 px-3 phone:hidden laptop:col-span-2 desktop:block laptop:block">
           <div className="flex items-center bg-blue-500 text-white text-xl p-2 mb-3">
             <AiFillStar />
             <h3 className="font-bold ml-2">TIN NỔI BẬT</h3>
@@ -80,10 +83,10 @@ const HomePage = () => {
               data.slice(0, 3).map((item) => (
                 <li
                   key={item.id}
-                  className="h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
+                  className=" cursor-pointer h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
                 >
-                  <a
-                    href=""
+                  <div
+                    onClick={() => navigate(`/${item.slug}`)}
                     title={`${item.title}`}
                     className="flex justify-between text-[14px] "
                   >
@@ -93,7 +96,7 @@ const HomePage = () => {
                       src="https://doanhnhanthanhhoahanoi.com/assets/news/2022_11/screenshot-2022-11-24-145502.png"
                       alt=""
                     />
-                  </a>
+                  </div>
                 </li>
               ))}
             {/* <li className="h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3">
@@ -149,10 +152,7 @@ const HomePage = () => {
             <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>
           </div>
           <div>
-            <img
-              src="https://doanhnhanthanhhoahanoi.com/uploads/banners/bandohc.jpg"
-              alt=""
-            />
+            <img src="/assets/images/bandohc.jpg" alt="" />
           </div>
         </div>
       </div>

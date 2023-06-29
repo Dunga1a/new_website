@@ -39,4 +39,11 @@ export class RoleService implements IRoleService {
       throw new HttpException('Quyền không tồn tại ', HttpStatus.NOT_FOUND);
     return role;
   }
+
+  async getByName(name: string): Promise<Role> {
+    const role = await this.roleRepository.findOne({ where: { name } });
+    if (!role)
+      throw new HttpException('Quyền không tồn tại ', HttpStatus.NOT_FOUND);
+    return role;
+  }
 }

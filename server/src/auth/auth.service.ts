@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
+
 import { IUserService } from '../users/users';
 import { Services } from '../utils/constants';
 import { PayloadgenerateToken, ValidateUserDetails } from '../utils/types';
@@ -17,13 +18,34 @@ export class AuthService implements IAuthService {
   async validateUser(userDetails: ValidateUserDetails) {
     const { password, username } = userDetails;
     const user = await this.userService.findByUsername(username);
+    if (!user) {
+      //console.log('Tài khoản của bạn đã bị khóa');
+      throw new HttpException(
+        'Tài khoản của bạn không đúng',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    if (!user.status) {
+      //console.log('Tài khoản của bạn đã bị khóa');
+      throw new HttpException(
+        'Tài khoản của bạn đã bị khóa',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     const isPasswordValid = await compareHash(password, user.password);
-    console.log('2323', isPasswordValid);
+    if (!isPasswordValid) {
+      throw new HttpException(
+        'Mật khẩu của bạn không chính xác',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    //console.log('2323', isPasswordValid);
 
     return isPasswordValid ? user : null;
   }
 
   async generateToken(userId: PayloadgenerateToken): Promise<any> {
+    // const user = await this.userService.findById();
     return this.jwtService.sign(userId);
   }
 

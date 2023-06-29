@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
     <div className="relative">
       <div className="fixed z-50 right-0 top-[300px]">
         <ul className="text-white">
-          <li className="p-3 bg-[#3664a2] mb-1">
+          <li className="p-3 bg-[#3664a2] mb-1 cursor-pointer hover:bg-blue-700">
             <a
               href="https://www.facebook.com/hoidoanhnhanthanhhoahanoi"
               className="text-[25px]"
@@ -25,11 +25,11 @@ const Layout = ({ children }) => {
               <FaFacebookF />
             </a>
           </li>
-          <li className="p-3 bg-[#fbb22f]">
+          {/* <li className="p-3 bg-[#fbb22f]">
             <a href="" className="text-[25px]">
               <FaRss />
             </a>
-          </li>
+          </li> */}
         </ul>
       </div>
       <Header />

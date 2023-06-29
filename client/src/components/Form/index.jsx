@@ -11,12 +11,15 @@ const Form = ({ formFields, onSubmit }) => {
   const imageValue = formFields.filter((item) => item.name === "image");
   // console.log("xuong day: ", imageValue[0].value);
   const [imageDeputy, setImageDeputy] = useState({
-    firstImage: `/uploads/${imageValue[0].value}`,
+    firstImage:
+      imageValue && imageValue[0] && imageValue[0].value
+        ? `/uploads/${imageValue[0].value}`
+        : null,
     secondImage: null,
   });
   const { register, handleSubmit, setValue, watch, getValues } = useForm();
   const contentQuill = formFields.find((item) => item.type === "react-quill");
-  console.log(contentQuill);
+  //console.log(contentQuill);
   useEffect(() => {
     //console.log(contentQuill);
     const imageField = formFields.find((item) => item.name === "image");
@@ -45,7 +48,9 @@ const Form = ({ formFields, onSubmit }) => {
     });
   }, [formFields]);
 
-  const [content, setContent] = useState(contentQuill.value);
+  const [content, setContent] = useState(
+    contentQuill ? contentQuill.value : ""
+  );
 
   //const values = watch();
   const handleFormSubmit = (data) => {
@@ -63,6 +68,7 @@ const Form = ({ formFields, onSubmit }) => {
   };
 
   const handleImageChange = (e, inputName) => {
+    console.log("đây");
     const file = e.target.files[0];
     console.log(file);
     if (file) {

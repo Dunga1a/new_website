@@ -187,7 +187,9 @@ export class MemberService implements IMemberService {
       email: userMemberDetails.email,
       password: userMemberDetails.password,
       username: userMemberDetails.username,
+      created_at: userMemberDetails.created_at,
     };
+    console.log(values);
 
     const createUser = await this.userService.createUser(values);
     const savedUser = await this.userService.editUser({

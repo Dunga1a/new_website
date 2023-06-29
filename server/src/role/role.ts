@@ -5,4 +5,5 @@ export interface IRoleService {
   createRole(userDetails: CreateRoleDto): Promise<Role>;
   getAllRole(): Promise<Role[]>;
   getById(id: string): Promise<Role>;
+  getByName(name: string): Promise<Role>;
 }

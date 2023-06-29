@@ -65,6 +65,11 @@ export class EventController {
     return eventOne;
   }
 
+  @Get('latestEvent')
+  async getLatestEvent() {
+    return this.eventService.getLastestEvent();
+  }
+
   @Post('editEvent')
   async editEvent(@Body() editEventDetails: EditEventDetails) {
     const result = await this.eventService.editEvent(editEventDetails);

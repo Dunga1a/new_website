@@ -146,6 +146,7 @@ const AppLayout = ({ currentUser }) => {
                 currentUser ? <Navigate to="/user/editinfo" /> : <LoginPage />
               }
             />
+
             <Route path="register" element={<RegisterPage />} />
             <Route path="lostpass" element={<LostPage />} />
 
@@ -188,7 +189,7 @@ const AppLayout = ({ currentUser }) => {
           <Route path="/member/:id" element={<MemberDetail />} />
 
           <Route path="/search" element={<SearchPage />} />
-          <Route path="*" element={<NotFound />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
 
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewDetail />} />
@@ -218,6 +219,10 @@ const AppLayout = ({ currentUser }) => {
   return (
     <Layout>
       <Routes>
+        <Route
+          path={`/memberManager/newsPost`}
+          element={<NewsMemberManager />}
+        />
         <Route path="/feeds" element={<RssFeeds />} />
         <Route path="/feeds/:slug" element={<RssDetail />} />
         <Route path="/" element={<HomePage />} />
@@ -292,7 +297,7 @@ const AppLayout = ({ currentUser }) => {
 
         {/* <Route path="/page" element={<Page />} /> */}
         <Route path="/:slug" element={<ContentDetail />} />
-        <Route path="*" element={<NotFound />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </Layout>
   );

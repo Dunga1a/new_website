@@ -4,7 +4,7 @@ export class CreatePostDto {
   //@IsNotEmpty()
   id: string;
 
-  @IsNotEmpty()
+  //@IsNotEmpty()
   @IsString()
   title: string;
 
@@ -20,9 +20,11 @@ export class CreatePostDto {
   @IsString()
   slug: string;
 
-  @IsNotEmpty()
+  //@IsNotEmpty()
   //@IsNumber()
   categoryId?: number;
+
+  userId?: number;
 
   status: boolean;
 }

@@ -12,6 +12,8 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
   Req,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Routes, Services } from 'src/utils/constants';
 import { IPostService } from './posts';
@@ -29,8 +31,20 @@ export class PostsController {
 
   @Post()
   createPost(@Body() newPostDto: CreatePostDto) {
-    const { categoryId, ...postData } = newPostDto;
-    return this.newsPostsService.createPost(postData, categoryId);
+    const { userId, categoryId, ...postData } = newPostDto;
+    console.log('đây là id', userId);
+
+    if (!postData.title) {
+      throw new HttpException('Vui lòng thêm tiêu đề', HttpStatus.NOT_FOUND);
+    }
+    if (!categoryId) {
+      throw new HttpException(
+        'Vui lòng tạo trước danh mục để thực hiện thêm bài viết',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return this.newsPostsService.createPost(postData, categoryId, userId);
   }
 
   @Post('/approve')

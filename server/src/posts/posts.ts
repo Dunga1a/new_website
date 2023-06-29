@@ -14,7 +14,7 @@ export interface IPostService {
     id: number,
   );
   approvePosts(postId: number[]);
-  createPost(postParams: CreatePostDto, categoryId: number);
+  createPost(postParams: CreatePostDto, categoryId: number, userId: number);
   deletePost(id: number);
   deleteMultiple(ids: number[]);
   updatePost(postId: number, updatePostDto: UpdatePostDto): Promise<NewsPost>;

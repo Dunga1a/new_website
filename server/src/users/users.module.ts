@@ -8,6 +8,7 @@ import { RoleModule } from 'src/role/role.module';
 import { MailModule } from 'src/mail/mail.module';
 import { MailService } from 'src/mail/mail.service';
 import { ContactModule } from 'src/contact/contact.module';
+import { RoleService } from 'src/role/role.service';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { ContactModule } from 'src/contact/contact.module';
     {
       provide: Services.MAILER,
       useClass: MailService,
+    },
+    {
+      provide: Services.ROLE,
+      useClass: RoleService,
     },
   ],
   exports: [

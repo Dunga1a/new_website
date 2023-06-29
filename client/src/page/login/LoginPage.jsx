@@ -21,6 +21,9 @@ const LoginPage = ({ className }) => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
+    if (data === null) {
+      alert("Bạn chưa có thông tin đăng nhập");
+    }
     try {
       const result = await axios.post(
         "http://localhost:3001/api/auth/login",
@@ -33,7 +36,9 @@ const LoginPage = ({ className }) => {
       // navigate("/user/editinfo");
       window.location.reload();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
 
       console.log(error.message);
     }
@@ -180,7 +185,10 @@ const LoginPage = ({ className }) => {
                     <BsFillCaretRightFill />
                     <span>Đăng ký</span>
                   </li>
-                  <li className="flex items-center cursor-pointer hover:opacity-80">
+                  <li
+                    onClick={() => navigate("/user/lostpass")}
+                    className="flex items-center cursor-pointer hover:opacity-80"
+                  >
                     <BsFillCaretRightFill />
                     <span>Khôi phục mật khẩu</span>
                   </li>
