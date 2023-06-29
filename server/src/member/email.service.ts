@@ -23,7 +23,7 @@ export class EmailService {
       from: 'ngoduy090801@gmail.com',
       to: sendEmailDetail.to,
       subject: sendEmailDetail.subject,
-      text: sendEmailDetail.text,
+      html: sendEmailDetail.text,
     };
 
     try {

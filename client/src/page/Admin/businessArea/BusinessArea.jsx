@@ -237,12 +237,14 @@ const BusinessArea = () => {
             />
           </div>
         </Card.Content>
-        <PaginationV2
-          total={count}
-          current={searchParams.get("page") || 1}
-          pageSize="3"
-          onChange={handleChangePage}
-        />
+        {businessAreaList && (
+          <PaginationV2
+            total={count}
+            current={searchParams.get("page") || 1}
+            pageSize="6"
+            onChange={handleChangePage}
+          />
+        )}
       </Card>
 
       <Modal

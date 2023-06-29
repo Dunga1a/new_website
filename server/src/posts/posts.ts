@@ -13,6 +13,7 @@ export interface IPostService {
     pageSize: number,
     id: number,
   );
+  getPostBySlugOfCategory(item: any, queryParams: any);
   approvePosts(postId: number[]);
   createPost(postParams: CreatePostDto, categoryId: number, userId: number);
   deletePost(id: number);

@@ -129,4 +129,10 @@ export class MemberController {
     const deletedMember = await this.memberService.deleteOneMember(idMember);
     return deletedMember;
   }
+
+  @Post('checkError')
+  async checkError(@Body() errorDetails: any) {
+    const result = await this.memberService.checkError(errorDetails);
+    return result;
+  }
 }

@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const LoginPage = ({ className }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -22,6 +23,7 @@ const LoginPage = ({ className }) => {
     reset,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => {
     if (data === null) {
       alert("Bạn chưa có thông tin đăng nhập");
@@ -44,13 +46,9 @@ const LoginPage = ({ className }) => {
       toast.error(error.response.data.message, {
         position: "top-center",
       });
-
-      console.log(error.message);
     }
   };
-  const resetFields = () => {
-    reset();
-  };
+
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -87,6 +85,10 @@ const LoginPage = ({ className }) => {
     localStorage.setItem("user", JSON.stringify(user));
     window.scrollTo(0, 0);
   }, [user]);
+
+  const resetFields = () => {
+    reset();
+  };
 
   return (
     <div className="bg-white">

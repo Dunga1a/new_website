@@ -251,10 +251,18 @@ export class UserService implements IUserService {
     });
 
     const savedUser = await this.userRepository.save(registerUser);
+    const findRole = await this.roleRepository.findOne({
+      where: {
+        name: 'user',
+      },
+    });
+    if (!findRole) {
+      throw new HttpException('Không tìm thấy quyền', HttpStatus.BAD_REQUEST);
+    }
 
     await this.editUser({
       username: createUser.username,
-      roleId: String(3),
+      roleId: String(findRole.id),
     });
 
     return savedUser;

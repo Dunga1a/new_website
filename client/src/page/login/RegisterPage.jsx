@@ -27,8 +27,6 @@ const RegisterPage = () => {
   const [captcha, setCaptcha] = useState(generateCaptcha);
 
   const onSubmit = async (data) => {
-    let username = data.username;
-    let password = data.password;
     if (!data) {
       alert("Đăng ký không thành công!");
     } else {
@@ -40,6 +38,7 @@ const RegisterPage = () => {
           withCredentials: true,
         });
         toast.success("Đăng ký tài khoản thành công.");
+        reset();
         navigate("/user/login");
       } catch (error) {
         toast.error(error.response.data.message);
@@ -147,6 +146,7 @@ const RegisterPage = () => {
 
           <div className="relative">
             <input
+              type="password"
               {...register("password", {
                 required: "Trường này không được để trống",
                 minLength: {
@@ -171,6 +171,7 @@ const RegisterPage = () => {
 
           <div className="relative">
             <input
+              type="password"
               {...register("confirmPassword", {
                 required: "Trường này không được để trống",
                 minLength: {
@@ -240,14 +241,14 @@ const RegisterPage = () => {
               {...register("birthday", {
                 required: "Vui lòng chọn ngày sinh",
 
-                validate: (value) => {
-                  const birthDate = new Date(value);
-                  const ageLimitDate = new Date();
-                  ageLimitDate.setFullYear(ageLimitDate.getFullYear() - 16);
-                  if (birthDate > ageLimitDate) {
-                    return "Chưa đủ 16 tuổi";
-                  }
-                },
+                // validate: (value) => {
+                //   const birthDate = new Date(value);
+                //   const ageLimitDate = new Date();
+                //   ageLimitDate.setFullYear(ageLimitDate.getFullYear() - 16);
+                //   if (birthDate > ageLimitDate) {
+                //     return "Chưa đủ 16 tuổi";
+                //   }
+                // },
               })}
               className={`w-full outline-none h-full px-3 pt-3 bg-gray-200 pb-0 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             />
@@ -261,7 +262,7 @@ const RegisterPage = () => {
             </span>
           )}
 
-          <div className="mt-2">
+          {/* <div className="mt-2">
             <textarea
               name=""
               id=""
@@ -278,7 +279,7 @@ const RegisterPage = () => {
             <span className="text-sm text-red-500">
               Vui lòng không được để trống
             </span>
-          )}
+          )} */}
 
           {/* <div className="mt-1 flex items-center">
             <input

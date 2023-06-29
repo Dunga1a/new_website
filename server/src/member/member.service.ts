@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { IMemberService } from './member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getRepository } from 'typeorm';
-import { Member, User } from 'src/utils/typeorm';
+import { Member, Role, User } from 'src/utils/typeorm';
 import { CreateMemberDetails, CreateUserDetails } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/users/users';
@@ -13,26 +13,59 @@ export class MemberService implements IMemberService {
     @InjectRepository(Member)
     private readonly memberRepository: Repository<Member>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     @Inject(Services.USERS) private readonly userService: IUserService,
   ) {}
 
   async createMember(memberDetails: CreateMemberDetails): Promise<Member> {
+    const findUserByEmail = await this.userRepository.findOne({
+      email: memberDetails.email,
+    });
+
+    if (findUserByEmail) {
+      throw new HttpException(
+        'Email này đã được người dùng khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
     const findMemberByEmail = await this.memberRepository.findOne({
       email: memberDetails.email,
     });
     if (findMemberByEmail) {
       throw new HttpException(
-        'Email này đã được đăng ký, vui lòng nhập email khác',
+        'Email này đã được hội viên khác đăng ký',
         HttpStatus.CONFLICT,
       );
     }
+
+    const findMemberByUsername = await this.memberRepository.findOne({
+      name_company: memberDetails.name_company,
+    });
+    if (findMemberByUsername) {
+      throw new HttpException(
+        'Tên doanh nghiệp này đã được hội viên khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const findUserByUsername = await this.userRepository.findOne({
+      username: memberDetails.name_company,
+    });
+    if (findUserByUsername) {
+      throw new HttpException(
+        'Tên doanh nghiệp này đã được người dùng khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
     const newMember = await this.memberRepository.create(memberDetails);
     const saveMember = await this.memberRepository.save(newMember);
     return saveMember;
   }
 
   async getAllMembers(queryParams: any) {
-    const pageSize = 4;
+    const pageSize = 8;
     const page = Number(queryParams.page);
     const roleAssociationParam = Number(queryParams.roleAssociationParam);
     const businessIdParam = Number(queryParams.businessIdParam);
@@ -44,7 +77,8 @@ export class MemberService implements IMemberService {
       .leftJoinAndSelect('member.id_business_areas', 'business_area')
 
       .skip((page - 1) * pageSize)
-      .take(pageSize);
+      .take(pageSize)
+      .orderBy('member.id', 'DESC');
 
     if (roleAssociationParam) {
       query.andWhere(
@@ -187,14 +221,22 @@ export class MemberService implements IMemberService {
       email: userMemberDetails.email,
       password: userMemberDetails.password,
       username: userMemberDetails.username,
-      created_at: userMemberDetails.created_at,
+
+      image: userMemberDetails.image,
     };
-    console.log(values);
+    const findRole = await this.roleRepository.findOne({
+      where: {
+        name: 'staff',
+      },
+    });
+    if (!findRole) {
+      throw new HttpException('Không tìm thấy quyền', HttpStatus.BAD_REQUEST);
+    }
 
     const createUser = await this.userService.createUser(values);
     const savedUser = await this.userService.editUser({
       username: userMemberDetails.username,
-      roleId: String(2),
+      roleId: String(findRole.id),
     });
     const findMember = await this.memberRepository.findOne(
       userMemberDetails.member,
@@ -215,7 +257,7 @@ export class MemberService implements IMemberService {
   }
 
   async editMember(memberEditDetails: any) {
-    console.log(memberEditDetails);
+    // console.log(memberEditDetails);
 
     const findMember = await this.memberRepository.findOne(
       memberEditDetails.id,
@@ -243,6 +285,18 @@ export class MemberService implements IMemberService {
       }
     }
 
+    if (memberEditDetails.usernameEdit) {
+      const findMemberByUsername = await this.memberRepository.findOne({
+        name_company: memberEditDetails.name_company,
+      });
+      if (findMemberByUsername) {
+        throw new HttpException(
+          'Tên doanh nghiệp đã tồn tại, vui lòng chọn tên doanh nghiệp khác',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
     if (!findMember) {
       throw new HttpException(
         'Không tìm thấy hội viên',
@@ -264,7 +318,7 @@ export class MemberService implements IMemberService {
     findMember.image_person = memberEditDetails.image_person;
     findMember.image_company = memberEditDetails.image_company;
     findUser.email = memberEditDetails.email;
-    findUser.status = 1;
+    findUser.status = memberEditDetails.status;
     const updatedMember = await this.memberRepository.save(findMember);
     const updatedUser = await this.userRepository.save(findUser);
     return { updatedMember, updatedUser };
@@ -298,6 +352,49 @@ export class MemberService implements IMemberService {
       console.log('Bản ghi đã được xóa.');
     } else {
       console.log('Không tìm thấy bản ghi hoặc xóa thất bại.');
+    }
+  }
+
+  async checkError(errorDetails: any) {
+    const findUserByEmail = await this.userRepository.findOne({
+      email: errorDetails.email,
+    });
+
+    if (findUserByEmail) {
+      throw new HttpException(
+        'Email này đã được người dùng khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const findMemberByEmail = await this.memberRepository.findOne({
+      email: errorDetails.email,
+    });
+    if (findMemberByEmail) {
+      throw new HttpException(
+        'Email này đã được hội viên khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const findMemberByUsername = await this.memberRepository.findOne({
+      name_company: errorDetails.name_company,
+    });
+    if (findMemberByUsername) {
+      throw new HttpException(
+        'Tên doanh nghiệp này đã được hội viên khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const findUserByUsername = await this.userRepository.findOne({
+      username: errorDetails.name_company,
+    });
+    if (findUserByUsername) {
+      throw new HttpException(
+        'Tên doanh nghiệp này đã được người dùng khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
     }
   }
 }

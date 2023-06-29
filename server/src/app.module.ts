@@ -6,7 +6,9 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import entities, { Role, User } from './utils/typeorm';
+
+import entities, { Role, User, OrganizeMembershipTitle } from './utils/typeorm';
+
 import { ContactModule } from './contact/contact.module';
 import { RelyModule } from './rely/rely.module';
 import { PostsModule } from './posts/posts.module';
@@ -17,6 +19,10 @@ import { OrganizeMembershipTitleModule } from './organize-membership-title/organ
 import { BusinessAreasModule } from './business-areas/business-areas.module';
 import { MemberModule } from './member/member.module';
 import { CommentModule } from './comment/comment.module';
+
+import { Services } from './utils/constants';
+import { OrganizeMembershipTitleService } from './organize-membership-title/organize-membership-title.service';
+
 import { RoleService } from './role/role.service';
 import { UserService } from './users/user.service';
 
@@ -31,6 +37,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
     ContactModule,
     ConfigModule.forRoot({ envFilePath }),
     PassportModule,
+    TypeOrmModule.forFeature([OrganizeMembershipTitle]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_DB_HOST,
@@ -54,6 +61,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') envFilePath = '.env.production';
     CommentModule,
   ],
   controllers: [],
-  providers: [RoleService, UserService],
+
+  providers: [RoleService, UserService, OrganizeMembershipTitleService],
 })
 export class AppModule {}

@@ -18,14 +18,15 @@ export class BusinessAreasService implements IBusinessAreasService {
   }
 
   async getAllBusinessAreas(queryParams: any) {
-    const pageSize = 3;
+    const pageSize = 6;
     const searchKey = String(queryParams.searchKey);
 
     const page = Number(queryParams.page);
     const query = this.businessAreasRepository
       .createQueryBuilder('business-area')
       .skip((page - 1) * pageSize)
-      .take(pageSize);
+      .take(pageSize)
+      .orderBy('business-area.id_business_areas', 'DESC');
 
     if (searchKey) {
       query.andWhere('business-area.name LIKE :searchKey', {

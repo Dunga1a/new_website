@@ -23,14 +23,14 @@ const FormBusinessArea = ({ initValue, onSave }) => {
   };
 
   const onSubmit = (data) => {
-    const strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
+    // const strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
 
-    if (strippedContent === "") {
-      // Nếu nội dung sau khi loại bỏ các thẻ HTML và khoảng trắng trống,
-      // hiển thị thông báo lỗi hoặc thực hiện các xử lý khác
-      alert("Vui lòng nhập nội dung");
-      return;
-    }
+    // if (strippedContent === "") {
+    //   // Nếu nội dung sau khi loại bỏ các thẻ HTML và khoảng trắng trống,
+    //   // hiển thị thông báo lỗi hoặc thực hiện các xử lý khác
+    //   alert("Vui lòng nhập nội dung");
+    //   return;
+    // }
     const slug = slugify(data.name, {
       replacement: "-", // replace spaces with replacement character, defaults to `-`
       remove: undefined, // remove characters that match regex, defaults to `undefined`
@@ -40,7 +40,6 @@ const FormBusinessArea = ({ initValue, onSave }) => {
       trim: true, // trim leading and trailing replacement chars, defaults to `true`
     });
 
-    // console.log("vao day");
     onSave({
       ...data,
       intro: content,
@@ -63,7 +62,7 @@ const FormBusinessArea = ({ initValue, onSave }) => {
                 >
                   Tên gọi lĩnh vực kinh doanh
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <input
                     type="text"
                     name="title"
@@ -79,6 +78,9 @@ const FormBusinessArea = ({ initValue, onSave }) => {
                     })}
                     defaultValue={initValue.name}
                   />
+                  <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+                    *
+                  </span>
                   {errors.title && (
                     <span className="text-sm text-red-500">
                       {errors.title.message}
