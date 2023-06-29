@@ -21,32 +21,39 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
         ...data,
         member: memberItem.id,
         username: memberItem.name_company,
+        image: memberItem.image_company,
       };
       const valuesTwo = {
         to: memberItem.email,
         subject: "Thư cấp mật khẩu cho tài khoản doanh nghiệp",
-        text: "Mật khẩu của bạn là: 12345678",
+        text: `<p>Mật khẩu của bạn là: <strong>${data.password}</strong></p>`,
       };
 
-      const result = await axios.post(
+      // console.log("values:", values);
+      // console.log("valuesTwo:", valuesTwo);
+
+      const resultOne = await axios.post(
         `${DOMAIN}/api/member/createUserFromMember`,
         values,
         {
           withCredentials: true,
         }
       );
-      const resultTwo = await toast.promise(
-        axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {
-          withCredentials: true,
-        }),
-        {
-          pending: "Đang gửi mật khẩu về email cấp tài khoản",
-          success: "Cấp tài khoản thành công 👌",
-          error: "Cấp tài khoản thất bại 🤯",
-        }
-      );
+      console.log(resultOne);
+      // if (resultOne) {
+      //   await toast.promise(
+      //     axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {
+      //       withCredentials: true,
+      //     }),
+      //     {
+      //       pending: "Đang gửi mật khẩu về email cấp tài khoản",
+      //       success: "Cấp tài khoản thành công 👌",
+      //       error: "Cấp tài khoản thất bại 🤯",
+      //     }
+      //   );
+      // }
 
-      console.log(result, resultTwo);
+      // console.log(result, resultTwo);
       fetchData();
       setOpen(false);
     } catch (error) {
@@ -74,9 +81,10 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
               })}
               defaultValue={memberItem.email}
               //   disabled={true}
+              readOnly
             />
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -87,6 +95,9 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
               })}
               placeholder="Nhập mật khẩu"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
         </div>
         <button

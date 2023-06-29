@@ -6,9 +6,10 @@ import Select from "react-select";
 import slugify from "slugify";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RegisterMember = () => {
   const { url } = useContext(AuthContext);
-  console.log(url);
+  // console.log(url);
   const [selectedImages, setSelectedImages] = useState({
     firstImg: null,
     secondImg: null,
@@ -49,6 +50,17 @@ const RegisterMember = () => {
 
   const onSubmit = async (data) => {
     try {
+      const valueCheck = {
+        email: data.email,
+        name_company: data.name_company,
+      };
+      await axios.post(`${DOMAIN}/api/member/checkError`, valueCheck, {
+        withCredentials: true,
+      });
+      if (!idBusinessAreas) {
+        console.log(idBusinessAreas);
+        return toast.error("Vui Lòng Chọn Lĩnh Vực Kinh Doanh");
+      }
       const formData = new FormData();
       const formDataTwo = new FormData();
       const slug = slugify(data.name_company, {
@@ -61,10 +73,11 @@ const RegisterMember = () => {
       });
       let image_person = null;
       let image_company = null;
+
       if (imageUrl.firstImg) {
         formData.append("image", imageUrl.firstImg);
         const responseImgPerson = await axios.post(
-          `${url}/api/member/uploadFileImage`,
+          `${DOMAIN}/api/member/uploadFileImage`,
           formData,
           {
             headers: {
@@ -77,7 +90,7 @@ const RegisterMember = () => {
       if (imageUrl.secondImg) {
         formDataTwo.append("image", imageUrl.secondImg);
         const responseImgCompany = await axios.post(
-          `${url}/api/member/uploadFileImage`,
+          `${DOMAIN}/api/member/uploadFileImage`,
           formDataTwo,
           {
             headers: {
@@ -102,7 +115,7 @@ const RegisterMember = () => {
       };
       console.log(values);
       const result = await axios.post(
-        `${url}/api/member/createMember`,
+        `${DOMAIN}/api/member/createMember`,
         values,
         {
           withCredentials: true,
@@ -126,7 +139,7 @@ const RegisterMember = () => {
   const fetchData = async () => {
     try {
       const result = await axios.get(
-        `${url}/api/business-areas/getListBusinessArea`
+        `${DOMAIN}/api/business-areas/getListBusinessArea`
       );
       // console.log(result.data);
       const data = result.data
@@ -162,7 +175,7 @@ const RegisterMember = () => {
       >
         <div className="px-10 phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
           <h3 className="font-semibold text-base">Thông tin doanh nghiệp</h3>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -173,8 +186,12 @@ const RegisterMember = () => {
               })}
               placeholder="Nhập tên doanh nghiệp, tổ chức"
             />
+
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -185,8 +202,11 @@ const RegisterMember = () => {
               })}
               placeholder="Người đại diện"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -197,8 +217,11 @@ const RegisterMember = () => {
               })}
               placeholder="Chức vụ"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="number"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -209,8 +232,11 @@ const RegisterMember = () => {
               })}
               placeholder="Số điện thoại"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="email"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -221,18 +247,11 @@ const RegisterMember = () => {
               })}
               placeholder="Nhập email"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
-            {/* <input
-              type="text"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("field", {
-                required: true,
-              })}
-              placeholder="Lĩnh vực hoạt động"
-            /> */}
+          <div className="my-4 relative">
             <Select
               options={businessAreas}
               className="col-span-2"
@@ -243,8 +262,11 @@ const RegisterMember = () => {
               }
               onChange={(e) => setIdBusinessAreas(e.value)}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -255,8 +277,11 @@ const RegisterMember = () => {
               })}
               placeholder="Mã số doanh nghiệp"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -267,6 +292,9 @@ const RegisterMember = () => {
               })}
               placeholder="Địa chỉ doanh nghiệp"
             />
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
           <div className="my-4">
             <input
@@ -274,9 +302,9 @@ const RegisterMember = () => {
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-              {...register("website", {
-                required: true,
-              })}
+              // {...register("website", {
+              //   required: true,
+              // })}
               placeholder="Website"
             />
           </div>

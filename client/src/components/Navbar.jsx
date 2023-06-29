@@ -69,6 +69,7 @@ const contentArr = [
   ],
 ];
 
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -140,7 +141,7 @@ const Navbar = () => {
     try {
       const sheet = page ? page : 1;
       const category = await axios.get(
-        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=${sheet}`,
         {
           withCredentials: true,
         }

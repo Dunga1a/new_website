@@ -11,4 +11,5 @@ export interface IMemberService {
   editMember(memberDetailEdit: CreateMemberDto);
   deleteOneMember(idMember: number);
   deleteManyMember(idMembers: number[]);
+  checkError(errorDetails: any);
 }

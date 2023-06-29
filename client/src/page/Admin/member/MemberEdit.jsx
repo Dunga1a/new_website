@@ -67,6 +67,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
       console.log(result);
       toast.success("Cập nhật hội viên thành công");
     } catch (error) {
+      toast.error(error.response.data.message);
       console.log(error.response.data.message);
     }
   };

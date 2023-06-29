@@ -45,7 +45,7 @@ export class NewsCategoryService implements INewsCategoryService {
     });
 
     if (existingNewsCategory) {
-      throw new HttpException('Đã tồn tại danh mục này', HttpStatus.CONFLICT);
+      throw new HttpException('Đã tồn tại danh mục này', HttpStatus.NOT_FOUND);
     }
     const newsCategory = await this.newsCategoryRepository.create(
       newsCategoryDetailsChildren,
@@ -85,6 +85,18 @@ export class NewsCategoryService implements INewsCategoryService {
   }
 
   async editCategory(newsCategoryDetails: NewsCategoryDetails) {
+    // console.log(newsCategoryDetails);
+    if (newsCategoryDetails.isEdit) {
+      const findNewsCategoryDB = await this.newsCategoryRepository.findOne({
+        where: {
+          name: newsCategoryDetails.name,
+        },
+      });
+      if (findNewsCategoryDB) {
+        throw new HttpException('Danh mục đã tồn tại', HttpStatus.NOT_FOUND);
+      }
+    }
+
     const newsCategoryDB = await this.newsCategoryRepository.findOne(
       newsCategoryDetails.news_category_id,
     );

@@ -13,33 +13,42 @@ import Category from "../../components/list/Category";
 import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 import { useSearchParams } from "react-router-dom";
-
+import EmptyState from "../../components/EmptyState/EmptyState";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const NewDetail = () => {
   const { state } = useLocation();
-  console.log(state);
   const props = state ? state.item : "";
   const [count, setCount] = useState();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
+  const [postList, setPostlist] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = searchParams.get("page");
+  // const page = searchParams.get("page");
+  const page = searchParams.get("page") || 1;
 
   const fetchData = async () => {
     try {
+      const sheet = page ? page : 1;
+
       let url = "http://localhost:3001/api/posts/allPost?";
       url += `page=${page || 1}`;
       const res = await axios.get(url);
-      //console.log(res);
+      const result = await axios.get(
+        `${DOMAIN}/api/posts/getPostBySlugOfCategory/${state.item.news_category_id}?page=${sheet}`
+      );
+
+      // console.log(result);
       setData(res.data.data);
-      setCount(res.data.count);
+      setCount(result.data.queryCount);
+      setPostlist(result.data.query);
     } catch (error) {
       console.log(error.message);
     }
   };
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [state]);
 
   const handlePageChange = (page) => {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -48,20 +57,20 @@ const NewDetail = () => {
     navigate(`/news/tin-hoi-vien?page=${page}`, { state: state });
   };
 
-  //console.log(data);
   return (
     <div className="bg-white pt-6">
       <Breadcrumbs
         title={"điểm tin"}
-        subtitle={props ? props.title : ""}
+        subtitle={props ? props.name : ""}
         link={"/news"}
       />
       <div className=" pb-14 grid grid-cols-4 gap-3 pt-4 px-6">
         <div className="pt-4 col-span-3 phone:col-span-4 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3">
-          <HeaderTitle title={props ? props.title : ""} />
+          <HeaderTitle title={props ? props.name : ""} />
           <div className="desktop:pr-5 list phone:pr-0">
-            {data
-              ? data.map((post, index) => {
+            {postList ? (
+              postList.length ? (
+                postList.map((post, index) => {
                   return (
                     <div
                       key={index}
@@ -120,14 +129,23 @@ const NewDetail = () => {
                     </div>
                   );
                 })
-              : "Không có dữ liệu"}
+              ) : (
+                <EmptyState />
+              )
+            ) : (
+              <EmptyState />
+            )}
           </div>
-          <PaginationV2
-            total={count}
-            pageSize={4}
-            current={searchParams.get("page") || 1}
-            onChange={handlePageChange}
-          />
+          {postList ? (
+            postList.length ? (
+              <PaginationV2
+                total={count}
+                pageSize={8}
+                current={searchParams.get("page") || 1}
+                onChange={handlePageChange}
+              />
+            ) : null
+          ) : null}
         </div>
         <div>
           <div>

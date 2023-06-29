@@ -3,34 +3,37 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { BsFillCaretRightFill } from "react-icons/bs";
 
 const arrContent = [
-  { title: "Cơ bản", slug: "basic" },
-  { title: "Hình đại điện", slug: "avatar" },
-  { title: "Email", slug: "email" },
-  { title: "Mật khẩu", slug: "password" },
+  { title: "Cơ bản", slug: "/user/editinfo/basic" },
+  { title: "Hình đại điện", slug: "/user/editinfo/avatar" },
+  { title: "Email", slug: "/user/editinfo/email" },
+  { title: "Mật khẩu", slug: "/user/editinfo/password" },
 ];
 
 const UserEdit = () => {
   const navigate = useNavigate();
+  const [active, setActive] = useState(0);
   const url = window.location.href;
   const path = new URL(url).pathname;
-  const lastSegment = path.split("/").pop();
-  const [pathCurrent, setPathCurrent] = useState(lastSegment);
-  const [active, setActive] = useState(0);
+
+  const [pathCurrent, setPathCurrent] = useState(path);
+
   useEffect(() => {
-    if (pathCurrent !== "") {
-      navigate(`/user/editinfo/${pathCurrent}`);
+    if (pathCurrent !== path) {
+      navigate(pathCurrent);
     }
   }, [pathCurrent]);
 
   const handleClick = (item) => {
-    navigate(`/user/editinfo/${item.slug}`);
     setPathCurrent(item.slug);
   };
+
   const logOut = () => {
     alert("Tài khoản của bạn sẽ đăng xuất?");
     localStorage.setItem("user", null);
     window.location.reload();
   };
+
+  console.log("vao day: ", url, path, pathCurrent);
   return (
     <div>
       <h3 className="mt-5 mb-4 font-bold text-[19px]">Thiết lập tài khoản</h3>

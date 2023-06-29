@@ -136,4 +136,16 @@ export class PostsController {
 
     return await this.newsPostsService.deleteMultiple(ids);
   }
+
+  @Get('getPostBySlugOfCategory/:item')
+  async getPostBySlugOfCategory(
+    @Param('item') item: any,
+    @Query() queryParams: any,
+  ) {
+    const result = await this.newsPostsService.getPostBySlugOfCategory(
+      item,
+      queryParams,
+    );
+    return result;
+  }
 }

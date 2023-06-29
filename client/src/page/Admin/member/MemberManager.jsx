@@ -103,7 +103,7 @@ const MemberManager = () => {
           withCredentials: true,
         }
       );
-
+      // console.log("result.data:", result.data);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
     } catch (error) {
@@ -366,11 +366,13 @@ const MemberManager = () => {
                     <td className="text-center">{item.representative}</td>
                     <td className="text-center">{item.role_name}</td>
                     <td className="text-center line-clamp-1 w-[200px]">
-                      <div dangerouslySetInnerHTML={{ __html: item.intro }} />;
+                      <div dangerouslySetInnerHTML={{ __html: item.intro }} />
                     </td>
                     <td className="text-center">{item.phone}</td>
                     <td className="text-center">
-                      {item.id_business_areas.name}
+                      {item.id_business_areas
+                        ? item.id_business_areas.name
+                        : ""}
                     </td>
                     <td className="text-center text-[12px]">
                       {item.status === 0
@@ -416,7 +418,7 @@ const MemberManager = () => {
           </tbody>
         </table>
 
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <div className="flex">
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
@@ -427,7 +429,7 @@ const MemberManager = () => {
               onClick={() => handleDeleteItems(isCheckedItems)}
             />
           </div>
-        </div>
+        </div> */}
 
         <Modal
           open={openEditForm}
@@ -459,7 +461,7 @@ const MemberManager = () => {
         <PaginationV2
           total={count}
           current={searchParams.get("page") || 1}
-          pageSize="4"
+          pageSize="8"
           onChange={handleChangePage}
         />
       </div>

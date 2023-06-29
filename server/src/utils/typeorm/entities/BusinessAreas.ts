@@ -11,7 +11,7 @@ export class BusinessAreas {
   @Column()
   slug: string;
 
-  @Column()
+  @Column({ nullable: true })
   intro: string;
 
   @Column()

@@ -13,6 +13,7 @@ import { MailService } from 'src/mail/mail.service';
 export class UserService implements IUserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     @Inject(Services.ROLE) private readonly roleService: IRoleService,
     private readonly mailService: MailService,
   ) {}
@@ -141,10 +142,18 @@ export class UserService implements IUserService {
     });
 
     const savedUser = await this.userRepository.save(registerUser);
+    const findRole = await this.roleRepository.findOne({
+      where: {
+        name: 'user',
+      },
+    });
+    if (!findRole) {
+      throw new HttpException('Không tìm thấy quyền', HttpStatus.BAD_REQUEST);
+    }
 
     await this.editUser({
       username: createUser.username,
-      roleId: String(3),
+      roleId: String(findRole.id),
     });
 
     return savedUser;

@@ -22,30 +22,7 @@ const LoginPage = ({ className }) => {
     reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data) => {
-    try {
-      const result = await axios.post(`${DOMAIN}/api/auth/login`, data, {
-        withCredentials: true,
-      });
-      // login(result.data.user);
-      setUser(result.data.user);
-      if (result.data.user.status !== 1) {
-        return;
-      }
 
-      // if(result.data.user)
-      toast.success("Đăng nhập thành công");
-      // navigate("/user/editinfo");
-      window.location.reload();
-    } catch (error) {
-      toast.error(error.response.data.message);
-
-      console.log(error.message);
-    }
-  };
-  const resetFields = () => {
-    reset();
-  };
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -82,6 +59,31 @@ const LoginPage = ({ className }) => {
     localStorage.setItem("user", JSON.stringify(user));
     window.scrollTo(0, 0);
   }, [user]);
+
+  const onSubmit = async (data) => {
+    try {
+      const result = await axios.post(`${DOMAIN}/api/auth/login`, data, {
+        withCredentials: true,
+      });
+      // login(result.data.user);
+      setUser(result.data.user);
+      if (result.data.user.status !== 1) {
+        return;
+      }
+
+      // if(result.data.user)
+      toast.success("Đăng nhập thành công");
+      // navigate("/user/editinfo");
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response.data.message);
+
+      console.log(error.message);
+    }
+  };
+  const resetFields = () => {
+    reset();
+  };
 
   return (
     <div className="bg-white">

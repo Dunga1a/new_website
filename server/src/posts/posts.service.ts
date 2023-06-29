@@ -250,4 +250,29 @@ export class PostsService {
 
     return { data, count };
   }
+
+  async getPostBySlugOfCategory(item: any, queryParams: any) {
+    const page = Number(queryParams.page);
+    const pageSize = 8;
+    const query = await this.newsPostRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.newsCategory', 'category')
+      .where('category.news_category_id = :news_category_id', {
+        news_category_id: item,
+      })
+      .orWhere('category.father_id = :father_id', { father_id: item })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getMany();
+
+    const queryCount = await this.newsPostRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.newsCategory', 'category')
+      .where('category.news_category_id = :news_category_id', {
+        news_category_id: item,
+      })
+      .orWhere('category.father_id = :father_id', { father_id: item })
+      .getCount();
+    return { query, queryCount };
+  }
 }

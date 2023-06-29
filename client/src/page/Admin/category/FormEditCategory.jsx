@@ -1,13 +1,15 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { AuthContext } from "../../../context/authContext";
+import { toast } from "react-toastify";
 const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
   // console.log(newsCategoryEdit);
   // const { url } = useContext(AuthContext);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
+  const [isEdit, setIsEdit] = useState(false);
 
   const {
     register,
@@ -24,12 +26,13 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
         locale: "vi", // language code of the locale to use
         trim: true, // trim leading and trailing replacement chars, defaults to `true`
       });
-      console.log(data);
+      // console.log("vao day: ", data.category);
 
       const values = {
         ...newsCategoryEdit,
         name: data.category,
         slug,
+        isEdit,
       };
       const result = await axios.put(
         `${DOMAIN}/api/newscategory/editCategory`,
@@ -42,6 +45,7 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
       fetchData();
       console.log(result.data);
     } catch (error) {
+      toast.error(error.response.data.message);
       console.log(error.message);
     }
   };
@@ -60,6 +64,7 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
             placeholder="Thêm danh mục"
             defaultValue={newsCategoryEdit.name}
             onEnter={handleSubmit(onSubmit)}
+            onChange={() => setIsEdit(true)}
           />
           <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
             *
@@ -79,12 +84,12 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
               : null;
           }}
         />
-        {/* <button
+        <button
           type="submit"
           class="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           Lưu{" "}
-        </button> */}
+        </button>
       </form>
     </div>
   );

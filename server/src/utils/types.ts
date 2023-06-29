@@ -14,6 +14,7 @@ export type CreateUserDetails = {
   lastName?: string;
   email: string;
   created_at?: Date;
+  image?: string;
 };
 
 export type ValidateUserDetails = {
@@ -101,6 +102,7 @@ export type NewsCategoryDetails = {
   father_id?: number;
   name: string;
   slug: string;
+  isEdit?: boolean;
 };
 
 export type BusinessAreasDetails = {
@@ -115,6 +117,7 @@ export type OrganizationDetails = {
   id_organize_membership?: number;
   name: string;
   status?: boolean;
+  isEdit?: boolean;
 };
 
 export type EditRole = {

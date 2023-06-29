@@ -51,6 +51,7 @@ const MemberFormRegister = ({
   );
   const [isPublic, setIsPublic] = useState(memberItem.status);
   const [editEmail, setEditEmail] = useState(false);
+  const [usernameEdit, setUsernameEdit] = useState(false);
 
   const {
     register,
@@ -132,6 +133,7 @@ const MemberFormRegister = ({
         image_person: image_person,
         image_company: image_company,
         editEmail: editEmail,
+        usernameEdit: usernameEdit,
       };
       // console.log("editEmail: ", editEmail);
       onSave(values);
@@ -162,6 +164,7 @@ const MemberFormRegister = ({
                 required: true,
               })}
               defaultValue={memberItem.name_company}
+              onChange={() => setUsernameEdit(true)}
             />
           </div>
           <div className="my-4">

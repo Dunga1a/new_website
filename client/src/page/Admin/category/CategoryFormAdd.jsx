@@ -1,13 +1,12 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
-import { AuthContext } from "../../../context/authContext";
+import { toast } from "react-toastify";
 
 const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
-
   const {
     register,
     handleSubmit,
@@ -24,22 +23,26 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
         locale: "vi", // language code of the locale to use
         trim: true, // trim leading and trailing replacement chars, defaults to `true`
       });
-      const values = { ...data, slug, father_id: value.news_category_id };
+      const values = {
+        ...data,
+        slug,
+        father_id: value.news_category_id,
+      };
       // console.log(values);
       //   console.log(values);
 
-      const results = await axios.post(
+      await axios.post(
         `${DOMAIN}/api/newscategory/createNewsCategoryChildren`,
         values,
         {
           withCredentials: true,
         }
       );
-      console.log(results);
-      //   reset({ category: "" });
+
       fetchData();
       setOpen(null);
     } catch (error) {
+      toast.error("error.response.data.message");
       console.log(error.message);
     }
   };

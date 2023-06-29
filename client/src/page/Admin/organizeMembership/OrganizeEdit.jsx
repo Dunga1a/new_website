@@ -13,6 +13,7 @@ const OrganizeEdit = ({ organizeItem, setOpen, fetchData }) => {
         ...data,
         id_organize_membership: organizeItem.id_organize_membership,
       };
+      // console.log(values);
       const result = await axios.put(
         `${DOMAIN}/api/organize-membership-title/editOne`,
         values,
@@ -26,7 +27,7 @@ const OrganizeEdit = ({ organizeItem, setOpen, fetchData }) => {
       toast.success("Cập nhật thành công");
       //   console.log(values);
     } catch (error) {
-      toast.success("Cập nhật thất bại");
+      toast.error(error.response.data.message);
 
       console.log(error.message);
     }

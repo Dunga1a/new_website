@@ -14,6 +14,7 @@ import slugify from "slugify";
 import { useSearchParams } from "react-router-dom";
 import CategoryList from "./CategoryList";
 import { AuthContext } from "../../../context/authContext";
+import { toast } from "react-toastify";
 
 const CategoryManager = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -40,27 +41,31 @@ const CategoryManager = () => {
     handleSubmit,
   } = useForm({ criteriaMode: "all" });
   const onSubmit = async (data) => {
-    const slug = slugify(data.category, {
-      replacement: "-", // replace spaces with replacement character, defaults to `-`
-      remove: undefined, // remove characters that match regex, defaults to `undefined`
-      lower: true, // convert to lower case, defaults to `false`
-      strict: false, // strip special characters except replacement, defaults to `false`
-      locale: "vi", // language code of the locale to use
-      trim: true, // trim leading and trailing replacement chars, defaults to `true`
-    });
-    const values = { name: data.category, slug };
-    // console.log(values);
+    try {
+      const slug = slugify(data.category, {
+        replacement: "-", // replace spaces with replacement character, defaults to `-`
+        remove: undefined, // remove characters that match regex, defaults to `undefined`
+        lower: true, // convert to lower case, defaults to `false`
+        strict: false, // strip special characters except replacement, defaults to `false`
+        locale: "vi", // language code of the locale to use
+        trim: true, // trim leading and trailing replacement chars, defaults to `true`
+      });
+      const values = { name: data.category, slug };
+      // console.log(values);
 
-    const results = await axios.post(
-      `${DOMAIN}/api/newscategory/createNewsCategory`,
-      values,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log(results);
-    reset({ category: "" });
-    fetchData();
+      const results = await axios.post(
+        `${DOMAIN}/api/newscategory/createNewsCategory`,
+        values,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(results);
+      reset({ category: "" });
+      fetchData();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
     // setNewsCategory((prev) => [...prev, results.data]);
   };
 

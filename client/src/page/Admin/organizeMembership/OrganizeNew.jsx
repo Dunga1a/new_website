@@ -27,6 +27,8 @@ const OrganizeNew = ({ setOpen, fetchData }) => {
       setOpen(false);
       toast.success("Thêm chức vụ thành công");
     } catch (error) {
+      toast.error(error.response.data.message);
+
       console.log(error.message);
     }
   };
