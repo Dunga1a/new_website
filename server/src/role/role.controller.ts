@@ -32,15 +32,4 @@ export class RoleController {
     return roles;
   }
 
-  @Post('getUserByRole')
-  async getUserByRole(@Body() item: any) {
-    const result = await this.roleService.getUserByRole(item);
-    return result;
-  }
-
-  @Put('editRole')
-  async editRole(@Body() editRoleDetails: EditRoleDto) {
-    const editedRole = await this.roleService.editRole(editRoleDetails);
-    return editedRole;
-  }
 }
