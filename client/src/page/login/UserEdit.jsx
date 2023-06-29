@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { BsFillCaretRightFill } from "react-icons/bs";
+import Modal from "../../components/Modal/Modal";
+import Button from "../../components/Buttons/Button";
 
 const arrContent = [
   { title: "Cơ bản", slug: "/user/editinfo/basic" },
@@ -10,6 +12,7 @@ const arrContent = [
 ];
 
 const UserEdit = () => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
   const url = window.location.href;
@@ -28,7 +31,7 @@ const UserEdit = () => {
   };
 
   const logOut = () => {
-    alert("Tài khoản của bạn sẽ đăng xuất?");
+    //alert("Tài khoản của bạn sẽ đăng xuất?");
     localStorage.setItem("user", null);
     window.location.reload();
   };
@@ -56,15 +59,33 @@ const UserEdit = () => {
         <Outlet />
       </div>
       <ul className="flex justify-start gap-3 mt-3 text-[13px]">
-        <li className="flex items-center cursor-pointer">
+        <li
+          onClick={() => {
+            navigate("/user/", { replace: true, state: { reload: true } });
+            window.location.reload();
+          }}
+          className="flex items-center cursor-pointer"
+        >
           <BsFillCaretRightFill />
           <span>Thông tin thành viên</span>
         </li>
-        <li className="flex items-center cursor-pointer" onClick={logOut}>
+        <li
+          className="flex items-center cursor-pointer"
+          onClick={() => setOpen(true)}
+        >
           <BsFillCaretRightFill />
           <span>Thoát</span>
         </li>
       </ul>
+      <Modal open={open} setOpen={setOpen} title={"Bạn muốn đăng xuất ?"}>
+        <div className=" flex justify-center">
+          <Button
+            title={"Có"}
+            colorBgr={"text-white bg-red-700 hover:bg-red-800 px-8"}
+            onClick={logOut}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -5,9 +5,8 @@
   repeat scroll 0 0 rgba(0, 0, 0, 0); */
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Wix+Madefor+Display:wght@400;500;600;700&display=swap");
 .footer {
-  background: #d5d5d5
-    url(https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-footer.png)
-    center center no-repeat;
+  background: #d5d5d5 url("../public/assets/images/bg-footer.png") center center
+    no-repeat;
   position: relative;
 }
 
@@ -17,9 +16,8 @@ body {
   font-family: "Wix Madefor Display", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #eeeeee
-    url(https://doanhnhanthanhhoahanoi.com/themes/egov/images/bgtrongdong_1.png)
-    top center no-repeat;
+  background: #eeeeee url("../public/assets/images/bgtrongdong_1.png") top
+    center no-repeat;
   font-size: 14px;
 }
 
@@ -84,7 +82,7 @@ input:focus {
   font-size: 18px;
   font-weight: 700;
   padding-left: 40px;
-  background: url(https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-national-emblem.png);
+  background: url("../public/assets/images/bg-national-emblem.png");
   background-repeat: no-repeat;
 }
 
@@ -95,7 +93,7 @@ input:focus {
 
 .wrapper {
   animation: scroll 70s linear infinite;
-  background: url("https://images.unsplash.com/photo-1465146633011-14f8e0781093?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3450&q=80"),
+  background: url("../public/assets/images/photo-1465146633011-14f8e0781093.avif"),
     #111111;
   color: #eee;
   height: 40px;

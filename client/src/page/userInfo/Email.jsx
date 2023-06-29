@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
+//import * as bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import axios from "axios";
 
 const Email = () => {
+  const salt = bcrypt.genSalt();
   const {
     register,
     handleSubmit,
@@ -24,34 +27,83 @@ const Email = () => {
         email: data.email,
         verificationCode: data.veriCode,
       };
-      console.log(value);
-      await axios.post(
-        `http://localhost:3001/api/users/${useContext.id}`,
+      // console.log(values);
+      // console.log(value);
+      const response = await axios.post(
+        `http://localhost:3001/api/users/${currentUser.id}/confirm-email`,
         value
       );
+      reset();
+      //console.log(response.data);
+      const values = { ...currentUser, email: response.data.email };
+      localStorage.setItem("user", JSON.stringify(values));
+      //console.log(values);
       toast.success("Email đã được thay đổi");
+      window.location.reload();
     } catch (error) {
       toast.error("Lỗi chưa thay đổi được email");
     }
   };
 
   const handleSendVerifiCode = async () => {
-    console.log(watch("password"));
-    //if (currentUser.password === watch("password")) {
-    try {
-      const value = {
-        currentEmail: currentUser.email,
-        newEmail: watch("email"),
-      };
+    const passwordOld = watch("password");
+    bcrypt.compare(passwordOld, currentUser.password, async (err, result) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
 
-      await axios.post("http://localhost:3001/api/users/change-email", value);
-      toast.success("Đã gửi mã thành công! Vui lòng kiểm tra");
-    } catch (error) {
-      console.log(error.message);
-    }
+      if (result) {
+        const email = watch("email");
 
-    //}
+        if (!email) {
+          toast.error("Vui lòng nhập email");
+          return;
+        }
+
+        try {
+          const value = {
+            currentEmail: currentUser.email,
+            newEmail: email,
+          };
+
+          await axios.post(
+            "http://localhost:3001/api/users/change-email",
+            value
+          );
+          toast.success("Đã gửi mã thành công! Vui lòng kiểm tra");
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        toast.error("Mật khẩu không hợp lệ");
+        // Thực hiện hành động khi mật khẩu không hợp lệ
+      }
+    });
+    // if (currentUser && bcrypt.compare(passwordOld, currentUser.password)) {
+    //   const email = watch("email");
+
+    //   if (!email) {
+    //     toast.error("Vui lòng nhập email");
+    //     return;
+    //   }
+
+    //   try {
+    //     const value = {
+    //       currentEmail: currentUser.email,
+    //       newEmail: email,
+    //     };
+
+    //     await axios.post("http://localhost:3001/api/users/change-email", value);
+    //     toast.success("Đã gửi mã thành công! Vui lòng kiểm tra");
+    //   } catch (error) {
+    //     console.log(error.message);
+    //   }
+    // } else {
+    //   toast.error("Mật khẩu không chính xác");
+    // }
   };
+
   return (
     <div>
       <div className="text-[14px] p-[10px] bg-gray-50 border-[1px] border-gray-400 rounded-md">
@@ -78,7 +130,7 @@ const Email = () => {
           <div className="flex items-center relative">
             <p className="w-[23%] text-end mr-2 text-[14px]">Mật khẩu</p>
             <input
-              type="text"
+              type="password"
               className={`block focus:outline-none w-[50%] rounded h-[32px] text-[13px] leading-[15px] border-[#cccccc] shadow-lg ${
                 errors.password ? "border-red-500 border-[1px]" : ""
               }`}

@@ -39,7 +39,7 @@ const RightBar = () => {
           />
         </a>
       </div>
-      <div className="border-[1px] bobder-solid border-gray-400 rounded p-3">
+      {/* <div className="border-[1px] bobder-solid border-gray-400 rounded p-3">
         <div className="font-semibold text-[14px] text-[#333] pb-2 uppercase pr-[8px] border-b-[2px] bobder-b-solid border-b-gray-500">
           Thống kê truy cập
         </div>
@@ -87,7 +87,7 @@ const RightBar = () => {
             <span>4,282</span>
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

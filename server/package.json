@@ -19,7 +19,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "roleBusiness": "ts-node -r tsconfig-paths/register src/roleBusiness.ts"
+
+    "roleBusiness": "ts-node -r tsconfig-paths/register src/roleBusiness.ts",
+
+    "seed": "ts-node -r tsconfig-paths/register src/seed.ts"
+
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.168.0",

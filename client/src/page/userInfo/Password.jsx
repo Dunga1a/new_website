@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
+import bcrypt from "bcryptjs";
+import { toast } from "react-toastify";
 
 const Password = () => {
   const {
@@ -17,31 +19,52 @@ const Password = () => {
   };
   const { currentUser } = useContext(AuthContext);
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const handleInputChange = (event) => {
+    setConfirmPassword(event.target.value);
+  };
   const onChangeSubmit = async (data) => {
-    let passConfirm = data.confirmPassword;
-    let passNew = data.passwordNew;
-    if (currentUser.password === data.passwordOld) {
-      if (passConfirm !== passNew) {
-        alert("Mật khẩu nhập lại không khớp. Vui lòng nhập lại");
-        setConfirmPassword("");
+    const passwordOld = data.passwordOld;
+    bcrypt.compare(passwordOld, currentUser.password, async (err, result) => {
+      if (err) {
+        console.error(err);
+        return;
       }
-      setConfirmPassword(passConfirm);
-      try {
-        await axios.post(
-          `http://localhost:3001/api/users/change-password/${currentUser.id}`,
-          { newPassword: confirmPassword }
-        );
-        alert("Bạn đã thay đổi mật khẩu thành công");
-        reset();
-      } catch (error) {
-        console.log(error.message);
+
+      if (result) {
+        let passConfirm = data.confirmPassword;
+        let passNew = data.passwordNew;
+
+        if (passConfirm !== passNew) {
+          toast.error("Mật khẩu nhập lại không khớp. Vui lòng nhập lại");
+
+          setConfirmPassword("");
+        }
+        if (passConfirm && passNew) {
+          setConfirmPassword(passConfirm);
+        }
+        try {
+          const response = await axios.post(
+            `http://localhost:3001/api/users/change-password/${currentUser.id}`,
+            { newPassword: confirmPassword }
+          );
+          //console.log(response);
+          setConfirmPassword("");
+          const pass = response.data.password;
+          console.log(pass);
+          const values = { ...currentUser, password: pass };
+          // console.log(values);
+          localStorage.setItem("user", JSON.stringify(values));
+          toast.success("Bạn đã thay đổi mật khẩu thành công");
+          reset();
+        } catch (error) {
+          console.log(error.message);
+        }
+        reset(watch(passConfirm));
+      } else {
+        toast.error("Mật khẩu cũ của bạn chưa chính xác");
+        reset({ passwordOld: "" });
       }
-      reset(watch(passConfirm));
-    } else {
-      //Sai
-      alert("Mật khẩu cũ của bạn chưa đúng");
-    }
+    });
   };
   return (
     <div>
@@ -96,13 +119,13 @@ const Password = () => {
           </p>
 
           <input
-            // value={confirmPassword}
-            // onChange={(e) => setConfirmPassword(e.target.value)}
             type="password"
             {...register("confirmPassword", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
             })}
+            value={confirmPassword}
+            onChange={handleInputChange}
             className={`desktop:w-[50%] laptop:w-[50%] tablet:w-[50%] phone:w-[70%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />

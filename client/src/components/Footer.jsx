@@ -8,7 +8,7 @@ const Footer = () => {
     <>
       <footer className=" dark:bg-gray-900 footer pb-4">
         <div className="mx-auto max-w-[1080px]">
-          <ul className="laptop:grid desktop:grid grid-cols-4 gap-8 px-4 pb-[3.5rem] pt-2 laptop:grid-cols-4 desktop:grid-cols-4 phone:hidden tablet:hidden ">
+          {/* <ul className="laptop:grid desktop:grid grid-cols-4 gap-8 px-4 pb-[3.5rem] pt-2 laptop:grid-cols-4 desktop:grid-cols-4 phone:hidden tablet:hidden ">
             <li>
               <h2 className="leading-[3.5rem] font-semibold text-gray-700 dark:text-white uppercase text-xl">
                 Sở / Ban Ngành
@@ -138,7 +138,7 @@ const Footer = () => {
                 </li>
               </ul>
             </li>
-          </ul>
+          </ul> */}
 
           <div className="px-4 pt-6  text-gray-700">
             <div className="text-center">
@@ -181,12 +181,12 @@ const Footer = () => {
       <div className="bg-gray-500 py-4">
         <div className="max-w-[1080px] m-auto flex justify-between items-center px-3">
           <div className="flex items-center">
-            <div
+            {/* <div
               href="#"
               className="mr-3 w-7 h-7 rounded-full flex items-center bg-primaryColor text-white justify-center"
             >
               <TbBrandStackshare className="font-bold text-lg" />
-            </div>
+            </div> */}
           </div>
           <div>
             <button

@@ -46,6 +46,41 @@ export class UserService implements IUserService {
     return savedUser;
   }
 
+  async createAdminUser(username: string, password: string) {
+    const pass = await hashPassword(password);
+    const adminUser = this.userRepository.create({
+      username,
+      password: pass,
+    });
+    const adminRole = await this.roleRepository.findOne({ name: 'admin' });
+    adminUser.roles = [adminRole];
+    return this.userRepository.save(adminUser);
+  }
+
+  async getUserPaginationAndStatus(
+    status?: boolean | null,
+    page: number = 1,
+    pageSize: number = 4,
+  ) {
+    const skip = (page - 1) * pageSize;
+
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('User')
+      .leftJoinAndSelect('User.roles', 'Role')
+      .leftJoinAndSelect('User.member', 'Member')
+      .orderBy('User.created_at', 'DESC')
+      .skip(skip)
+      .take(pageSize);
+
+    if (status !== null && status !== undefined) {
+      queryBuilder.andWhere('User.status = :status', { status });
+    }
+
+    const [data, count] = await queryBuilder.getManyAndCount();
+
+    return { data, count };
+  }
+
   async findByUsername(username: string) {
     const user = await this.userRepository.findOne(
       {
@@ -85,6 +120,18 @@ export class UserService implements IUserService {
     return user;
   }
 
+  async updateAvatarUser(userId: string, avatarUrl: string) {
+    const user = await this.userRepository.findOne(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.image = avatarUrl;
+    const updateAvatar = await this.userRepository.save(user);
+    return updateAvatar;
+  }
+
   async forgetPassword(email: Useremail) {
     const findUserByEmail = await this.userRepository.findOne({
       where: email,
@@ -109,14 +156,76 @@ export class UserService implements IUserService {
     console.log(user);
 
     user.email = email;
-    await this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   async changePassword(newPassword: string, id: string) {
     const user = await this.userRepository.findOne(id);
-    user.password = newPassword;
+    const password = await hashPassword(newPassword);
+    user.password = password;
 
-    await this.userRepository.save(user);
+    return await this.userRepository.save(user);
+  }
+
+  async editUserProfile(userDetails: any, idUser: string) {
+    try {
+      const user = await this.userRepository.findOne(idUser);
+      if (!user) {
+        // Xử lý khi không tìm thấy người dùng
+        throw new HttpException(
+          'Không tìm thấy người dùng',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      user.firstname = userDetails.firstname;
+      user.lastname = userDetails.lastname;
+      user.gender = userDetails.gender;
+      user.birthday = userDetails.birthday;
+      user.signature = userDetails.signature;
+
+      await this.userRepository.save(user);
+
+      // Cập nhật thành công
+    } catch (error) {
+      console.log(error.message);
+
+      throw new HttpException(
+        'Không thay đổi được thông tin người dùng',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  async approveUsersClose(userIds: number[]) {
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ status: 2 })
+      .whereInIds(userIds)
+      .execute();
+
+    // Trả về danh sách các liên hệ đã được cập nhật
+    const approvedContacts = await this.userRepository.findByIds(userIds);
+    return approvedContacts;
+  }
+
+  async approveUsersOpen(userIds: number[]) {
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ status: 1 })
+      .whereInIds(userIds)
+      .execute();
+
+    // Trả về danh sách các liên hệ đã được cập nhật
+    const approvedUsers = await this.userRepository.findByIds(userIds);
+    return approvedUsers;
+  }
+
+  async checkUserStatus(username: string) {
+    const user = await this.userRepository.findOne({ username: username });
+    return user ? user.status : 2;
   }
 
   async registerUser(createUser: any) {

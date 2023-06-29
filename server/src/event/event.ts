@@ -8,4 +8,5 @@ export interface IEventService {
   editEvent(editEventDetails: EditEventDetails);
   deletedEvent(idEvent: number);
   deletedManyEvent(idEvents: number[]);
+  getLastestEvent();
 }

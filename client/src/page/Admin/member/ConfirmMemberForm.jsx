@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+
+import dayjs from "dayjs";
+
 import { AuthContext } from "../../../context/authContext";
 
 const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
@@ -17,11 +20,15 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
 
   const onSubmit = async (data) => {
     try {
+      const currentTime = dayjs();
       const values = {
         ...data,
         member: memberItem.id,
         username: memberItem.name_company,
+
         image: memberItem.image_company,
+
+        created_at: currentTime.format("HH:mm:ss DD/MM/YYYY"),
       };
       const valuesTwo = {
         to: memberItem.email,
@@ -40,18 +47,18 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
         }
       );
       console.log(resultOne);
-      // if (resultOne) {
-      //   await toast.promise(
-      //     axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {
-      //       withCredentials: true,
-      //     }),
-      //     {
-      //       pending: "Đang gửi mật khẩu về email cấp tài khoản",
-      //       success: "Cấp tài khoản thành công 👌",
-      //       error: "Cấp tài khoản thất bại 🤯",
-      //     }
-      //   );
-      // }
+      if (resultOne) {
+        await toast.promise(
+          axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {
+            withCredentials: true,
+          }),
+          {
+            pending: "Đang gửi mật khẩu về email cấp tài khoản",
+            success: "Cấp tài khoản thành công 👌",
+            error: "Cấp tài khoản thất bại 🤯",
+          }
+        );
+      }
 
       // console.log(result, resultTwo);
       fetchData();

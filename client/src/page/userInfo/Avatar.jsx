@@ -1,14 +1,15 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 
 import { supabase } from "../../libs/supbase.js";
 import Modal from "../../components/Modal/Modal.jsx";
 import ImageCrop from "./cropImage/index.jsx";
+import axios from "axios";
+import { AuthContext } from "../../context/authContext.js";
 const defaltImg =
   "https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/images/1683254955152-avatar.png";
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
-
 export default function AvatarUser() {
   const {
     register,
@@ -17,6 +18,7 @@ export default function AvatarUser() {
     formState: { errors },
   } = useForm();
   const [avatarPreviewUrl, setAvatarPreviewUrl] = useState(defaltImg);
+  const { currentUser } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
   const onDrop = useCallback((acceptedFiles) => {
@@ -26,9 +28,28 @@ export default function AvatarUser() {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // handle form submission here
     console.log(data);
+    // const formData = new FormData();
+    // formData.append("image", data.avatar[0]);
+
+    // try {
+    //   // Send a POST request to upload the image
+    //   const response = await axios.post(
+    //     `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+    //     formData,
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   );
+
+    //   console.log(response.data); // The response from the server after uploading
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   return (
@@ -36,7 +57,9 @@ export default function AvatarUser() {
       <div className="w-[100px] h-[100px] ">
         {avatarPreviewUrl && (
           <img
-            src={avatarPreviewUrl}
+            src={
+              currentUser ? `/uploads/${currentUser.image}` : avatarPreviewUrl
+            }
             alt="Avatar preview"
             className="w-full h-full object-cover center"
           />

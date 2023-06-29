@@ -221,6 +221,7 @@ export class MemberService implements IMemberService {
       email: userMemberDetails.email,
       password: userMemberDetails.password,
       username: userMemberDetails.username,
+
       image: userMemberDetails.image,
     };
     const findRole = await this.roleRepository.findOne({
@@ -231,7 +232,6 @@ export class MemberService implements IMemberService {
     if (!findRole) {
       throw new HttpException('Không tìm thấy quyền', HttpStatus.BAD_REQUEST);
     }
-    // console.log('vao day: ', findRole.id);
 
     const createUser = await this.userService.createUser(values);
     const savedUser = await this.userService.editUser({

@@ -299,7 +299,7 @@ const MemberManager = () => {
             placeholder={
               selectedOption
                 ? `------ Lọc theo ${selectedOption.label} ------`
-                : "------ Lọc theo lĩnh vực kinh doanh ------"
+                : "----- Lọc theo lĩnh vực kinh doanh -----"
             }
             onChange={(e) => handleChangeBusinessIdParam(e.value)}
             value={selectedOptionBusiness}

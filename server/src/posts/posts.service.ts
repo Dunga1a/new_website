@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -26,14 +28,20 @@ export class PostsService {
     categoryId: number,
     userId: number,
   ): Promise<NewsPost> {
+    console.log(userId);
+
     const user = await this.userRepository.findOne(userId, {
       relations: ['roles', 'member'],
     });
+    console.log(user);
 
     //const category = await this.newsCategoryRepository.findOne(categoryId, {relations:['member']});
 
     if (!user) {
-      throw new Error('Member not found');
+      throw new HttpException(
+        'Không có dữ liệu hội viên',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const newsPost = new NewsPost();
@@ -87,7 +95,7 @@ export class PostsService {
   async getPostById(id: number) {
     const post = await this.newsPostRepository.findOne(id);
     if (!post) {
-      return 'Không có dữ liệu';
+      throw new HttpException('Không có dữ liệu', HttpStatus.NOT_FOUND);
     }
 
     return post;
@@ -98,7 +106,7 @@ export class PostsService {
       where: { slug: slug },
     });
     if (!postBySlug) {
-      return 'Không có dữ liệu đâu';
+      throw new HttpException('Không có dữ liệu', HttpStatus.NOT_FOUND);
     }
     // Kiểm tra thời gian từ lần cuối cùng xem bài viết
     const currentTime = new Date().getTime();
@@ -117,7 +125,7 @@ export class PostsService {
   async updatePost(postId: number, updatePostData: UpdatePostDto) {
     const post = await this.newsPostRepository.findOne(postId);
     if (!post) {
-      throw new NotFoundException('Post not found');
+      throw new HttpException('Không tìm thấy bài viết', HttpStatus.NOT_FOUND);
     }
 
     post.title = updatePostData.title;

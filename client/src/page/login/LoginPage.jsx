@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 const LoginPage = ({ className }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -22,6 +23,31 @@ const LoginPage = ({ className }) => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const onSubmit = async (data) => {
+    if (data === null) {
+      alert("Bạn chưa có thông tin đăng nhập");
+    }
+    try {
+      const result = await axios.post(`${DOMAIN}/api/auth/login`, data, {
+        withCredentials: true,
+      });
+      // login(result.data.user);
+      setUser(result.data.user);
+      if (result.data.user.status !== 1) {
+        return;
+      }
+
+      // if(result.data.user)
+      toast.success("Đăng nhập thành công");
+      // navigate("/user/editinfo");
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
+    }
+  };
 
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -60,27 +86,6 @@ const LoginPage = ({ className }) => {
     window.scrollTo(0, 0);
   }, [user]);
 
-  const onSubmit = async (data) => {
-    try {
-      const result = await axios.post(`${DOMAIN}/api/auth/login`, data, {
-        withCredentials: true,
-      });
-      // login(result.data.user);
-      setUser(result.data.user);
-      if (result.data.user.status !== 1) {
-        return;
-      }
-
-      // if(result.data.user)
-      toast.success("Đăng nhập thành công");
-      // navigate("/user/editinfo");
-      window.location.reload();
-    } catch (error) {
-      toast.error(error.response.data.message);
-
-      console.log(error.message);
-    }
-  };
   const resetFields = () => {
     reset();
   };
@@ -187,7 +192,10 @@ const LoginPage = ({ className }) => {
                     <BsFillCaretRightFill />
                     <span>Đăng ký</span>
                   </li>
-                  <li className="flex items-center cursor-pointer hover:opacity-80">
+                  <li
+                    onClick={() => navigate("/user/lostpass")}
+                    className="flex items-center cursor-pointer hover:opacity-80"
+                  >
                     <BsFillCaretRightFill />
                     <span>Khôi phục mật khẩu</span>
                   </li>

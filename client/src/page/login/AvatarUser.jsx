@@ -1,7 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import Test from "../../components/ShareSocial/ShareFaceBook";
+import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 const defaltImg =
   "https://doanhnhanthanhhoahanoi.com/themes/default/images/users/no_avatar.png?fbclid=IwAR338fL6RIzbS6D7bPRRwrwdTnvJbePi4du2t5x47ei63BYmnz4CM_-VRfo";
 export default function AvatarUser() {
@@ -11,6 +13,7 @@ export default function AvatarUser() {
     setValue,
     formState: { errors },
   } = useForm();
+  const { currentUser } = useContext(AuthContext);
   const [avatarPreviewUrl, setAvatarPreviewUrl] = useState(defaltImg);
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -22,9 +25,28 @@ export default function AvatarUser() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // handle form submission here
     console.log(data);
+    const formData = new FormData();
+    formData.append("image", data.avatar[0]);
+
+    try {
+      // Send a POST request to upload the image
+      const response = await axios.post(
+        `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response.data); // The response from the server after uploading
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Form from "../../../components/Form";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
 import Button from "../../../components/Buttons/Button";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../context/authContext";
 const NewsInsert = ({ fetchData, setOpen }) => {
+  const { currentUser } = useContext(AuthContext);
   const handleFormSubmit = async (data) => {
     // Xử lý logic khi submit form
     try {
@@ -34,14 +37,16 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         );
         image = `/uploads/${responseImgPerson.data.imageUrl}`;
       }
-      const value = { ...data, slug, image };
+      const value = { ...data, slug, image, userId: currentUser.id };
       console.log(value);
       const res = await axios.post("http://localhost:3001/api/posts/", value);
       console.log(res.data);
+      toast.success("Thêm bài viết thành công");
       setOpen(false);
       fetchData();
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.response.data.message);
+      console.log(error);
     }
   };
   const [searchParams, setSearchParams] = useSearchParams();

@@ -6,6 +6,5 @@ export interface IRoleService {
   createRole(userDetails: CreateRoleDto): Promise<Role>;
   getAllRole(): Promise<Role[]>;
   getById(id: string): Promise<Role>;
-  getUserByRole(item: any);
-  editRole(editRoleDetails: EditRole);
+  getByName(name: string): Promise<Role>;
 }

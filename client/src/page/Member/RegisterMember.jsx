@@ -177,6 +177,7 @@ const RegisterMember = () => {
           <h3 className="font-semibold text-base">Thông tin doanh nghiệp</h3>
           <div className="my-4 relative">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -193,6 +194,7 @@ const RegisterMember = () => {
           </div>
           <div className="my-4 relative">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -208,6 +210,7 @@ const RegisterMember = () => {
           </div>
           <div className="my-4 relative">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -223,7 +226,8 @@ const RegisterMember = () => {
           </div>
           <div className="my-4 relative">
             <input
-              type="number"
+              required
+              type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
@@ -245,6 +249,7 @@ const RegisterMember = () => {
               {...register("email", {
                 required: true,
               })}
+              required
               placeholder="Nhập email"
             />
             <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
@@ -268,6 +273,7 @@ const RegisterMember = () => {
           </div>
           <div className="my-4 relative">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -283,6 +289,7 @@ const RegisterMember = () => {
           </div>
           <div className="my-4 relative">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -298,6 +305,7 @@ const RegisterMember = () => {
           </div>
           <div className="my-4">
             <input
+              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
@@ -315,7 +323,9 @@ const RegisterMember = () => {
             <h3 className="font-semibold text-base">Ảnh người đại diện:</h3>
             <div className="flex items-center">
               <input
+                required
                 type="file"
+                accept=".jpg, .png, .jpeg, .svg"
                 placeholder="Chưa...chọn"
                 onChange={(e) => handleImageChange(e, "firstImg")}
               />
@@ -326,7 +336,7 @@ const RegisterMember = () => {
                     src={
                       selectedImages.firstImg
                         ? `${selectedImages.firstImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
+                        : "/assets/images/logo-107x107.png"
                     }
                     alt="Selected Img One"
                   />
@@ -341,7 +351,9 @@ const RegisterMember = () => {
 
             <div className="flex items-center">
               <input
+                required
                 type="file"
+                accept=".jpg, .png, .jpeg, .svg"
                 placeholder="Chưa...chọn"
                 onChange={(e) => handleImageChange(e, "secondImg")}
               />
@@ -352,7 +364,7 @@ const RegisterMember = () => {
                     src={
                       selectedImages.secondImg
                         ? `${selectedImages.secondImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
+                        : "/assets/images/logo-107x107.png"
                     }
                     alt="Selected Img One"
                   />

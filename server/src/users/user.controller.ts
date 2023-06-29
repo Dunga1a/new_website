@@ -6,6 +6,9 @@ import {
   Put,
   Body,
   Post,
+  Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { Routes, Services } from '../utils/constants';
 import { IUserService } from './users';
@@ -19,6 +22,9 @@ import { ChangeEmailDto } from './dtos/ChangeEmail.dto';
 import { ConfirmEmailDto } from './dtos/ConfirmEmail.dto';
 import { MailService } from 'src/mail/mail.service';
 import { ChangePassword } from './dtos/ChangePassword.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 // Hàm tạo mã xác minh
 
 @Controller(Routes.USERS)
@@ -32,6 +38,21 @@ export class UsersController {
   @Post('getOneUser')
   async forgetPassword(@Body() email: UserEmail): Promise<User> {
     return this.userService.forgetPassword(email);
+  }
+
+  @Get()
+  async getUserByStatusWithPagination(
+    @Query('status') status: boolean | null,
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 4,
+  ) {
+    const data = await this.userService.getUserPaginationAndStatus(
+      status,
+      page,
+      pageSize,
+    );
+
+    return data;
   }
 
   @Get(':username')
@@ -52,6 +73,36 @@ export class UsersController {
       verificationCode += characters[randomIndex];
     }
     return verificationCode;
+  }
+
+  @Post('uploadFileImage/:userId')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../client/public/uploads',
+        filename: (req, file, callback) => {
+          const randomName = Array(4)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 4).toString(16))
+            .join('');
+          return callback(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('userId') userId: string,
+  ) {
+    console.log(userId);
+    console.log(file.filename);
+
+    const imageUrl = file.filename;
+    const updatedUser = await this.userService.updateAvatarUser(
+      userId,
+      imageUrl,
+    );
+    return updatedUser;
   }
 
   @Post('change-email')
@@ -88,10 +139,7 @@ export class UsersController {
       // Xóa mã xác minh đã sử dụng
       this.verificationCode = '';
 
-      return (
-        'Đã thay đổi thành công ' +
-        (await this.userService.updateUserEmail(email, userId))
-      );
+      return await this.userService.updateUserEmail(email, userId);
     } else {
       // Mã xác minh không hợp lệ
       return { message: 'Invalid verification code' };
@@ -107,19 +155,31 @@ export class UsersController {
     //console.log(password);
 
     if (password) {
-      return (
-        'Thay đổi mật khẩu thành công' +
-        (await this.userService.changePassword(password, id))
-      );
+      return await this.userService.changePassword(password, id);
     } else {
       return 'lỗi';
     }
   }
 
-  @Post('registerUser')
-  async registerUser(@Body() createUser: any) {
-    const result = await this.userService.registerUser(createUser);
-    return result;
+  @Put('editUser/:idUser')
+  async editUserProfile(
+    @Body() userDetails: any,
+    @Param('idUser') idUser: string,
+  ) {
+    console.log(userDetails);
+    console.log(idUser);
+
+    return await this.userService.editUserProfile(userDetails, idUser);
+  }
+
+  @Put('approve-close')
+  async approveClose(@Body() ids: number[]) {
+    return await this.userService.approveUsersClose(ids);
+  }
+
+  @Put('approve-open')
+  async approveOpen(@Body() ids: number[]) {
+    return await this.userService.approveUsersOpen(ids);
   }
 
   // @Post('forgotPassword')
