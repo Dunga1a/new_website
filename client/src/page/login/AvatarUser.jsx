@@ -4,6 +4,8 @@ import { useDropzone } from "react-dropzone";
 import Test from "../../components/ShareSocial/ShareFaceBook";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const defaltImg =
   "https://doanhnhanthanhhoahanoi.com/themes/default/images/users/no_avatar.png?fbclid=IwAR338fL6RIzbS6D7bPRRwrwdTnvJbePi4du2t5x47ei63BYmnz4CM_-VRfo";
 export default function AvatarUser() {
@@ -34,7 +36,7 @@ export default function AvatarUser() {
     try {
       // Send a POST request to upload the image
       const response = await axios.post(
-        `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+        `${DOMAIN}/api/users/uploadFileImage/${currentUser.id}`,
         formData,
         {
           headers: {

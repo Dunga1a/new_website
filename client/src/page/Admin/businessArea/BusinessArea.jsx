@@ -13,6 +13,7 @@ import FormBusinessAreaDelete from "./FormBusinessAreaDelete";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const BusinessArea = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -113,7 +114,7 @@ const BusinessArea = () => {
   const handleChangeStatusOnManyItems = async (items) => {
     try {
       const result = await axios.put(
-        "http://localhost:3001/api/business-areas/updateStatusOn",
+        `${DOMAIN}/api/business-areas/updateStatusOn`,
         items,
         {
           withCredentials: true,

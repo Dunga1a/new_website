@@ -13,6 +13,8 @@ import EmptyState from "../../../components/EmptyState/EmptyState";
 import { Flip, toast } from "react-toastify";
 import Modal from "../../../components/Modal/Modal";
 import { ButtonV2 } from "../../../components/Buttons/ButtonV2";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const ContactManager = () => {
   const navigate = useNavigate();
   const [contact, setContact] = useState([]);
@@ -30,9 +32,7 @@ const ContactManager = () => {
   const fetchData = async () => {
     try {
       const sheet = page || 1;
-      const res = await axios.get(
-        `http://localhost:3001/api/contact?page=${sheet}`
-      );
+      const res = await axios.get(`${DOMAIN}/api/contact?page=${sheet}`);
       //console.log(res.data);
 
       setContact(res.data.data);
@@ -82,10 +82,7 @@ const ContactManager = () => {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
       console.log(item);
 
-      await axios.post(
-        "http://localhost:3001/api/contact/deletesContact/",
-        item
-      );
+      await axios.post(`${DOMAIN}/api/contact/deletesContact/`, item);
       setOpen(false);
       toast.success("Đã xóa thành công", {
         position: "top-right",
@@ -109,7 +106,7 @@ const ContactManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.put("http://localhost:3001/api/contact/approve-open", item);
+      await axios.put(`${DOMAIN}/api/contact/approve-open`, item);
 
       toast.success("Đã đánh dấu thành công");
       setOpenStatus(false);
@@ -125,7 +122,7 @@ const ContactManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.put("http://localhost:3001/api/contact/approve-close", item);
+      await axios.put(`${DOMAIN}/api/contact/approve-close`, item);
 
       toast.success("Đã đánh dấu là chưa đọc");
       setCloseStatus(false);

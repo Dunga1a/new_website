@@ -11,6 +11,8 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context/authContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -138,7 +140,7 @@ export default function ImageCrop({
     try {
       // Send a POST request to upload the image
       const response = await axios.post(
-        `http://localhost:3001/api/users/uploadFileImage/${currentUser.id}`,
+        `${DOMAIN}/api/users/uploadFileImage/${currentUser.id}`,
         formData,
         {
           headers: {

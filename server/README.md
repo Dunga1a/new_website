@@ -25,7 +25,7 @@
    - **`MYSQL_DB_NAME`** The name of your database (be sure to create it first otherwise an error will be thrown).
    - **`COOKIE_SECRET`** Can be any string that can be used to encrypt & decrypt your cookie.
 3. Run `npm install` or `npm i --legacy-peer-deps`.
-4. Run `npm run seed` and `npm run roleBusiness` create `role`, `user "admin"` and `role Oganize`
+4. Run `npm run seed` create `role`, `user "admin"` and `role Oganize`
    - role {
       name: 'admin',
       name: 'staff',

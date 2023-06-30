@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Test from "../../components/ShareSocial/ShareFaceBook";
 import axios from "axios";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const Basic = () => {
   const { currentUser } = useContext(AuthContext);
@@ -20,10 +21,7 @@ const Basic = () => {
     try {
       const value = { ...currentUser, ...data };
       console.log(value);
-      axios.put(
-        `http://localhost:3001/api/users/editUser/${currentUser.id}`,
-        value
-      );
+      axios.put(`${DOMAIN}/api/users/editUser/${currentUser.id}`, value);
       toast.success("Thay đổi thông tin thành công");
       localStorage.setItem("user", JSON.stringify(value));
       reset();

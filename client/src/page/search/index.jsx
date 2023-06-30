@@ -7,6 +7,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const SearchPage = () => {
   const [data, setData] = useState(null);
   const [count, setCount] = useState();
@@ -35,7 +37,7 @@ const SearchPage = () => {
       const search = data.keyword || searchkey;
       console.log(search);
       const res = await axios.get(
-        `http://localhost:3001/api/posts/search?keyword=${search}&page=${sheet}`
+        `${DOMAIN}/api/posts/search?keyword=${search}&page=${sheet}`
       );
       if (data.keyword) {
         setSearchParams({ ...searchParams, keyword: search, page: sheet });
