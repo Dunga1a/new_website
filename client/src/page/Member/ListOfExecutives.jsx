@@ -138,14 +138,17 @@ const ListOfExecutives = () => {
                 ))
               : null}
           </div>
-          {member && (
-            <PaginationV2
-              total={count}
-              current={searchParams.get("page") || 1}
-              pageSize="5"
-              onChange={handleChangePage}
-            />
-          )}
+
+          {member ? (
+            member.length ? (
+              <PaginationV2
+                total={count}
+                current={searchParams.get("page") || 1}
+                pageSize="5"
+                onChange={handleChangePage}
+              />
+            ) : null
+          ) : null}
         </div>
         <div>
           <div>

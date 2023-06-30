@@ -5,8 +5,6 @@ import { toast } from "react-toastify";
 
 import dayjs from "dayjs";
 
-import { AuthContext } from "../../../context/authContext";
-
 const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
   // const { url } = useContext(AuthContext);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -36,9 +34,6 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
         text: `<p>Mật khẩu của bạn là: <strong>${data.password}</strong></p>`,
       };
 
-      // console.log("values:", values);
-      // console.log("valuesTwo:", valuesTwo);
-
       const resultOne = await axios.post(
         `${DOMAIN}/api/member/createUserFromMember`,
         values,
@@ -46,7 +41,7 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
           withCredentials: true,
         }
       );
-      console.log(resultOne);
+
       if (resultOne) {
         await toast.promise(
           axios.post(`${DOMAIN}/api/member/sendEmail`, valuesTwo, {

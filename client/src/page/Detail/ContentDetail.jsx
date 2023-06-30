@@ -7,18 +7,17 @@ import Breadcrumbs from "../../components/Breadcrumb";
 import { CgCalendarDates } from "react-icons/cg";
 import ShareFaceBook from "../../components/ShareSocial/ShareFaceBook";
 import ShareTwitter from "../../components/ShareSocial/Twitter";
-import { BsFacebook, BsFillReplyFill } from "react-icons/bs";
+import { BsFacebook } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
-import FormReply from "./FormReply";
-import { FaUserAlt } from "react-icons/fa";
-import { BiTime } from "react-icons/bi";
+
 import dayjs from "dayjs";
 import CommentList from "./CommentList";
 import { useParams } from "react-router-dom";
 
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const ContentDetail = () => {
   const [arr, setArr] = useState([]);
 
@@ -26,22 +25,17 @@ const ContentDetail = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    setValue,
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
   // CẦN LẤY CẢ ID CỦA USER VÀ ID CỦA BÀI POST NỮA
   const { currentUser } = useContext(AuthContext);
-
+  console.log("currentUser: ", currentUser);
   const [postItem, setPostItem] = useState(null);
   const { slug } = useParams();
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3001/api/posts/details-slug/" + slug
-      );
-      console.log(res.data);
+      const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
       setPostItem(res.data);
     } catch (error) {
       console.log(error.message);
@@ -59,14 +53,13 @@ const ContentDetail = () => {
         post: postItem.id,
         user: currentUser.id,
       };
-      const result = await axios.post(
+      await axios.post(
         "http://localhost:3001/api/comment/createComment",
         values,
         { withCredentials: true }
       );
       fetchData();
       reset({ content: "" });
-      console.log(result);
     } catch (error) {
       console.log(error.message);
     }
@@ -213,10 +206,9 @@ const ContentDetail = () => {
                         className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-                        {...register("email", {
-                          required: true,
-                        })}
+                        {...register("email")}
                         defaultValue={currentUser.email}
+                        readOnly
                       />
                     </div>
                   </div>
@@ -237,7 +229,7 @@ const ContentDetail = () => {
                   <div className="col-span-2 text-center">
                     <button
                       type="submit"
-                      className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
+                      className="px-10 hidden py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
                     >
                       Gửi bình luận
                     </button>
