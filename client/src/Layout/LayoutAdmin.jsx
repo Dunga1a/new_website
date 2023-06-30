@@ -125,7 +125,7 @@ export default function LayoutAdmin() {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
             <div className="flex h-16 shrink-0 items-center">
               <img
-                className="h-8 w-auto"
+                className="h-16 w-auto mt-3"
                 src="/assets/images/logo-107x107.png"
                 alt="Your Company"
                 onClick={() => navigate("/")}

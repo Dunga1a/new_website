@@ -31,7 +31,11 @@ const FormDeleteCategory = ({
       <div className="text-[18px] mb-2">
         Bạn có chắc muốn xóa:{" "}
         {newsCategoryDelete.map((item) => {
-          return <p className="font-bold">{item.name}</p>;
+          return (
+            <p key={item.id} className="font-bold">
+              {item.name}
+            </p>
+          );
         })}
         Và các bài đăng liên quan?
       </div>
