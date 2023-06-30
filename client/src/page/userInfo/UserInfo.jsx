@@ -7,6 +7,8 @@ import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Buttons/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const defaltImg =
   "https://doanhnhanthanhhoahanoi.com/themes/default/images/users/no_avatar.png?fbclid=IwAR338fL6RIzbS6D7bPRRwrwdTnvJbePi4du2t5x47ei63BYmnz4CM_-VRfo";
 
@@ -25,7 +27,7 @@ const UserInfo = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/users/${currentUser.username}`
+        `${DOMAIN}/api/users/${currentUser.username}`
       );
       // console.log(response);
       setData(response.data);
@@ -44,11 +46,12 @@ const UserInfo = () => {
             <img
               src={
                 (currentUser && currentUser.photoURL) ||
-                (data && `/uploads/${data.image}`) ||
-                defaltImg
+                (data && data.image !== null
+                  ? `/uploads/${data.image}`
+                  : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg")
               }
               alt=""
-              className="h-[90px] w-[90px]"
+              className="h-[90px] w-[90px] border"
             />
             <p className="absolute bottom-0 text-center left-0 right-0 py-[1px] text-[12px] text-white bg-[#357edb]">
               Hình đại diện
@@ -60,7 +63,7 @@ const UserInfo = () => {
               <p>
                 Tài khoản:{" "}
                 <span className="font-bold">
-                  {currentUser?.displayName || (data && data.lastname)}
+                  {currentUser?.displayName || (data && data.username)}
                 </span>{" "}
                 (
                 {(currentUser && currentUser.email) ||
@@ -85,7 +88,9 @@ const UserInfo = () => {
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
               {(currentUser && currentUser.displayName) ||
-                (data && data.firstname + " " + data.lastname)}
+                (data && data.lastname !== null
+                  ? data.firstname + " " + data.lastname
+                  : "")}
             </td>
           </tr>
           <tr>
@@ -94,8 +99,12 @@ const UserInfo = () => {
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
               {" "}
-              {dayjs(currentUser.birthday).format("DD/MM/YYYY") ||
-                (data && dayjs(data.birthday).format("DD/MM/YYYY"))}
+              {currentUser && currentUser.birthday
+                ? dayjs(currentUser.birthday).format("DD/MM/YYYY") ||
+                  (data && data.birthday
+                    ? dayjs(data.birthday).format("DD/MM/YYYY")
+                    : "")
+                : ""}
             </td>
           </tr>
           <tr className="bg-[#f9f9f9]">
@@ -124,7 +133,8 @@ const UserInfo = () => {
               Ngày tham gia
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
-              {currentUser.created_at || (data && data.created_at)}
+              {dayjs(currentUser.created_at).format("DD/MM/YYYY") ||
+                (data && dayjs(data.created_at).format("DD/MM/YYYY"))}
             </td>
           </tr>
           <tr>

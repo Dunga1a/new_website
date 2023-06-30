@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 //import * as bcrypt from "bcrypt";
 import bcrypt from "bcryptjs";
 import axios from "axios";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const Email = () => {
   const salt = bcrypt.genSalt();
@@ -30,7 +31,7 @@ const Email = () => {
       // console.log(values);
       // console.log(value);
       const response = await axios.post(
-        `http://localhost:3001/api/users/${currentUser.id}/confirm-email`,
+        `${DOMAIN}/api/users/${currentUser.id}/confirm-email`,
         value
       );
       reset();
@@ -67,10 +68,7 @@ const Email = () => {
             newEmail: email,
           };
 
-          await axios.post(
-            "http://localhost:3001/api/users/change-email",
-            value
-          );
+          await axios.post(`${DOMAIN}/api/users/change-email`, value);
           toast.success("Đã gửi mã thành công! Vui lòng kiểm tra");
         } catch (error) {
           console.log(error.message);

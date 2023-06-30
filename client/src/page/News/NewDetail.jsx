@@ -31,7 +31,7 @@ const NewDetail = () => {
     try {
       const sheet = page ? page : 1;
 
-      let url = "http://localhost:3001/api/posts/allPost?";
+      let url = `${DOMAIN}/api/posts/allPost?`;
       url += `page=${page || 1}`;
       const res = await axios.get(url);
       const result = await axios.get(
@@ -56,6 +56,7 @@ const NewDetail = () => {
     setSearchParams(newSearchParams.toString());
     navigate(`/news/tin-hoi-vien?page=${page}`, { state: state });
   };
+  console.log(postList);
 
   return (
     <div className="bg-white pt-6">
@@ -70,10 +71,10 @@ const NewDetail = () => {
           <div className="desktop:pr-5 list phone:pr-0">
             {postList ? (
               postList.length ? (
-                postList.map((post, index) => {
+                postList.map((post) => {
                   return (
                     <div
-                      key={index}
+                      key={post.id}
                       className="block text-[14px] py-8 border-b-[2px] border-[#999999] border-solid item"
                     >
                       <div
@@ -81,7 +82,7 @@ const NewDetail = () => {
                         className=" cursor-pointer"
                       >
                         <img
-                          src={post.image ? post.image[0] : null}
+                          src={post.image ? post.image : null}
                           alt={post.title}
                           className="float-left mr-3 mt-2"
                           width={170}

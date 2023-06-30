@@ -62,10 +62,6 @@ const contentArr = [
         title: "Danh sách thành viên",
         slug: "",
       },
-      {
-        title: "Thoát",
-        slug: "quyen-loi-hoi-voi",
-      },
     ],
   ],
 ];
@@ -373,6 +369,19 @@ const Navbar = () => {
               </div>
             </li>
           )}
+
+          {currentUser &&
+            currentUser.roles &&
+            currentUser.roles.some((item) => item.name === "admin") && (
+              <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+                <div
+                  className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                  onClick={() => navigate("/admin")}
+                >
+                  <span>Quản lí site</span>
+                </div>
+              </li>
+            )}
         </ul>
       </div>
       <div className=" laptop:hidden desktop:hidden phone:block tablet:block">

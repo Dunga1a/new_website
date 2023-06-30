@@ -8,6 +8,7 @@ import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 // import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 import "react-toastify/dist/ReactToastify.css";
 const Member = () => {
@@ -37,7 +38,7 @@ const Member = () => {
       const status = memberStatus ? memberStatus : "1";
 
       const result = await axios.get(
-        `http://localhost:3001/api/member?page=${sheet}&memberStatus=${status}`,
+        `${DOMAIN}/api/member?page=${sheet}&memberStatus=${status}`,
         {
           withCredentials: true,
         }

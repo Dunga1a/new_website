@@ -18,6 +18,7 @@ import { BiTime } from "react-icons/bi";
 import dayjs from "dayjs";
 import CommentList from "./CommentList";
 import { useParams } from "react-router-dom";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const ContentDetail = () => {
   const [arr, setArr] = useState([]);
@@ -38,9 +39,7 @@ const ContentDetail = () => {
   const { slug } = useParams();
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3001/api/posts/details-slug/" + slug
-      );
+      const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
       console.log(res.data);
       setPostItem(res.data);
     } catch (error) {
@@ -60,7 +59,7 @@ const ContentDetail = () => {
         user: currentUser.id,
       };
       const result = await axios.post(
-        "http://localhost:3001/api/comment/createComment",
+        `${DOMAIN}/api/comment/createComment`,
         values,
         { withCredentials: true }
       );
@@ -114,7 +113,7 @@ const ContentDetail = () => {
   const fetchDataCmt = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/comment/getCommentByPost/${postItem.id}`,
+        `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
         {
           withCredentials: true,
         }
@@ -138,7 +137,7 @@ const ContentDetail = () => {
       <Breadcrumbs
         title={"Điểm Tin"}
         // sau khi fetch data thì sẽ lấy theo title ở đây
-        subtitle={"Tên bài"}
+        subtitle={`${postItem && postItem.title}`}
         link={"/news"}
         // link sẽ theo thằng category
       />

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./popup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+console.log(DOMAIN);
 const PopupEvent = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [eventList, setEventList] = useState([]);
@@ -24,7 +26,7 @@ const PopupEvent = () => {
       //const sheet = page ? page : 1;
 
       const result = await axios.get(
-        `http://localhost:3001/api/event/getAllEvent?page=1&searchKey=&dateStart=&dateEnd=`,
+        `${DOMAIN}/api/event/getAllEvent?page=1&searchKey=&dateStart=&dateEnd=`,
         {
           withCredentials: true,
         }

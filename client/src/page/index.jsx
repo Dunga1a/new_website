@@ -8,6 +8,8 @@ import SliderPage from "../components/Slider";
 import Card from "../components/Card";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const slides = [
   {
     id: 1,
@@ -27,7 +29,7 @@ const HomePage = () => {
   const [data, setData] = useState(null);
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/posts/allPost");
+      const res = await axios.get(`${DOMAIN}/api/posts/allPost`);
       console.log(res.data);
       setData(res.data.data);
     } catch (error) {
@@ -55,7 +57,7 @@ const HomePage = () => {
             >
               <div className="bg-gray-200 w-[110%] phone:w-full">
                 <img
-                  src="https://doanhnhanthanhhoahanoi.com/data/tmp/news_17_197d0083412t2690l8-2_320-0.jpg"
+                  src={`${item.image}`}
                   alt=""
                   className="m-auto phone:m-auto w-[90%] h-[215px]"
                 />
@@ -64,10 +66,7 @@ const HomePage = () => {
                 <h2 className="mt-2 font-bold text-lg text-gray-700">
                   <a href="#">{item.title}</a>
                 </h2>
-                <span
-                  className="text-sm"
-                  dangerouslySetInnerHTML={{ __html: item.content }}
-                ></span>
+                <span className="text-sm">{item.subcontent}</span>
               </div>
             </div>
           ))}
@@ -92,8 +91,9 @@ const HomePage = () => {
                   >
                     {item.title}
                     <img
-                      className="ml-[20px]"
-                      src="https://doanhnhanthanhhoahanoi.com/assets/news/2022_11/screenshot-2022-11-24-145502.png"
+                      className="ml-[20px] max-h-[70px] object-cover"
+                      width={130}
+                      src={item.image}
                       alt=""
                     />
                   </div>

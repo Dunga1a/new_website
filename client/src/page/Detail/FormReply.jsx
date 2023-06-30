@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const FormReply = ({ value, user, fetchData, setOpen }) => {
   // console.log("value: ", user);
@@ -9,9 +10,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
   const { slug } = useParams();
   const fetchDataStatic = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3001/api/posts/details-slug/" + slug
-      );
+      const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
       console.log(res.data);
       setPost(res.data);
     } catch (error) {
@@ -40,7 +39,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
         post: post.id,
       };
       const result = await axios.post(
-        "http://localhost:3001/api/comment/createComment",
+        `${DOMAIN}/api/comment/createComment`,
         values,
         { withCredentials: true }
       );

@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/authContext";
 import axios from "axios";
 import bcrypt from "bcryptjs";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const Password = () => {
   const {
@@ -44,7 +45,7 @@ const Password = () => {
         }
         try {
           const response = await axios.post(
-            `http://localhost:3001/api/users/change-password/${currentUser.id}`,
+            `${DOMAIN}/api/users/change-password/${currentUser.id}`,
             { newPassword: confirmPassword }
           );
           //console.log(response);

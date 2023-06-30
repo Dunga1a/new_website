@@ -17,12 +17,7 @@ import NewsInsert from "./NewsInsert";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
-const options = [
-  { label: "Tin tức hoạt động", value: 1 },
-  { label: "Tin tức Xứ Thanh", value: 2 },
-  { label: "Tin Hội viên", value: 3 },
-  { label: "Hoạt động", value: 4 },
-];
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_post = [
   { value: 0, label: "Chưa duyệt" },
@@ -48,6 +43,7 @@ const NewsMemberManager = () => {
   const page = searchParams.get("page");
   const category = searchParams.get("category");
   const status = searchParams.get("status");
+  const [listCategory, setListCategory] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
   //console.log(currentUser);
@@ -83,7 +79,7 @@ const NewsMemberManager = () => {
   const onSubmit = (data) => console.log(data);
   const fetchDataWithFilter = async () => {
     try {
-      let url = "http://localhost:3001/api/posts?";
+      let url = `${DOMAIN}/api/posts?`;
       if (selectOne) {
         url += `category=${selectOne.value || null}&`;
       }
@@ -104,12 +100,37 @@ const NewsMemberManager = () => {
 
   useEffect(() => {
     fetchDataWithFilter();
+    fetchDataStatic();
   }, [page, selectOne, selectTwo, idItem]);
 
   const handleEdit = (item) => {
     console.log(item);
     setIdItem(item);
     setOpenEditModal(true);
+  };
+
+  //const list = searchParams.get("page") || 1;
+
+  const fetchDataStatic = async () => {
+    try {
+      //const sheet = page ? page : 1;
+      const result = await axios.get(
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=1`,
+        {
+          withCredentials: true,
+        }
+      );
+      const data = result.data.getListCategory.map((item) => {
+        return {
+          value: item.news_category_id,
+          label: item.name,
+        };
+      });
+      setListCategory(data);
+      console.log(result.data.getListCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   //console.log(data);
 
@@ -119,7 +140,7 @@ const NewsMemberManager = () => {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
       //console.log(typeof itemId);
 
-      await axios.post("http://localhost:3001/api/posts/deletes/", item);
+      await axios.post(`${DOMAIN}/api/posts/deletes/`, item);
       toast.success("Đã xóa thành công");
       setOpenModalDelete(false);
       fetchDataWithFilter();
@@ -151,7 +172,7 @@ const NewsMemberManager = () => {
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
 
-      await axios.post("http://localhost:3001/api/posts/approve", item);
+      await axios.post(`${DOMAIN}/api/posts/approve`, item);
       toast.success("Đã duyệt thành công");
       setOpenModalStatus(false);
       setIsCheckedItems([]);
@@ -169,6 +190,8 @@ const NewsMemberManager = () => {
     setSelectOne("");
     setSelectTwo("");
   };
+
+  const options = listCategory;
 
   return (
     <div className="relative transition-all ease-linear">

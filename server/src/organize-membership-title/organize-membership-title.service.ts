@@ -32,7 +32,7 @@ export class OrganizeMembershipTitleService
 
   async createOrganizations(createOrganizationsDetails: OrganizationDetails) {
     const findOrganizationByName =
-      await this.organizeMembershipTitleRepository.find({
+      await this.organizeMembershipTitleRepository.findOne({
         where: {
           name: createOrganizationsDetails.name,
         },
