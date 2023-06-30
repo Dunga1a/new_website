@@ -22,12 +22,12 @@ const slides = [
     img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
   },
 ];
-
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const HomePage = () => {
   const [data, setData] = useState(null);
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/posts/allPost");
+      const res = await axios.get(`${DOMAIN}/api/posts/allPost`);
       console.log(res.data);
       setData(res.data.data);
     } catch (error) {

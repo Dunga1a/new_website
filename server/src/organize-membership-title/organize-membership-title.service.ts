@@ -32,11 +32,13 @@ export class OrganizeMembershipTitleService
 
   async createOrganizations(createOrganizationsDetails: OrganizationDetails) {
     const findOrganizationByName =
-      await this.organizeMembershipTitleRepository.find({
+      await this.organizeMembershipTitleRepository.findOne({
         where: {
           name: createOrganizationsDetails.name,
         },
       });
+    // console.log(findOrganizationByName);
+
     if (findOrganizationByName) {
       throw new HttpException('Chức vụ này đã tồn tại', HttpStatus.NOT_FOUND);
     }
@@ -60,7 +62,10 @@ export class OrganizeMembershipTitleService
           },
         });
       if (findOrganizationDB) {
-        throw new HttpException('Chức vụ đã tồn tại', HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          'Chức vụ đã tồn tại, Vui long chon khac',
+          HttpStatus.NOT_FOUND,
+        );
       }
     }
 

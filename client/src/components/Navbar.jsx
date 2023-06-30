@@ -64,7 +64,8 @@ const contentArr = [
       },
       {
         title: "Thoát",
-        slug: "quyen-loi-hoi-voi",
+        slug: "",
+        onClick: true,
       },
     ],
   ],
