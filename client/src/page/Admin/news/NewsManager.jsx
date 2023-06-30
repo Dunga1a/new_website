@@ -276,15 +276,11 @@ const NewsManager = () => {
                       </td>
 
                       <td className="text-center">
-                        {item.user.member ? item.user.member.name_company : ""}
+                        {item.user ? item.user.username : ""}
                       </td>
 
                       <td className="text-center line-clamp-1 w-[200px]">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: item.content ? item.content : "",
-                          }}
-                        ></div>
+                        {item && item.subcontent}
                       </td>
                       <td className="text-center">
                         {dayjs(item.created_at.slice(0, 10)).format(
