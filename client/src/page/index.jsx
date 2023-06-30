@@ -91,7 +91,7 @@ const HomePage = () => {
                   >
                     {item.title}
                     <img
-                      className="ml-[20px]"
+                      className="ml-[20px] max-h-[70px] object-cover"
                       width={130}
                       src={item.image}
                       alt=""

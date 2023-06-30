@@ -56,6 +56,7 @@ const NewDetail = () => {
     setSearchParams(newSearchParams.toString());
     navigate(`/news/tin-hoi-vien?page=${page}`, { state: state });
   };
+  console.log(postList);
 
   return (
     <div className="bg-white pt-6">
@@ -81,7 +82,7 @@ const NewDetail = () => {
                         className=" cursor-pointer"
                       >
                         <img
-                          src={post.image ? post.image[0] : null}
+                          src={post.image ? post.image : null}
                           alt={post.title}
                           className="float-left mr-3 mt-2"
                           width={170}
