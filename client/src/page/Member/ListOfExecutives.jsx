@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 import { AuthContext } from "../../context/authContext";
-
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const ListOfExecutives = () => {
   const { url } = useContext(AuthContext);
   const [member, setMember] = useState([]);
@@ -34,10 +34,10 @@ const ListOfExecutives = () => {
       const search = "";
 
       const result = await axios.get(
-        `${url}/api/business-areas/getListBusinessArea`
+        `${DOMAIN}/api/business-areas/getListBusinessArea`
       );
       const resultTwo = await axios.get(
-        `${url}/api/organize-membership-title?searchKey=${search}`
+        `${DOMAIN}/api/organize-membership-title?searchKey=${search}`
       );
 
       const data = result.data.map((item) => {
@@ -78,7 +78,7 @@ const ListOfExecutives = () => {
       const status = memberStatus ? memberStatus : "";
 
       const result = await axios.get(
-        `${url}/api/member/getMemberByRole?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
+        `${DOMAIN}/api/member/getMemberByRole?page=${sheet}&roleAssociationParam=${roleAssociationParamId}&businessIdParam=${businessIdParamId}&memberStatus=${status}`,
         {
           withCredentials: true,
         }
@@ -104,7 +104,7 @@ const ListOfExecutives = () => {
       <div className=" pb-14 grid grid-cols-4 gap-3 pt-4 px-6">
         <div className="pt-4 col-span-3 ">
           <div className="grid grid-cols-3 gap-3">
-            {member
+            {member && member.length
               ? member.map((member) => (
                   <div
                     key={member.id}
