@@ -13,7 +13,9 @@ import FormBusinessAreaDelete from "./FormBusinessAreaDelete";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
+
 import { toast } from "react-toastify";
+import EmptyState from "../../../components/EmptyState/EmptyState";
 
 const BusinessArea = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -118,9 +120,11 @@ const BusinessArea = () => {
         ids: items,
         status: status,
       };
-      await axios.put(
-        "http://localhost:3001/api/business-areas/updateStatusOn",
-        data,
+
+      const result = await axios.put(
+        `${DOMAIN}/api/business-areas/updateStatusOn`,
+        items,
+
         {
           withCredentials: true,
         }
@@ -173,7 +177,7 @@ const BusinessArea = () => {
           />
         </div>
         <Card.Content>
-          {businessAreaList ? (
+          {businessAreaList.length ? (
             <table className="border border-blue-400 w-full bg-white">
               <thead>
                 <tr>
@@ -241,16 +245,10 @@ const BusinessArea = () => {
                 })}
               </tbody>
             </table>
-          ) : null}
+          ) : (
+            <EmptyState />
+          )}
           <div className="mt-5 flex gap-1">
-            {/* <Button
-              icon={<AiOutlineDelete className="text-[18px]" />}
-              title={"Xóa các lựa chọn"}
-              colorBgr={"bg-red-500"}
-              colorText={"text-white"}
-              colorHover={"bg-red-800"}
-              onClick={() => handleDeleteManyItems(isCheckedItems)}
-            /> */}
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Bật Trạng Thái Các Lựa Chọn"}
@@ -269,14 +267,14 @@ const BusinessArea = () => {
             />
           </div>
         </Card.Content>
-        {businessAreaList && (
+        {businessAreaList.length ? (
           <PaginationV2
             total={count}
             current={searchParams.get("page") || 1}
             pageSize="6"
             onChange={handleChangePage}
           />
-        )}
+        ) : null}
       </Card>
 
       <Modal

@@ -25,4 +25,5 @@ export interface IUserService {
   approveUsersOpen(idUser: number[]);
 
   createAdminUser(username: string, password: string);
+  registerUser(createUser: any);
 }

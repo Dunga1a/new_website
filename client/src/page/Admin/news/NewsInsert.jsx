@@ -7,6 +7,8 @@ import Button from "../../../components/Buttons/Button";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const NewsInsert = ({ fetchData, setOpen }) => {
   const { currentUser } = useContext(AuthContext);
   const handleFormSubmit = async (data) => {
@@ -27,7 +29,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
       if (data.image) {
         formData.append("image", data.image[0]);
         const responseImgPerson = await axios.post(
-          "http://localhost:3001/api/member/uploadFileImage",
+          `${DOMAIN}/api/member/uploadFileImage`,
           formData,
           {
             headers: {
@@ -39,10 +41,10 @@ const NewsInsert = ({ fetchData, setOpen }) => {
       }
       const value = { ...data, slug, image, userId: currentUser.id };
       console.log(value);
-      const res = await axios.post("http://localhost:3001/api/posts/", value);
-      console.log(res.data);
-      toast.success("Thêm bài viết thành công");
+      const res = await axios.post(`${DOMAIN}/api/posts/`, value);
+      //console.log(res.data);
       setOpen(false);
+      setTimeout(() => toast.success("Thêm bài viết thành công"), 3000);
       fetchData();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -57,7 +59,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
     try {
       const sheet = page ? page : 1;
       const result = await axios.get(
-        `http://localhost:3001/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=${sheet}`,
         {
           withCredentials: true,
         }

@@ -9,6 +9,8 @@ import axios from "axios";
 import Modal from "../../../components/Modal/Modal";
 import NewsEdit from "./NewsEdit";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const NewsDetail = () => {
   const [data, setData] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -18,9 +20,7 @@ const NewsDetail = () => {
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3001/api/posts/details/" + id
-      );
+      const res = await axios.get(`${DOMAIN}/api/posts/details/` + id);
       console.log(res);
       setData(res.data);
     } catch (error) {
@@ -39,7 +39,7 @@ const NewsDetail = () => {
 
   const handleDelete = async (item) => {
     try {
-      await axios.delete("http://localhost:3001/api/posts/delete/" + item);
+      await axios.delete(`${DOMAIN}/api/posts/delete/` + item);
       toast.success("Bạn đã xóa thành công");
       navigate("/admin/news");
     } catch (error) {

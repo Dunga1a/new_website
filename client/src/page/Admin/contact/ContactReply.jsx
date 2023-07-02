@@ -5,6 +5,8 @@ import Button from "../../../components/Buttons/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const ContactReply = ({ dataReply }) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,7 +27,7 @@ const ContactReply = ({ dataReply }) => {
     console.log("content: ", content);
     const data = { contactId: id, content: content };
     try {
-      await toast.promise(axios.post("http://localhost:3001/api/rely", data), {
+      await toast.promise(axios.post(`${DOMAIN}/api/rely`, data), {
         pending: "Đang xử lý...",
         success: "Gửi phản hồi thành công",
         error: "Lỗi! Không thể gửi phản hồi... ",

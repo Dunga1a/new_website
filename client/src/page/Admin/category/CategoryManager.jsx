@@ -15,6 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import CategoryList from "./CategoryList";
 import { AuthContext } from "../../../context/authContext";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const CategoryManager = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -141,7 +142,7 @@ const CategoryManager = () => {
   const handleDelete = async (item) => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/newscategory/getOneCategory/${item.news_category_id}`,
+        `${DOMAIN}/api/newscategory/getOneCategory/${item.news_category_id}`,
         {
           withCredentials: true,
         }
@@ -156,7 +157,7 @@ const CategoryManager = () => {
   const handleEdit = async (item) => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/newscategory/getCategory/${item.news_category_id}`
+        `${DOMAIN}/api/newscategory/getCategory/${item.news_category_id}`
       );
       setNewsCategoryEdit(result.data);
       setOpenEditForm(true);

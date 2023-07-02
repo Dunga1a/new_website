@@ -15,6 +15,7 @@ import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { AuthContext } from "../../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_status = [
   { value: 0, label: "Chưa kích hoạt" },
@@ -245,12 +246,9 @@ const MemberManager = () => {
 
   const handleDeleteMember = async (idMember) => {
     try {
-      const result = await axios.delete(
-        `http://localhost:3001/api/member/${idMember}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const result = await axios.delete(`${DOMAIN}/api/member/${idMember}`, {
+        withCredentials: true,
+      });
       console.log(result);
     } catch (error) {
       console.log(error.message);
@@ -457,13 +455,14 @@ const MemberManager = () => {
             />
           )}
         </Modal>
-
-        <PaginationV2
-          total={count}
-          current={searchParams.get("page") || 1}
-          pageSize="8"
-          onChange={handleChangePage}
-        />
+        {member.length ? (
+          <PaginationV2
+            total={count}
+            current={searchParams.get("page") || 1}
+            pageSize="8"
+            onChange={handleChangePage}
+          />
+        ) : null}
       </div>
     </div>
   );

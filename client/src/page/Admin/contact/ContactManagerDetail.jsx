@@ -14,6 +14,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Flip, toast } from "react-toastify";
 import Modal from "../../../components/Modal/Modal";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const ContactManagerDetail = () => {
   const navigate = useNavigate();
@@ -31,9 +32,7 @@ const ContactManagerDetail = () => {
   };
 
   const fetchData = async () => {
-    const response = await axios.get(
-      "http://localhost:3001/api/contact/contactById/" + id
-    );
+    const response = await axios.get(`${DOMAIN}/api/contact/contactById/` + id);
     console.log(response.data);
     setDataContact(response.data);
   };
@@ -44,10 +43,7 @@ const ContactManagerDetail = () => {
       const idNew = id.split(",").map((item) => parseInt(item, 10));
       console.log(idNew);
 
-      await axios.post(
-        "http://localhost:3001/api/contact/deletesContact/",
-        idNew
-      );
+      await axios.post(`${DOMAIN}/api/contact/deletesContact/`, idNew);
       setOpen(false);
       toast.success("Đã xóa thành công", {
         position: "top-right",

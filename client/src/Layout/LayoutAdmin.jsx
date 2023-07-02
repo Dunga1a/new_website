@@ -10,11 +10,12 @@ import { FaUserAlt } from "react-icons/fa";
 import { TbTimelineEventText } from "react-icons/tb";
 
 import { IoLogOutOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { IoIosBusiness } from "react-icons/io";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../context/authContext";
 
 const prevHref = "/admin";
 
@@ -92,6 +93,7 @@ export default function LayoutAdmin() {
   const url = window.location.href;
   const path = new URL(url).pathname;
   const [pathCurrent, setPathCurrent] = useState(path);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (pathCurrent !== "") {
@@ -101,6 +103,12 @@ export default function LayoutAdmin() {
 
   const handleClick = (item) => {
     setPathCurrent(item.href);
+  };
+
+  const logOut = () => {
+    //confirm("Bạn chắc chắn muốn đăng xuất?");
+    localStorage.setItem("user", null);
+    window.location.href = "/";
   };
 
   return (
@@ -117,8 +125,8 @@ export default function LayoutAdmin() {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
             <div className="flex h-16 shrink-0 items-center">
               <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                className="h-16 w-auto mt-3"
+                src="/assets/images/logo-107x107.png"
                 alt="Your Company"
                 onClick={() => navigate("/")}
               />
@@ -151,18 +159,24 @@ export default function LayoutAdmin() {
                 </li>
 
                 <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
+                  <div
+                    onClick={() => navigate("/user")}
+                    className=" cursor-pointer flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
                   >
                     <img
                       className="h-8 w-8 rounded-full bg-gray-800"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src={
+                        currentUser && currentUser.image !== null
+                          ? `/uploads/${currentUser.image}`
+                          : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+                      }
                       alt=""
                     />
                     <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
-                  </a>
+                    <span aria-hidden="true">
+                      {currentUser && currentUser.username}
+                    </span>
+                  </div>
                 </li>
               </ul>
             </nav>
@@ -274,7 +288,11 @@ export default function LayoutAdmin() {
             <span className="sr-only">Your profile</span>
             <img
               className="h-8 w-8 rounded-full bg-gray-800 cursor-pointer"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              src={
+                currentUser && currentUser.image !== null
+                  ? `/uploads/${currentUser.image}`
+                  : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+              }
               alt=""
               onClick={(e) => {
                 e.stopPropagation();
@@ -285,10 +303,16 @@ export default function LayoutAdmin() {
             />
             {openUser && (
               <ul className=" absolute right-0 min-w-[100px] bg-white rounded-lg drop-shadow-2xl overflow-hidden">
-                <li className="px-3 py-2 cursor-pointer font-medium hover:bg-gray-100">
+                <li
+                  className="px-3 py-2 cursor-pointer font-medium hover:bg-gray-100"
+                  onClick={() => navigate("/user")}
+                >
                   Your profile
                 </li>
-                <li className="flex items-center px-3 py-2 cursor-pointer font-medium hover:bg-gray-100 hover:scale-[1.1]">
+                <li
+                  onClick={logOut}
+                  className="flex items-center px-3 py-2 cursor-pointer font-medium hover:bg-gray-100 hover:scale-[1.1]"
+                >
                   <IoLogOutOutline />
                   LogOut
                 </li>

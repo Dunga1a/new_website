@@ -3,6 +3,7 @@ import "./popup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const PopupEvent = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [eventList, setEventList] = useState([]);

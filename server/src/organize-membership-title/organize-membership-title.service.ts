@@ -20,8 +20,6 @@ export class OrganizeMembershipTitleService
       'organize-membership',
     );
     if (searchKey) {
-      console.log(searchKey);
-
       query.andWhere('organize-membership.name LIKE :searchKey', {
         searchKey: `%${searchKey}%`,
       });
@@ -53,7 +51,6 @@ export class OrganizeMembershipTitleService
   }
 
   async editOrganizations(editOrganizationsDetails: OrganizationDetails) {
-    console.log(editOrganizationsDetails);
     if (editOrganizationsDetails.isEdit) {
       const findOrganizationDB =
         await this.organizeMembershipTitleRepository.findOne({

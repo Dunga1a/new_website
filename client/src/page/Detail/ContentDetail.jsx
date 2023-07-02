@@ -36,6 +36,8 @@ const ContentDetail = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
+
+      console.log(res.data);
       setPostItem(res.data);
     } catch (error) {
       console.log(error.message);
@@ -53,8 +55,10 @@ const ContentDetail = () => {
         post: postItem.id,
         user: currentUser.id,
       };
-      await axios.post(
-        "http://localhost:3001/api/comment/createComment",
+
+      const result = await axios.post(
+        `${DOMAIN}/api/comment/createComment`,
+
         values,
         { withCredentials: true }
       );
@@ -107,7 +111,7 @@ const ContentDetail = () => {
   const fetchDataCmt = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/api/comment/getCommentByPost/${postItem.id}`,
+        `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
         {
           withCredentials: true,
         }
@@ -131,7 +135,7 @@ const ContentDetail = () => {
       <Breadcrumbs
         title={"Điểm Tin"}
         // sau khi fetch data thì sẽ lấy theo title ở đây
-        subtitle={"Tên bài"}
+        subtitle={`${postItem && postItem.title}`}
         link={"/news"}
         // link sẽ theo thằng category
       />
