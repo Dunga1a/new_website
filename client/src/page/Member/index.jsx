@@ -44,7 +44,6 @@ const Member = () => {
         }
       );
 
-      console.log(result.data);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
     } catch (error) {
