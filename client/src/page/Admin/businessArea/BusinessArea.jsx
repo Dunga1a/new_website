@@ -121,9 +121,9 @@ const BusinessArea = () => {
         status: status,
       };
 
-      const result = await axios.put(
+      await axios.put(
         `${DOMAIN}/api/business-areas/updateStatusOn`,
-        items,
+        data,
 
         {
           withCredentials: true,
