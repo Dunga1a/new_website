@@ -63,9 +63,14 @@ export class BusinessAreasController {
   }
 
   @Put('updateStatusOn')
-  async updateStatusOnManyBusinessArea(@Body() ids: number[]) {
+  async updateStatusOnManyBusinessArea(
+    @Body() data: { ids: number[]; status: number },
+  ) {
     const updatedBusinessAreaOnStatus =
-      await this.businessAreasService.updateStatusOnManyBusinessArea(ids);
+      await this.businessAreasService.updateStatusOnManyBusinessArea(
+        data.ids,
+        data.status,
+      );
     return updatedBusinessAreaOnStatus;
   }
 }

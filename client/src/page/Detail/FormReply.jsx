@@ -81,10 +81,8 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-              {...register("email", {
-                required: true,
-              })}
-              defaultValue={user.email}
+              {...register("email")}
+              defaultValue={user.email ? user.email : ""}
               readOnly
             />
           </div>

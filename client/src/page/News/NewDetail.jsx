@@ -137,16 +137,14 @@ const NewDetail = () => {
               <EmptyState />
             )}
           </div>
-          {postList ? (
-            postList.length ? (
-              <PaginationV2
-                total={count}
-                pageSize={8}
-                current={searchParams.get("page") || 1}
-                onChange={handlePageChange}
-              />
-            ) : null
-          ) : null}
+          {postList?.length > 0 && (
+            <PaginationV2
+              total={count}
+              pageSize={8}
+              current={searchParams.get("page") || 1}
+              onChange={handlePageChange}
+            />
+          )}
         </div>
         <div>
           <div>

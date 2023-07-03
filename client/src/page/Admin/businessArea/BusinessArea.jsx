@@ -13,7 +13,9 @@ import FormBusinessAreaDelete from "./FormBusinessAreaDelete";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
-const DOMAIN = process.env.REACT_APP_DOMAIN;
+
+import { toast } from "react-toastify";
+import EmptyState from "../../../components/EmptyState/EmptyState";
 
 const BusinessArea = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -113,20 +115,45 @@ const BusinessArea = () => {
 
   const handleChangeStatusOnManyItems = async (items) => {
     try {
-      const result = await axios.put(
+      const status = 1; // Giá trị status muốn truyền
+      const data = {
+        ids: items,
+        status: status,
+      };
+
+      await axios.put(
         `${DOMAIN}/api/business-areas/updateStatusOn`,
-        items,
+        data,
+
         {
           withCredentials: true,
         }
       );
-      console.log(result.data);
       fetchData();
       setIsCheckedItems([]);
     } catch (error) {
       console.log(error.message);
     }
     console.log(items);
+  };
+
+  const handleChangeStatusOff = async (items) => {
+    try {
+      const status = 2; // Giá trị status muốn truyền
+      const data = {
+        ids: items,
+        status: status,
+      };
+      await axios.put(`${DOMAIN}/api/business-areas/updateStatusOn`, data, {
+        withCredentials: true,
+      });
+      fetchData();
+      setIsCheckedItems([]);
+      toast.success("Cập nhật trạng thái thành công");
+    } catch (error) {
+      toast.error("Cập nhật trạng thái thất bại");
+      console.log(error.message);
+    }
   };
 
   return (
@@ -150,7 +177,7 @@ const BusinessArea = () => {
           />
         </div>
         <Card.Content>
-          {businessAreaList ? (
+          {businessAreaList.length ? (
             <table className="border border-blue-400 w-full bg-white">
               <thead>
                 <tr>
@@ -218,16 +245,10 @@ const BusinessArea = () => {
                 })}
               </tbody>
             </table>
-          ) : null}
+          ) : (
+            <EmptyState />
+          )}
           <div className="mt-5 flex gap-1">
-            {/* <Button
-              icon={<AiOutlineDelete className="text-[18px]" />}
-              title={"Xóa các lựa chọn"}
-              colorBgr={"bg-red-500"}
-              colorText={"text-white"}
-              colorHover={"bg-red-800"}
-              onClick={() => handleDeleteManyItems(isCheckedItems)}
-            /> */}
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
               title={"Bật Trạng Thái Các Lựa Chọn"}
@@ -236,16 +257,24 @@ const BusinessArea = () => {
               colorHover={"bg-blue-800"}
               onClick={() => handleChangeStatusOnManyItems(isCheckedItems)}
             />
+            <Button
+              icon={<AiOutlineDelete className="text-[18px]" />}
+              title={"Tắt Trạng Thái Các Lựa Chọn"}
+              colorBgr={"bg-yellow-500"}
+              colorText={"text-white"}
+              colorHover={"bg-yellow-800"}
+              onClick={() => handleChangeStatusOff(isCheckedItems)}
+            />
           </div>
         </Card.Content>
-        {businessAreaList && (
+        {businessAreaList.length ? (
           <PaginationV2
             total={count}
             current={searchParams.get("page") || 1}
             pageSize="6"
             onChange={handleChangePage}
           />
-        )}
+        ) : null}
       </Card>
 
       <Modal

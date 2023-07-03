@@ -57,4 +57,25 @@ export class RoleService implements IRoleService {
       throw new HttpException('Quyền không tồn tại ', HttpStatus.NOT_FOUND);
     return role;
   }
+
+  async getUserByRole(item: any) {
+    const getUser = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .where('role.id = :id', { id: item.id })
+      .getMany();
+    return getUser;
+  }
+
+  async editRole(editRoleDetails: EditRole) {
+    const findRole = await this.roleRepository.findOne({
+      id: editRoleDetails.id,
+    });
+    if (!findRole) {
+      throw new HttpException('Không tìm thấy quyền', HttpStatus.CONFLICT);
+    }
+    findRole.name = editRoleDetails.name;
+    const savedRole = await this.roleRepository.save(findRole);
+    return savedRole;
+  }
 }

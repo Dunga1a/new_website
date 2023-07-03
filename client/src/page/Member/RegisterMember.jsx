@@ -305,14 +305,10 @@ const RegisterMember = () => {
           </div>
           <div className="my-4">
             <input
-              required
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-              // {...register("website", {
-              //   required: true,
-              // })}
               placeholder="Website"
             />
           </div>
@@ -323,7 +319,6 @@ const RegisterMember = () => {
             <h3 className="font-semibold text-base">Ảnh người đại diện:</h3>
             <div className="flex items-center">
               <input
-                required
                 type="file"
                 accept=".jpg, .png, .jpeg, .svg"
                 placeholder="Chưa...chọn"
@@ -351,7 +346,6 @@ const RegisterMember = () => {
 
             <div className="flex items-center">
               <input
-                required
                 type="file"
                 accept=".jpg, .png, .jpeg, .svg"
                 placeholder="Chưa...chọn"

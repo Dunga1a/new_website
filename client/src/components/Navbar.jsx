@@ -62,6 +62,13 @@ const contentArr = [
         title: "Danh sách thành viên",
         slug: "",
       },
+
+      {
+        title: "Thoát",
+        slug: "",
+        onClick: true,
+      },
+
     ],
   ],
 ];

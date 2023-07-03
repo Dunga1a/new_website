@@ -20,8 +20,6 @@ export class OrganizeMembershipTitleService
       'organize-membership',
     );
     if (searchKey) {
-      console.log(searchKey);
-
       query.andWhere('organize-membership.name LIKE :searchKey', {
         searchKey: `%${searchKey}%`,
       });
@@ -37,6 +35,8 @@ export class OrganizeMembershipTitleService
           name: createOrganizationsDetails.name,
         },
       });
+    // console.log(findOrganizationByName);
+
     if (findOrganizationByName) {
       throw new HttpException('Chức vụ này đã tồn tại', HttpStatus.NOT_FOUND);
     }
@@ -51,7 +51,6 @@ export class OrganizeMembershipTitleService
   }
 
   async editOrganizations(editOrganizationsDetails: OrganizationDetails) {
-    console.log(editOrganizationsDetails);
     if (editOrganizationsDetails.isEdit) {
       const findOrganizationDB =
         await this.organizeMembershipTitleRepository.findOne({
@@ -60,7 +59,10 @@ export class OrganizeMembershipTitleService
           },
         });
       if (findOrganizationDB) {
-        throw new HttpException('Chức vụ đã tồn tại', HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          'Chức vụ đã tồn tại, Vui long chon khac',
+          HttpStatus.NOT_FOUND,
+        );
       }
     }
 

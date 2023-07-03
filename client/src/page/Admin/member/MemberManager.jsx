@@ -455,13 +455,14 @@ const MemberManager = () => {
             />
           )}
         </Modal>
-
-        <PaginationV2
-          total={count}
-          current={searchParams.get("page") || 1}
-          pageSize="8"
-          onChange={handleChangePage}
-        />
+        {member.length ? (
+          <PaginationV2
+            total={count}
+            current={searchParams.get("page") || 1}
+            pageSize="8"
+            onChange={handleChangePage}
+          />
+        ) : null}
       </div>
     </div>
   );

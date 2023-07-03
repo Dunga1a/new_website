@@ -39,7 +39,7 @@ const LoginPage = ({ className }) => {
       }
 
       // if(result.data.user)
-      toast.success("Đăng nhập thành công");
+      // toast.success("Đăng nhập thành công");
       // navigate("/user/editinfo");
       window.location.reload();
     } catch (error) {
@@ -202,14 +202,6 @@ const LoginPage = ({ className }) => {
                   </li>
                 </ul>
               </form>
-              {user ? (
-                <div>
-                  Login successfully : {user.displayName}
-                  <div>
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                </div>
-              ) : null}
             </LayoutLoginPage>
           </div>
         </div>

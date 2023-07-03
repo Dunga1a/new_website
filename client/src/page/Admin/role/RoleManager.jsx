@@ -23,8 +23,8 @@ const options_role = [
   { value: "hoi_vien", label: "Hội viên" },
   { value: "nguoi_dung", label: "Người dùng" },
 ];
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RoleManager = () => {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
   const [openEditForm, setOpenEditForm] = useState(false);
   const [roleItem, setRoleItem] = useState();
   const [openUserByRole, setOpenUserByRole] = useState(false);

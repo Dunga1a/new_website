@@ -12,7 +12,14 @@ const NavbarArr = ({ arr }) => {
   const handleSubItemClick = (subItem) => {
     navigate(`${href}/${subItem.slug}`, { state: { item: subItem } });
   };
-
+  const logOut = () => {
+    const option = window.confirm("Bạn có chắc muốn đăng xuất không?");
+    if (!option) {
+      return;
+    }
+    localStorage.setItem("user", null);
+    window.location.reload();
+  };
   return (
     <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
       {arr[1].map((item, idx) => {
@@ -20,6 +27,9 @@ const NavbarArr = ({ arr }) => {
           <li
             key={idx}
             onClick={() => {
+              if (item.onClick) {
+                logOut();
+              }
               handleClick(item);
             }}
             className={`cursor-pointer relative ${item.subCategory ? "a" : ""}`}

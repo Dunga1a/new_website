@@ -308,12 +308,14 @@ const EventManager = () => {
               onClick={() => handleDeleteManyItems(isCheckedItems)}
             />
           </div>
-          <PaginationV2
-            total={count}
-            current={searchParams.get("page") || 1}
-            pageSize="8"
-            onChange={handleChangePage}
-          />
+          {eventList.length ? (
+            <PaginationV2
+              total={count}
+              current={searchParams.get("page") || 1}
+              pageSize="8"
+              onChange={handleChangePage}
+            />
+          ) : null}
         </Card.Content>
       </Card>
 

@@ -6,5 +6,5 @@ export interface IBusinessAreasService {
   createBusinessAreas(createBusinessDetails: BusinessAreasDetails);
   getOneBusinessAreas(id: number);
   editOneBusinessAreas(editBusinessDetails: BusinessAreasDetails);
-  updateStatusOnManyBusinessArea(ids: number[]);
+  updateStatusOnManyBusinessArea(ids: number[], status: number);
 }

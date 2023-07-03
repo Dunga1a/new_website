@@ -4,16 +4,13 @@ import { useForm } from "react-hook-form";
 import { BsFillCaretRightFill } from "react-icons/bs";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
-import { AuthContext } from "../../context/authContext";
 import Modal from "../../components/Modal/Modal";
 import { useNavigate } from "react-router-dom";
 import generateCaptcha from "../../uitls";
 import axios from "axios";
 import { toast } from "react-toastify";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RegisterPage = () => {
-  const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
-
   // ${DOMAIN}
   const {
     register,

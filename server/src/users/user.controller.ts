@@ -182,6 +182,11 @@ export class UsersController {
     return await this.userService.approveUsersOpen(ids);
   }
 
+  @Post('registerUser')
+  async registerUser(@Body() createUser: any) {
+    return await this.userService.registerUser(createUser);
+  }
+
   // @Post('forgotPassword')
   // async forgotPassword(@Body() email: string) {
   //   //console.log(email);

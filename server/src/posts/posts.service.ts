@@ -28,12 +28,9 @@ export class PostsService {
     categoryId: number,
     userId: number,
   ): Promise<NewsPost> {
-    console.log(userId);
-
     const user = await this.userRepository.findOne(userId, {
       relations: ['roles', 'member'],
     });
-    console.log(user);
 
     //const category = await this.newsCategoryRepository.findOne(categoryId, {relations:['member']});
 
@@ -140,8 +137,6 @@ export class PostsService {
   }
 
   async searchByKeyword(keyword: string, page: number = 1, limit: number = 2) {
-    console.log(keyword);
-
     try {
       const query = await this.newsPostRepository
         .createQueryBuilder('newsPost')

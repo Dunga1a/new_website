@@ -11,6 +11,7 @@ import OrganizeNew from "./OrganizeNew";
 import OrganizeEdit from "./OrganizeEdit";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
+import EmptyState from "../../../components/EmptyState/EmptyState";
 
 const Organize = () => {
   // const { url } = useContext(AuthContext);
@@ -183,7 +184,7 @@ const Organize = () => {
           />
         </div>
         <Card.Content>
-          {organizeList ? (
+          {organizeList.length ? (
             <table className="border border-blue-400 w-full bg-white">
               <thead>
                 <tr>
@@ -254,7 +255,9 @@ const Organize = () => {
                 })}
               </tbody>
             </table>
-          ) : null}
+          ) : (
+            <EmptyState />
+          )}
           <div className="mt-5 flex gap-1">
             {/* <Button
               icon={<AiOutlineDelete className="text-[18px]" />}

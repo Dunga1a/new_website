@@ -92,18 +92,18 @@ export class BusinessAreasService implements IBusinessAreasService {
     return savedBusinessArea;
   }
 
-  async updateStatusOnManyBusinessArea(ids: number[]) {
-    const updatedStatusOn = await this.businessAreasRepository
+  async updateStatusOnManyBusinessArea(ids: number[], status: number) {
+    const updatedQuery = await this.businessAreasRepository
       .createQueryBuilder()
-      .update(BusinessAreas)
-      .set({ status: 1 }) // Giá trị mới của trường status
-      .whereInIds(ids) // Mảng id của member cần update
-      .execute();
-    if (updatedStatusOn.affected > 0) {
-      console.log('Cập nhật thành công.');
-    } else {
-      console.log('Không tìm thấy bản ghi hoặc cập nhật thất bại.');
+      .update(BusinessAreas);
+
+    if (status === 1) {
+      updatedQuery.set({ status: 1 }).whereInIds(ids);
     }
-    return updatedStatusOn;
+    if (status === 2) {
+      updatedQuery.set({ status: 0 }).whereInIds(ids);
+    }
+    const updatedStatus = updatedQuery.execute();
+    return updatedStatus;
   }
 }
