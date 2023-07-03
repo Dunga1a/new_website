@@ -24,7 +24,9 @@ const Header = () => {
               onClick={() => navigate("/user/")}
               className=" cursor-pointer inline-block px-[5px] border-r-[1px] border-r-[#fff] relative hover:text-gray-200"
             >
-              <div className="text-[14px]">{currentUser.username}</div>
+              <div className="text-[14px]">
+                {currentUser.displayName || currentUser.username}
+              </div>
             </li>
             <li
               onClick={() => setOpen(true)}

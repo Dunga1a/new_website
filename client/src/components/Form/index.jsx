@@ -152,6 +152,7 @@ const Form = ({ formFields, onSubmit }) => {
               </div>
             )}
             <input
+              accept=".jpg, .png, .jpeg, .svg"
               type={field.type}
               {...register(field.name)}
               onChange={(e) => handleImageChange(e, "firstImage")}
@@ -192,6 +193,7 @@ const Form = ({ formFields, onSubmit }) => {
               </div>
             )}
             <input
+              accept=".jpg, .png, .jpeg, .svg"
               type={field.type}
               {...register(field.name)}
               onChange={(e) => handleImageChange(e, "secondImage")}
@@ -207,6 +209,7 @@ const Form = ({ formFields, onSubmit }) => {
       <label key={field.name}>
         <span className="block font-semibold text-sm ">{field.label}</span>
         <input
+          accept=".jpg, .png, .jpeg, .svg"
           type={field.type}
           {...register(field.name)}
           defaultValue={field.value}

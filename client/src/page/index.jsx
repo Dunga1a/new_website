@@ -51,7 +51,7 @@ const HomePage = () => {
           data.length > 0 &&
           data.slice(0, 1).map((item) => (
             <div
-              className="col-span-2 desktop:col-span-2 phone:col-span-5 laptop:col-span-2"
+              className="col-span-2 desktop:col-span-2 tablet:col-span-3 phone:col-span-5 laptop:col-span-2"
               key={item.id}
               onClick={() => navigate(`/${item.slug}`)}
             >
@@ -70,7 +70,7 @@ const HomePage = () => {
               </div>
             </div>
           ))}
-        <div className="col-span-2 desktop:col-span-2 px-3 phone:hidden laptop:col-span-2 desktop:block laptop:block">
+        <div className="col-span-2 desktop:col-span-2 px-3 tablet:block phone:hidden laptop:col-span-2 desktop:block laptop:block">
           <div className="flex items-center bg-blue-500 text-white text-xl p-2 mb-3">
             <AiFillStar />
             <h3 className="font-bold ml-2">TIN NỔI BẬT</h3>
@@ -87,15 +87,18 @@ const HomePage = () => {
                   <div
                     onClick={() => navigate(`/${item.slug}`)}
                     title={`${item.title}`}
-                    className="flex justify-between text-[14px] "
+                    className="grid grid-cols-3 text-[14px] gap-3"
                   >
-                    {item.title}
-                    <img
-                      className="ml-[20px] max-h-[70px] object-cover"
-                      width={130}
-                      src={item.image}
-                      alt=""
-                    />
+                    <span className=" col-span-2">
+                      <p className="line-clamp-3 font-semibold">{item.title}</p>
+                    </span>
+                    <span className="">
+                      <img
+                        className=" h-[70px] w-full object-cover"
+                        src={item.image}
+                        alt=""
+                      />
+                    </span>
                   </div>
                 </li>
               ))}

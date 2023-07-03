@@ -112,17 +112,17 @@ const UserInfo = () => {
               Giới tính
             </td>
             <td className="border border-slate-400 text-[15px] p-[6px]">
-              {currentUser.gender === "1"
+              {currentUser.gender === 1
                 ? "Nam"
-                : currentUser.gender === "2"
+                : currentUser.gender === 2
                 ? "Nữ"
-                : currentUser.gender === "0"
+                : currentUser.gender === 0
                 ? "N/A"
-                : "" || (data && data.gender === "1")
+                : "" || (data && data.gender === 1)
                 ? "Nam"
-                : data && data.gender === "2"
+                : data && data.gender === 2
                 ? "Nữ"
-                : data && data.gender === "0"
+                : data && data.gender === 0
                 ? "N/A"
                 : ""}
             </td>

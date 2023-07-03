@@ -3,6 +3,7 @@ import Form from "../../../components/Form";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
+import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
@@ -46,9 +47,11 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
       );
 
       setOpen(false);
+      toast.success("Chỉnh sửa thông tin thành công");
       fetchDataWithFilter();
     } catch (error) {
       console.log(error.message);
+      toast.error(error.response.data.message);
     }
   };
 

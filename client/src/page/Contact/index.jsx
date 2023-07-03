@@ -61,7 +61,7 @@ function ContactPage() {
   };
 
   const onReset = (data) => {
-    reset(data);
+    reset();
     setCaptcha(generateCaptcha);
     reset(data.checkCaptcha);
   };
@@ -210,7 +210,9 @@ function ContactPage() {
                       <input
                         type="text"
                         className={`block focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
-                          currentUser ? "bg-gray-200 cursor-not-allowed" : ""
+                          currentUser && currentUser.lastname !== null
+                            ? "bg-gray-200 cursor-not-allowed"
+                            : ""
                         } ${
                           errors.username ? "border-red-500 border-[1px]" : ""
                         }`}
@@ -238,7 +240,10 @@ function ContactPage() {
                         // })}
                         placeholder="Họ và tên"
                         defaultValue={
-                          currentUser ? currentUser.displayName : ""
+                          (currentUser && currentUser.displayName) ||
+                          (currentUser && currentUser.firstname !== null
+                            ? currentUser.firstname + " " + currentUser.lastname
+                            : "")
                         }
                         //disabled={currentUser ? true : false}
                       />

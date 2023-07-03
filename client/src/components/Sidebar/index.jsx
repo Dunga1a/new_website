@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   MdOutlineRememberMe,
@@ -6,23 +6,104 @@ import {
   MdOutlineEvent,
   MdOutlineSend,
   MdOutlineLogout,
+  MdOutlineSearch,
 } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
+
 const SideBar = ({ props }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [arr, setArr] = useState([]);
+  const [count, setCount] = useState();
+  const [newsCategory, setNewsCategory] = useState([]);
+
+  const page = searchParams.get("page") || 1;
   const navigate = useNavigate();
   // console.log(props[1]);
   // console.log(props[1][1][1]);
   const href = props[0][0].href;
   const hrefLog = props[1][0].href;
+  const groupCommentsByFatherId = (comments) => {
+    const commentMap = {};
+    const topLevelComments = [];
+
+    // Tạo một map để ánh xạ các comment theo id
+    for (const comment of comments) {
+      const commentId = comment.news_category_id;
+
+      if (!commentMap[commentId]) {
+        commentMap[commentId] = {
+          ...comment,
+          children: [],
+        };
+      }
+
+      const mappedComment = commentMap[commentId];
+
+      // Kiểm tra nếu có father_id, thêm comment hiện tại vào danh sách con của cha tương ứng
+      if (comment.father_id) {
+        if (!commentMap[comment.father_id]) {
+          commentMap[comment.father_id] = {
+            children: [],
+          };
+        }
+
+        commentMap[comment.father_id].children.push(mappedComment);
+      } else {
+        topLevelComments.push(mappedComment);
+      }
+
+      // Kiểm tra nếu comment hiện tại đã có con trong map, thì gán danh sách con của nó vào comment hiện tại
+      if (commentMap[commentId].children.length > 0) {
+        mappedComment.children = commentMap[commentId].children;
+      }
+    }
+
+    return topLevelComments;
+  };
+
+  const fetchData = async () => {
+    try {
+      const sheet = page ? page : 1;
+      const category = await axios.get(
+        `${DOMAIN}/api/newscategory/getAllNewsCategory?page=${sheet}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const group = groupCommentsByFatherId(category.data.newsCategories);
+      console.log(group);
+      setArr(group);
+      setNewsCategory(category.data.newsCategories);
+      setCount(category.data.countCategory);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  // console.log(arr);
   const handleClick = (item) => {
-    navigate(`${hrefLog}/${item.slug}`, { state: { item } });
-    window.location.reload();
+    navigate(`/news/${item.slug}`, { state: { item } });
   };
 
   const handleSubItemClick = (subItem) => {
-    navigate(`${href}/${subItem.slug}`, { state: { item: subItem } });
-    window.location.reload();
+    navigate(`/news/${subItem.slug}`, { state: { item: subItem } });
   };
+  // const handleClick = (item) => {
+  //   navigate(`${hrefLog}/${item.slug}`, { state: { item } });
+  //   window.location.reload();
+  // };
+
+  // const handleSubItemClick = (subItem) => {
+  //   navigate(`${href}/${subItem.slug}`, { state: { item: subItem } });
+  //   window.location.reload();
+  // };
   return (
     <>
       <button
@@ -107,7 +188,7 @@ const SideBar = ({ props }) => {
                 <li>
                   <div
                     onClick={() => {
-                      navigate("//regulations");
+                      navigate("/regulations");
                       window.location.reload();
                     }}
                     className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -222,7 +303,7 @@ const SideBar = ({ props }) => {
                 id="dropdown-authentication"
                 className="hidden py-2 space-y-2"
               >
-                {props[0][1].map((item, idx) => (
+                {arr.map((item, idx) => (
                   <li key={idx}>
                     <button
                       type="button"
@@ -230,9 +311,9 @@ const SideBar = ({ props }) => {
                       data-collapse-toggle="dropdown-li"
                       className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
-                      {item.subCategory ? (
+                      {item ? (
                         <span className="flex-1 ml-3 text-left whitespace-nowrap">
-                          {item.title}
+                          {item.name}
                         </span>
                       ) : (
                         <span
@@ -245,7 +326,7 @@ const SideBar = ({ props }) => {
                           {item.title}
                         </span>
                       )}
-                      {item.subCategory && (
+                      {item.children && item.children.length !== 0 && (
                         <svg
                           aria-hidden="true"
                           className="w-6 h-6"
@@ -262,82 +343,23 @@ const SideBar = ({ props }) => {
                       )}
                     </button>
                     <ul id="dropdown-li" className="hidden py-2 space-y-2">
-                      {item.subCategory &&
-                        item.subCategory.map((subItem, idx) => (
+                      {item.children &&
+                        item.children.map((subItem, idx) => (
                           <li key={idx}>
                             <div
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleSubItemClick(subItem);
                               }}
-                              className="flex items-center p-2 pl-20 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                              className=" cursor-pointer flex items-center p-2 pl-20 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                             >
-                              {subItem.title}
+                              {subItem.name}
                             </div>
                           </li>
                         ))}
                     </ul>
                   </li>
                 ))}
-                {/* <li>
-                  <button
-                    type="button"
-                    aria-controls="dropdown-li"
-                    data-collapse-toggle="dropdown-li"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    <span className="flex-1 ml-3 text-left whitespace-nowrap">
-                      Tin tức
-                    </span>
-                    <svg
-                      aria-hidden="true"
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                  </button>
-                  <ul id="dropdown-li" className="hidden py-2 space-y-2">
-                    <li>
-                      <a
-                        href="#"
-                        className="flex items-center p-2 pl-20 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                      >
-                        Tin hoạt động
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="flex items-center p-2 pl-20 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                      >
-                        Tin tức Thanh Hóa
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="flex items-center p-2 pl-20 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                      >
-                        Tin tức Hội viên
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Hoạt động
-                  </a>
-                </li> */}
               </ul>
             </li>
             <li>
@@ -346,7 +368,7 @@ const SideBar = ({ props }) => {
                   navigate("/events-page");
                   window.location.reload();
                 }}
-                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center cursor-pointer p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdOutlineEvent className="text-[26px]" />
                 <span className="flex-1 ml-3 whitespace-nowrap">Sự kiện</span>
@@ -358,7 +380,7 @@ const SideBar = ({ props }) => {
                   navigate("/contact-page");
                   window.location.reload();
                 }}
-                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center cursor-pointer p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdOutlineSend className="text-[26px]" />
                 <span className="flex-1 ml-3 whitespace-nowrap">Liên hệ</span>
@@ -398,7 +420,7 @@ const SideBar = ({ props }) => {
                         e.stopPropagation();
                         handleClick(item);
                       }}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className=" cursor-pointer flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       {item.title === "Thoát" ? (
                         <>
@@ -411,56 +433,20 @@ const SideBar = ({ props }) => {
                     </div>
                   </li>
                 ))}
-                {/* <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Đăng nhập
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Đăng ký
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Khôi phục mật khẩu
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Thiết lập tài khoản
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Danh sách thành viên
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    <MdOutlineLogout className="text-[26px]" />
-                    Thoát
-                  </a>
-                </li> */}
               </ul>
+            </li>
+
+            <li>
+              <div
+                onClick={() => {
+                  navigate("/search");
+                  window.location.reload();
+                }}
+                className=" cursor-pointer flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <MdOutlineSearch className="text-[26px]" />
+                <span className="flex-1 ml-3 whitespace-nowrap">Tìm kiếm</span>
+              </div>
             </li>
           </ul>
         </div>

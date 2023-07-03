@@ -246,10 +246,8 @@ const MemberFormRegister = ({
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
-              {...register("website", {
-                required: true,
-              })}
-              defaultValue={memberItem.website}
+              {...register("website", {})}
+              defaultValue={memberItem.website ? memberItem.website : ""}
             />
           </div>
           <div className="my-4">

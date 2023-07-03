@@ -22,7 +22,9 @@ const Breadcrumbs = ({ title, subtitle, link, sublink }) => {
             <div>
               <AiFillCaretRight className="w-3 h-3 hover:text-[#000]" />
             </div>
-            <div className=" text-sm  mt-0.5 hover:text-[#000]">{subtitle}</div>{" "}
+            <div className=" line-clamp-1 text-sm max-w-[200px] w-auto mt-0.5 hover:text-[#000]">
+              {subtitle}
+            </div>{" "}
           </>
         ) : (
           ""
