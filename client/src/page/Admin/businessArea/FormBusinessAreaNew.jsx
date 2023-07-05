@@ -18,7 +18,7 @@ const FormBusinessAreaNew = ({ setOpen, fetchData }) => {
       const result = await axios.post(`${DOMAIN}/api/business-areas`, data, {
         withCredentials: true,
       });
-      console.log(result);
+      //console.log(result);
       fetchData();
       setOpen(false);
       toast.success("Thêm lĩnh vực hoạt động thành công.");

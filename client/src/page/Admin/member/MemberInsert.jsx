@@ -5,7 +5,7 @@ import Form from "../../../components/Form";
 const MemberInsert = () => {
   const handleFormSubmit = (data) => {
     // Xử lý logic khi submit form
-    console.log(data);
+    //console.log(data);
   };
   const memberFormFields = [
     {

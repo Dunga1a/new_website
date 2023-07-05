@@ -11,6 +11,7 @@ export enum Routes {
   BUSINESSAREAS = 'business-areas',
   MEMBER = 'member',
   COMMENT = 'comment',
+  IMAGE = 'image',
 }
 
 export enum Services {
@@ -27,4 +28,5 @@ export enum Services {
   BUSINESSAREAS = 'BUSINESS-AREAS',
   MEMBER = 'MEMBER_SERVICE',
   COMMENT = 'COMMENT_SERVICE',
+  IMAGE = 'IMAGE_SERVICE',
 }

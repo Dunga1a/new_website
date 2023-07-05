@@ -74,7 +74,7 @@ const SideBar = ({ props }) => {
         }
       );
       const group = groupCommentsByFatherId(category.data.newsCategories);
-      console.log(group);
+      //console.log(group);
       setArr(group);
       setNewsCategory(category.data.newsCategories);
       setCount(category.data.countCategory);

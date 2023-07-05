@@ -40,7 +40,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
           value: item.id_organize_membership,
         }));
 
-      console.log(resultTwo.data);
+      //console.log(resultTwo.data);
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);
     } catch (error) {
@@ -64,7 +64,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
       );
       fetchData();
       setOpen(false);
-      console.log(result);
+      //console.log(result);
       toast.success("Cập nhật hội viên thành công");
     } catch (error) {
       toast.error(error.response.data.message);

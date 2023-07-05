@@ -20,11 +20,11 @@ const LoginPage = ({ className }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    //console.log(data);
     if (data === null) {
       alert("Bạn chưa có thông tin đăng nhập");
     }
@@ -39,7 +39,7 @@ const LoginPage = ({ className }) => {
       }
 
       // if(result.data.user)
-      // toast.success("Đăng nhập thành công");
+      toast.success("Đăng nhập thành công");
       // navigate("/user/editinfo");
       window.location.reload();
     } catch (error) {
@@ -126,7 +126,7 @@ const LoginPage = ({ className }) => {
                       </span>
                     </div>
                   </div>
-                  {errors.username && (
+                  {isSubmitted && errors.username && (
                     <span className="text-sm text-red-500 mb-3 block">
                       {errors.username.message}
                     </span>
@@ -152,7 +152,7 @@ const LoginPage = ({ className }) => {
                       </span>
                     </div>
                   </div>
-                  {errors.password && (
+                  {isSubmitted && errors.password && (
                     <span className="text-sm text-red-500 mb-3 block">
                       {errors.password.message}
                     </span>
@@ -161,6 +161,7 @@ const LoginPage = ({ className }) => {
 
                 <div className="text-center text-[13px]">
                   <button
+                    type="button"
                     className="bg-gray-100 p-2 mr-4 rounded-lg hover:bg-gray-300"
                     onClick={resetFields}
                   >
@@ -195,7 +196,7 @@ const LoginPage = ({ className }) => {
                   </li>
                   <li
                     onClick={() => navigate("/user/lostpass")}
-                    className="flex items-center cursor-pointer hover:opacity-80"
+                    className="flex items-center text-blue-700 cursor-pointer hover:opacity-80"
                   >
                     <BsFillCaretRightFill />
                     <span>Khôi phục mật khẩu</span>

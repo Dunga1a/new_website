@@ -8,7 +8,7 @@ const FormDeleteCategory = ({
 }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
   const values = newsCategoryDelete.map((item) => item.news_category_id);
-  console.log(newsCategoryDelete);
+  //console.log(newsCategoryDelete);
 
   const handleDelete = async () => {
     try {
@@ -19,7 +19,7 @@ const FormDeleteCategory = ({
           withCredentials: true,
         }
       );
-      console.log(result);
+      //console.log(result);
       fetchData();
       setOpenDeleteForm(false);
     } catch (error) {

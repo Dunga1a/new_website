@@ -30,7 +30,7 @@ const HomePage = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/allPost`);
-      console.log(res.data);
+      //console.log(res.data);
       setData(res.data.data);
     } catch (error) {
       console.log(error.message);
@@ -57,9 +57,11 @@ const HomePage = () => {
             >
               <div className="bg-gray-200 w-[110%] phone:w-full">
                 <img
-                  src={`${item.image}`}
+                  src={
+                    item.image ? item.image : "/assets/images/new_default.jpg"
+                  }
                   alt=""
-                  className="m-auto phone:m-auto w-[90%] h-[215px]"
+                  className="m-auto phone:m-auto w-[90%] h-[215px] object-cover"
                 />
               </div>
               <div>
@@ -95,7 +97,11 @@ const HomePage = () => {
                     <span className="">
                       <img
                         className=" h-[70px] w-full object-cover"
-                        src={item.image}
+                        src={
+                          item.image
+                            ? item.image
+                            : "/assets/images/new_default.jpg"
+                        }
                         alt=""
                       />
                     </span>

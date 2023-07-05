@@ -9,7 +9,7 @@ import { Reply } from './entities/Reply';
 import { Role } from './entities/Role';
 import { User } from './entities/User';
 import { Event } from './entities/Event';
-
+import { Image } from './entities/Image';
 const entities = [
   User,
   Role,
@@ -22,6 +22,7 @@ const entities = [
   NewsPost,
   OrganizeMembershipTitle,
   Reply,
+  Image,
 ];
 
 export default entities;
@@ -38,4 +39,5 @@ export {
   NewsPost,
   OrganizeMembershipTitle,
   Reply,
+  Image,
 };

@@ -31,7 +31,7 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
       const valuesTwo = {
         to: memberItem.email,
         subject: "Thư cấp mật khẩu cho tài khoản doanh nghiệp",
-        text: `<p>Mật khẩu của bạn là: <strong>${data.password}</strong></p>`,
+        text: `<p>Mật khẩu của bạn là: <strong>${data.password}</strong></p> <p><b>Cảm ơn bạn đã tham gia trở thành hội viên của Hội Doanh Nhân Thanh Hóa Tại Hà Nội</b></p>`,
       };
 
       const resultOne = await axios.post(

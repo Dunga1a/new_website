@@ -20,6 +20,13 @@ export const AuthContextProvider = ({ children }) => {
     if (storedUser !== currentUser) {
       setCurrentUser(storedUser);
     }
+    if (storedUser !== null) {
+      setTimeout(() => {
+        localStorage.setItem("user", null);
+        localStorage.removeItem("hasShownPopup");
+        window.location.href = "/";
+      }, 86000 * 1000);
+    }
   }, []);
 
   useEffect(() => {

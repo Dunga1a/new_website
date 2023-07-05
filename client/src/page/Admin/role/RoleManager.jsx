@@ -42,7 +42,7 @@ const RoleManager = () => {
         withCredentials: true,
       });
       setRoleList(result.data);
-      console.log(result.data);
+      //console.log(result.data);
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +51,7 @@ const RoleManager = () => {
     fetchDataStatic();
   }, []);
 
-  const onSubmit = (data) => console.log(data);
+  //const onSubmit = (data) => console.log(data);
 
   const handleOpenFormEdit = (item) => {
     setOpenEditForm(true);

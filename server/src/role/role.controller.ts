@@ -9,10 +9,15 @@ import {
   Post,
   Body,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Routes, Services } from 'src/utils/constants';
 import { IRoleService } from './role';
 import { CreateRoleDto, EditRoleDto } from './dtos/CreateRole.dto';
+import { Roles } from 'src/auth/utils/role/roles.decorator';
+import RoleEnum from 'src/utils/types';
+import JwtAuthenticationGuard from 'src/auth/utils/jwt/jwt-authentication.guard';
+import { RolesGuard } from 'src/auth/utils/role/roles.guard';
 
 @Controller(Routes.ROLE)
 export class RoleController {
@@ -21,6 +26,8 @@ export class RoleController {
   ) {}
 
   @Post('createRole')
+  @Roles(RoleEnum.Admin)
+  @UseGuards(JwtAuthenticationGuard, RolesGuard)
   async createRole(@Body() role: CreateRoleDto) {
     const savedRole = await this.roleService.createRole(role);
     return savedRole;

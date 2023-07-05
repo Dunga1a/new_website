@@ -11,7 +11,7 @@ export class RelyController {
 
   @Post()
   createRely(@Body() relyDto: ReplyDto): Promise<Reply> {
-    console.log(relyDto);
+    //console.log(relyDto);
 
     return this.relyService.createRely(relyDto);
   }

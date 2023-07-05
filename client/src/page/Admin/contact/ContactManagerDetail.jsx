@@ -14,6 +14,8 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Flip, toast } from "react-toastify";
 import Modal from "../../../components/Modal/Modal";
+import ModalV1 from "../../../components/Modal/ModalV1";
+import { BiTrash } from "react-icons/bi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const ContactManagerDetail = () => {
@@ -33,7 +35,7 @@ const ContactManagerDetail = () => {
 
   const fetchData = async () => {
     const response = await axios.get(`${DOMAIN}/api/contact/contactById/` + id);
-    console.log(response.data);
+    //console.log(response.data);
     setDataContact(response.data);
   };
 
@@ -41,7 +43,7 @@ const ContactManagerDetail = () => {
     //console.log(isCheckedItems.map((item) => parseInt(item, 10)));
     try {
       const idNew = id.split(",").map((item) => parseInt(item, 10));
-      console.log(idNew);
+      //console.log(idNew);
 
       await axios.post(`${DOMAIN}/api/contact/deletesContact/`, idNew);
       setOpen(false);
@@ -165,7 +167,11 @@ const ContactManagerDetail = () => {
           </Card.Content>
         </Card>
       )}
-      <Modal title={"Xóa liên hệ"} open={open} setOpen={setOpen}>
+      <ModalV1
+        title={<BiTrash className="m-auto w-12 h-12 text-red-500" />}
+        open={open}
+        setOpen={setOpen}
+      >
         <h2 className="text-xl">
           Bạn có chắc muốn xóa liên hệ đã lựa chọn không?
         </h2>
@@ -178,7 +184,7 @@ const ContactManagerDetail = () => {
             onClick={handleDeleteMultiple}
           ></Button>
         </div>
-      </Modal>
+      </ModalV1>
     </>
   );
 };

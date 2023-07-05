@@ -234,7 +234,7 @@ const Card = () => {
                                 {item.subcontent}
                               </p>
                               <div onClick={() => nav(`/${item.slug}`)}>
-                                <span className=" bg-[#10bcff] text-[12px] text-white p-1">
+                                <span className="cursor-pointer bg-[#10bcff] hover:opacity-80 text-[12px] text-white p-1">
                                   Chi tiết
                                 </span>
                               </div>
@@ -255,7 +255,10 @@ const Card = () => {
           <div className="grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-1 phone:grid-cols-1 gap-3 pb-8 border-b-[1px] bobder-b-solid border-b-gray-400 ">
             {arrNew.map((item) => {
               return (
-                <div className="p-[15px] border-[1px] border-solid border-gray-400 rounded">
+                <div
+                  key={item.id}
+                  className="p-[15px] border-[1px] border-solid border-gray-400 rounded"
+                >
                   <div className="py-3">
                     <h2 className="uppercase text-[#494949] font-bold text-[20px] pb-1 border-b-[2px] border-b-solid border-b-[#fba919]">
                       <p className=" block leading-[1.5]">
@@ -273,22 +276,20 @@ const Card = () => {
                             : "/assets/images/new_default.jpg"
                         }
                         alt=""
-                        className="float-left mt-[4px] mr-[15px] max-width-full w-[170px]"
+                        className="float-left mt-[4px] mr-[15px] max-w-full w-[170px] max-h-[100px] object-cover"
                       />
                     </div>
                     <h3 className="text-[16px] font-bold text-[#494949]">
-                      <p>{item.title}</p>
+                      <p className="line-clamp-3">{item.title}</p>
                     </h3>
-                    <p className="text-[14px]">{item.subcontent}</p>
+                    <p className="text-[14px] ">{item.subcontent}</p>
                   </div>
-                  <p className="mt-3 text-[#1f9cf8]">
-                    <p
-                      className="flex items-center float-right cursor-pointer"
-                      onClick={() => nav(`/${item.slug}`)}
-                    >
-                      <span>Xem tiếp</span>
-                      <IoMdArrowDropright />
-                    </p>
+                  <p
+                    className="mt-3 text-[#1f9cf8] hover:text-blue-800 flex items-center float-right cursor-pointer"
+                    onClick={() => nav(`/${item.slug}`)}
+                  >
+                    Xem tiếp
+                    <IoMdArrowDropright />
                   </p>
                 </div>
               );

@@ -71,8 +71,8 @@ const DetailFeedback = () => {
 
   // console.log(id);
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(captcha);
+    //console.log(data);
+    //console.log(captcha);
     if (data.checkCaptcha !== captcha) {
       return console.log("ngu");
     }

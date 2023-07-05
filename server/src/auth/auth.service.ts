@@ -37,7 +37,7 @@ export class AuthService implements IAuthService {
 
     const isPasswordValidhi = await compareHash('1234567', '1234567');
     const isPassWord = await bcrypt.compare('1234567', '1234567');
-    console.log(isPassWord);
+    //console.log(isPassWord);
 
     const isPasswordValid = await compareHash(password, user.password);
     if (!isPasswordValid) {

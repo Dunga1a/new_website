@@ -14,7 +14,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${colorText} ${colorBgr} hover:${colorHover} flex items-center focus:outline-none rounded text-sm px-3 py-2 text-center mr-2`}
+      className={` ${colorText} ${colorBgr} hover:${colorHover} flex items-center focus:outline-none rounded  px-3 py-2 text-center mr-2`}
     >
       {icon}
       {title}

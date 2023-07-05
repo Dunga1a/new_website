@@ -141,7 +141,7 @@ const MemberManager = () => {
   };
 
   const handleChangeRoleAssociations = async (idRoleAssociationParams) => {
-    console.log(idRoleAssociationParams);
+    //console.log(idRoleAssociationParams);
     setSearchParams({
       ...queryParams,
       roleAssociationParam: idRoleAssociationParams.toString(),
@@ -151,7 +151,7 @@ const MemberManager = () => {
   };
 
   const handleChangeBusinessIdParam = async (idBusinessIdParams) => {
-    console.log(idBusinessIdParams);
+    //console.log(idBusinessIdParams);
     setSearchParams({
       ...queryParams,
       businessIdParam: idBusinessIdParams.toString(),
@@ -161,7 +161,7 @@ const MemberManager = () => {
   };
 
   const handleChangeStatusMember = async (status) => {
-    console.log(status);
+    //console.log(status);
     setSearchParams({
       ...queryParams,
       memberStatus: status.toString(),
@@ -182,7 +182,7 @@ const MemberManager = () => {
     (option) => option.value === Number(memberStatus)
   );
 
-  console.log(selectedChooseStatus);
+  //console.log(selectedChooseStatus);
 
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [isCheckedItems, setIsCheckedItems] = useState([]);
@@ -228,7 +228,7 @@ const MemberManager = () => {
       if (!option) {
         return;
       }
-      console.log(items);
+      //console.log(items);
       const result = await axios.delete(
         `${DOMAIN}/api/member/deleteManyMember`,
 
@@ -237,7 +237,7 @@ const MemberManager = () => {
           withCredentials: true,
         }
       );
-      console.log(result);
+      //console.log(result);
       fetchData();
     } catch (error) {
       console.log(error.message);
@@ -249,7 +249,7 @@ const MemberManager = () => {
       const result = await axios.delete(`${DOMAIN}/api/member/${idMember}`, {
         withCredentials: true,
       });
-      console.log(result);
+      //console.log(result);
     } catch (error) {
       console.log(error.message);
     }

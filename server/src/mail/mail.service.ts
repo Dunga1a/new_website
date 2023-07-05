@@ -38,7 +38,7 @@ export class MailService {
     const contact = await this.contactRepository.findOne(
       reply.contact.contact_id,
     );
-    console.log(contact);
+    // console.log(contact);
 
     await this.mailerService.sendMail({
       from: 'Phòng truyền thông....',
@@ -48,7 +48,7 @@ export class MailService {
     });
     contact.status = 1;
     await this.contactRepository.save(contact);
-    console.log(reply);
+    //console.log(reply);
   }
 
   async sendEmailForgetPassword(email: any) {
@@ -56,12 +56,12 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email.email,
       subject: 'Thư cấp lại mật khẩu',
-      html: `<h2>Mật khẩu mới của bạn là: <b>${password}</b></h2>`,
+      html: `<h2>Mật khẩu mới của bạn là: <b>${password}</b></h2><p>Cảm ơn bạn đã sử dụng trang web của chúng tôi!</p>`,
     });
     return password;
   }
   sendEmailConfirmation(email: string, verificationCode: string) {
-    console.log(verificationCode);
+    //console.log(verificationCode);
 
     this.mailerService.sendMail({
       to: email,

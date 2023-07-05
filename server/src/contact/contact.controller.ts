@@ -22,7 +22,7 @@ export class ContactController {
 
   @Post()
   createContact(@Body() contactDto: CreateContactDto): Promise<Contact> {
-    console.log('đây' + contactDto);
+    //console.log('đây' + contactDto);
 
     return this.contactService.createContact(contactDto);
   }
@@ -41,7 +41,7 @@ export class ContactController {
 
   @Post('deletesContact')
   async deleteMultiple(@Body() ids: number[]): Promise<Contact[]> {
-    console.log(ids);
+    //console.log(ids);
     const deleteContact = await this.contactService.deleteMultiple(ids);
     return deleteContact;
   }

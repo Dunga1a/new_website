@@ -48,7 +48,7 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log("vao day");
+      //console.log("vao day");
     }
   };
   return (

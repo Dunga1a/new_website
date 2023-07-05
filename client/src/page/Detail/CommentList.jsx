@@ -41,8 +41,8 @@ const CommentItem = ({
             <img
               src={
                 comment?.user?.image
-                  ? comment?.user?.image
-                  : "https://doanhnhanthanhhoahanoi.com/uploads/users/avatar_a0254quq_5.jpg"
+                  ? `/uploads/${comment?.user?.image}`
+                  : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg"
               }
               className="rounded-full w-[40px] h-[40px]"
             />
@@ -106,7 +106,7 @@ const CommentList = ({
   postItem,
 }) => {
   return (
-    <div className={`p-[5px] border border-gray-300`}>
+    <div>
       {postItem &&
         comments.map((comment) => (
           <CommentItem

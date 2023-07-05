@@ -17,6 +17,7 @@ const Form = ({ formFields, onSubmit }) => {
         : null,
     secondImage: null,
   });
+
   const { register, handleSubmit, setValue, watch, getValues } = useForm();
   const contentQuill = formFields.find((item) => item.type === "react-quill");
   //console.log(contentQuill);
@@ -54,7 +55,7 @@ const Form = ({ formFields, onSubmit }) => {
 
   //const values = watch();
   const handleFormSubmit = (data) => {
-    console.log("day", { ...data, isEdit });
+    //console.log("day", { ...data, isEdit });
     // const formData = {
     //   ...data,
     //   file: imageURL || (imageURL && imageDeputy),
@@ -68,9 +69,9 @@ const Form = ({ formFields, onSubmit }) => {
   };
 
   const handleImageChange = (e, inputName) => {
-    console.log("đây");
+    //console.log("đây");
     const file = e.target.files[0];
-    console.log(file);
+    //console.log(file);
     if (file) {
       setIsEdit(true);
       const reader = new FileReader();
@@ -118,13 +119,14 @@ const Form = ({ formFields, onSubmit }) => {
             }
             value={field.value}
             placeholder={`${field.label}`}
+            required
           />
         </>
       );
     }
 
     if (field.type === "file" && field.name === "image") {
-      console.log(imageDeputy.firstImage);
+      //console.log(imageDeputy.firstImage);
       return (
         <div className={field.col_span ? "col-span-2" : ""} key={field.name}>
           <label>
@@ -135,20 +137,20 @@ const Form = ({ formFields, onSubmit }) => {
                 <img
                   width={200}
                   src={imageDeputy.firstImage}
-                  alt="Uploaded"
+                  //alt="Uploaded"
                   style={{ width: "200px" }}
                   className="object-cover"
                 />
               </div>
             ) : (
               <div>
-                <img
+                {/* <img
                   width={200}
                   src={field.value !== "null" ? `/uploads/${field.value}` : ""}
-                  alt="Uploaded"
+                  //alt="Uploaded"
                   style={{ width: "200px" }}
                   className="object-cover"
-                />
+                /> */}
               </div>
             )}
             <input
@@ -168,15 +170,17 @@ const Form = ({ formFields, onSubmit }) => {
           <label>
             <span className="block font-semibold text-sm">{field.label}</span>
             {imageDeputy.secondImage ? (
-              <div>
-                <img
-                  width={200}
-                  src={imageDeputy.secondImage}
-                  alt="Uploaded"
-                  style={{ width: "200px" }}
-                  className="object-cover"
-                />
-              </div>
+              imageDeputy.secondImage !== null && (
+                <div>
+                  <img
+                    width={200}
+                    src={imageDeputy.secondImage ? imageDeputy.secondImage : ""}
+                    //alt="Uploaded"
+                    style={{ width: "200px" }}
+                    className="object-cover"
+                  />
+                </div>
+              )
             ) : (
               <div>
                 <img
@@ -209,11 +213,11 @@ const Form = ({ formFields, onSubmit }) => {
       <label key={field.name}>
         <span className="block font-semibold text-sm ">{field.label}</span>
         <input
-          accept=".jpg, .png, .jpeg, .svg"
           type={field.type}
           {...register(field.name)}
           defaultValue={field.value}
           className="w-full rounded h-[36px] border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+          required
         />
       </label>
     );
@@ -235,9 +239,9 @@ const Form = ({ formFields, onSubmit }) => {
       <Button
         type={"submit"}
         colorBgr={
-          "col-span-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold justify-center"
+          "col-span-2 bg-blue-500 hover:bg-blue-700 text-[18px] text-white font-semibold justify-center"
         }
-        title={"Save"}
+        title={"Lưu"}
       />
     </form>
   );
