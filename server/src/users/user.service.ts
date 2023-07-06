@@ -110,7 +110,7 @@ export class UserService implements IUserService {
 
   async editUser(editUser: editUser): Promise<User> {
     const { username, roleId } = editUser;
-    console.log('username', username);
+    //console.log('username', username);
 
     const user = await this.findByUsername(username);
     const role = await this.roleService.getById(roleId);
@@ -150,10 +150,10 @@ export class UserService implements IUserService {
   }
 
   async updateUserEmail(email: string, userId: string) {
-    console.log('đây là', userId);
-    console.log('đây là e', email);
+    //console.log('đây là', userId);
+    //console.log('đây là e', email);
     const user = await this.userRepository.findOne(userId);
-    console.log(user);
+    //console.log(user);
 
     user.email = email;
     return await this.userRepository.save(user);

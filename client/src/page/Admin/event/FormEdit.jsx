@@ -37,7 +37,7 @@ const FormEdit = ({ eventItem, setOpen, fetchData }) => {
           withCredentials: true,
         }
       );
-      console.log(result);
+      //console.log(result);
       setOpen(false);
       fetchData();
       toast.success("Sửa sự kiện thành công");

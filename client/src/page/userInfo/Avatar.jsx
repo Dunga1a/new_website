@@ -32,10 +32,9 @@ export default function AvatarUser() {
 
   const onSubmit = async (data) => {
     // handle form submission here
-    console.log(data);
+    //console.log(data);
     // const formData = new FormData();
     // formData.append("image", data.avatar[0]);
-
     // try {
     //   // Send a POST request to upload the image
     //   const response = await axios.post(
@@ -47,7 +46,6 @@ export default function AvatarUser() {
     //       },
     //     }
     //   );
-
     //   console.log(response.data); // The response from the server after uploading
     // } catch (error) {
     //   console.error(error);

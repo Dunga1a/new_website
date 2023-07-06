@@ -1,16 +1,3 @@
-.popup {
-  position: relative;
-  height: 70vh;
-  width: 100vh;
-  background-image: url(../../../public/assets/images/Orange_Modern_Happy_Birthday_Party_Postcard-removebg-preview.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  /* box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
-    rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px,
-    rgba(240, 46, 170, 0.05) 25px 25px; */
-}
-
 .img-event {
   position: absolute;
   right: -45px;

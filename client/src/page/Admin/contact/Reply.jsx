@@ -3,7 +3,7 @@ import React from "react";
 import { BsFileEarmarkText } from "react-icons/bs";
 
 const Reply = ({ dataReply }) => {
-  console.log(dataReply);
+  //console.log(dataReply);
   //console.log(dataReply.replies.map((reply) => reply.content));
   return (
     <>

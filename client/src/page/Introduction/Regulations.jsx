@@ -14,16 +14,16 @@ const Regulations = () => {
   });
   return (
     <div className="bg-white pt-6">
-      <Breadcrumbs title={"Điều lệ hoạt động"} />
+      <Breadcrumbs title={"Giới thiệu"} link={"/introduction"} />
 
       <div className="grid grid-cols-4 gap-3 p-7">
         <div className="px-3 py-4 laptop:col-span-3 desktop:col-span-3 tablet:col-span-4 phone:col-span-4">
           {load && (
-            <div class="flex items-center justify-center dark:bg-gray-800 dark:border-gray-700">
+            <div className="flex items-center justify-center dark:bg-gray-800 dark:border-gray-700">
               <div role="status">
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                  className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -37,13 +37,13 @@ const Regulations = () => {
                     fill="currentFill"
                   />
                 </svg>
-                <span class="sr-only">Loading...</span>
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
           )}
           {load === false && (
             <div className="border-[1px] border-solid border-[#4f4f4f] px-6 py-4 rounded">
-              <h2 className=" text-[20px] mb-5">Giới thiệu chung</h2>
+              <h2 className=" text-[20px] font-bold mb-5">Điều lệ hoạt động</h2>
               <Social
                 url={
                   "https://doanhnhanthanhhoahanoi.com/vi/about/Dieu-le-hoat-dong.html"

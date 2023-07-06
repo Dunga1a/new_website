@@ -19,12 +19,12 @@ export class RolesGuard implements CanActivate {
     const test = requiredRoles.some((role) =>
       user?.roles?.map((item) => item.name)?.includes(role),
     );
-    console.log('user', user);
-    console.log(
-      'test',
-      user?.roles?.map((item) => item.name),
-    );
-    console.log('requiredRoles', requiredRoles);
+    //console.log('user', user);
+    // console.log(
+    //   'test',
+    //   user?.roles?.map((item) => item.name),
+    // );
+    // console.log('requiredRoles', requiredRoles);
 
     return test;
   }

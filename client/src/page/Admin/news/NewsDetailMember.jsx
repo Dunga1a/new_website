@@ -13,7 +13,7 @@ import ModalV1 from "../../../components/Modal/ModalV1";
 import { BiTrash } from "react-icons/bi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
-const NewsDetail = () => {
+const NewsDetailMember = () => {
   const [data, setData] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [idItem, setIdItem] = useState(null);
@@ -55,7 +55,7 @@ const NewsDetail = () => {
   return (
     <Card title={"Chi tiết bài viết"}>
       <Button
-        onClick={() => navigate("/admin/news")}
+        onClick={() => navigate("/memberManager/newsPost")}
         title={"Trở lại"}
         colorBgr={"bg-blue-600 text-white hover:bg-blue-800 ml-3 mt-3 px-8"}
       />
@@ -141,4 +141,4 @@ const NewsDetail = () => {
   );
 };
 
-export default NewsDetail;
+export default NewsDetailMember;

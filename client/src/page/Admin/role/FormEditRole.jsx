@@ -17,7 +17,7 @@ const FormEditRole = ({ item, fetchData, setOpen }) => {
         id: Number(item.id),
         name: data.name,
       };
-      console.log("values: ", value);
+      //console.log("values: ", value);
       await axios.put(`${DOMAIN}/api/role/editRole`, value, {
         withCredentials: true,
       });
@@ -65,7 +65,7 @@ const FormEditRole = ({ item, fetchData, setOpen }) => {
         />
         <button
           type="submit"
-          class="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           Lưu
         </button>

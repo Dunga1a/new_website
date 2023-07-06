@@ -8,35 +8,23 @@ const RightBar = () => {
   return (
     <div className="desktop:block laptop:block phone:hidden tablet:block">
       <div className="mb-3">
-        <a href="">
-          <img
-            src="https://doanhnhanthanhhoahanoi.com/uploads/banners/qc1.jpg"
-            alt=""
-          />
+        <a href="http://egov-demo.nukeviet.vn/laws/">
+          <img src="/assets/images/qc1.jpg" alt="" />
+        </a>
+      </div>
+      <div className="my-3">
+        <a href="https://chinhphu.vn/portal/page/portal/chinhphu/congdan/dichvucong">
+          <img src="/assets/images/qc2.jpg" alt="" />
         </a>
       </div>
       <div className="my-3">
         <a href="">
-          <img
-            src="https://doanhnhanthanhhoahanoi.com/uploads/banners/qc2.jpg"
-            alt=""
-          />
+          <img src="/assets/images/qc3.jpg" alt="" />
         </a>
       </div>
       <div className="my-3">
-        <a href="">
-          <img
-            src="https://doanhnhanthanhhoahanoi.com/uploads/banners/qc3.jpg"
-            alt=""
-          />
-        </a>
-      </div>
-      <div className="my-3">
-        <a href="">
-          <img
-            src="https://doanhnhanthanhhoahanoi.com/uploads/banners/qc4.jpg"
-            alt=""
-          />
+        <a href="/">
+          <img src="/assets/images/qc4.jpg" alt="" />
         </a>
       </div>
       {/* <div className="border-[1px] bobder-solid border-gray-400 rounded p-3">

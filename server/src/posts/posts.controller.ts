@@ -32,7 +32,7 @@ export class PostsController {
   @Post()
   createPost(@Body() newPostDto: CreatePostDto) {
     const { userId, categoryId, ...postData } = newPostDto;
-    console.log('đây là id', userId);
+    //console.log('đây là id', userId);
 
     if (!postData.title) {
       throw new HttpException('Vui lòng thêm tiêu đề', HttpStatus.NOT_FOUND);
@@ -122,7 +122,7 @@ export class PostsController {
   @Get('/details-slug/:slug')
   async getPostBySlug(@Param('slug') slug: string) {
     const postBySlug = await this.newsPostsService.getPostBySlug(slug);
-    console.log(postBySlug);
+    //console.log(postBySlug);
 
     if (!postBySlug) {
       throw new NotFoundException('Post not found');
@@ -146,7 +146,7 @@ export class PostsController {
 
   @Post('deletes')
   async deleteMultiple(@Body() ids: number[]) {
-    console.log(ids);
+    //console.log(ids);
 
     return await this.newsPostsService.deleteMultiple(ids);
   }

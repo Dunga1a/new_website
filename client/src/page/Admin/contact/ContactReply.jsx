@@ -24,7 +24,7 @@ const ContactReply = ({ dataReply }) => {
       alert("Vui lòng nhập nội dung");
       return;
     }
-    console.log("content: ", content);
+    //console.log("content: ", content);
     const data = { contactId: id, content: content };
     try {
       await toast.promise(axios.post(`${DOMAIN}/api/rely`, data), {
@@ -43,30 +43,30 @@ const ContactReply = ({ dataReply }) => {
   return (
     <Card title={"Gửi Phản Hồi"}>
       <Card.Content>
-        <table class="border-collapse border border-slate-500">
+        <table className="border-collapse border border-slate-500">
           <tbody>
             <tr>
-              <td class="border border-slate-700 px-2 py-1">Tiêu đề gửi</td>
-              <td class="border border-slate-700 px-2 py-1">
+              <td className="border border-slate-700 px-2 py-1">Tiêu đề gửi</td>
+              <td className="border border-slate-700 px-2 py-1">
                 {dataReply.title}
               </td>
             </tr>
             <tr>
-              <td class="border border-slate-700 px-2 py-1">
+              <td className="border border-slate-700 px-2 py-1">
                 Gửi liên hệ tới email
               </td>
-              <td class="border border-slate-700 px-2 py-1">
+              <td className="border border-slate-700 px-2 py-1">
                 {dataReply.email}
               </td>
             </tr>
             <tr>
-              <td class="border border-slate-700 " colSpan={2}>
+              <td className="border border-slate-700 " colSpan={2}>
                 <ReactQuillEditor content={content} setContent={setContent} />
               </td>
             </tr>
 
             <tr>
-              <td class="border border-slate-700 py-2" colSpan={2}>
+              <td className="border border-slate-700 py-2" colSpan={2}>
                 <Button
                   colorBgr={
                     "bg-[#428bca] border border-[#357ebd] m-auto text-white "

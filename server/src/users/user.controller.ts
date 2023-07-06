@@ -94,8 +94,8 @@ export class UsersController {
     @UploadedFile() file: Express.Multer.File,
     @Param('userId') userId: string,
   ) {
-    console.log(userId);
-    console.log(file.filename);
+    //console.log(userId);
+    //console.log(file.filename);
 
     const imageUrl = file.filename;
     const updatedUser = await this.userService.updateAvatarUser(
@@ -130,7 +130,7 @@ export class UsersController {
   ) {
     const { verificationCode } = confirmEmailDto;
     const email = confirmEmailDto.email;
-    console.log(email);
+    //console.log(email);
 
     if (verificationCode === this.verificationCode) {
       // Mã xác minh hợp lệ, xác nhận email mới
@@ -166,8 +166,8 @@ export class UsersController {
     @Body() userDetails: any,
     @Param('idUser') idUser: string,
   ) {
-    console.log(userDetails);
-    console.log(idUser);
+    // console.log(userDetails);
+    // console.log(idUser);
 
     return await this.userService.editUserProfile(userDetails, idUser);
   }

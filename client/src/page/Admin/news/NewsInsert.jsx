@@ -24,7 +24,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         locale: "vi", // language code of the locale to use
         trim: true, // trim leading and trailing replacement chars, defaults to `true`
       });
-      console.log(data);
+      //console.log(data);
       let image = null;
       if (data.image) {
         formData.append("image", data.image[0]);
@@ -40,11 +40,11 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         image = `/uploads/${responseImgPerson.data.imageUrl}`;
       }
       const value = { ...data, slug, image, userId: currentUser.id };
-      console.log(value);
+      //console.log(value);
       const res = await axios.post(`${DOMAIN}/api/posts/`, value);
       //console.log(res.data);
       setOpen(false);
-      setTimeout(() => toast.success("Thêm bài viết thành công"), 3000);
+      toast.success("Thêm bài viết thành công");
       fetchData();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -71,7 +71,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         };
       });
       setListCategory(data);
-      console.log(result.data.getListCategory);
+      //console.log(result.data.getListCategory);
     } catch (error) {
       console.log(error.message);
     }
@@ -80,7 +80,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
   useEffect(() => {
     fetchDataStatic();
   }, [page]);
-  console.log(listCategory);
+  //console.log(listCategory);
   const newsFormFields = [
     { name: "title", label: "Tiêu đề", type: "text", col_span: true },
     {

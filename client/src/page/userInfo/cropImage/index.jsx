@@ -234,7 +234,7 @@ export default function ImageCrop({
                 className="px-3 py-1 bg-blue-500 rounded-xl text-white font-semibold mt-1"
                 onClick={getImage}
               >
-                Chọn
+                Thay đổi
               </button>
             </div>
           </>

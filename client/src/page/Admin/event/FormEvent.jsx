@@ -47,7 +47,7 @@ const FormEvent = ({ initValue, onSave }) => {
   const onSubmit = async (data) => {
     try {
       const strippedContent = content.replace(/(<([^>]+)>)/gi, "").trim();
-      console.log("tren: ", selectedPdf);
+      //console.log("tren: ", selectedPdf);
 
       if (strippedContent === "") {
         // Nếu nội dung sau khi loại bỏ các thẻ HTML và khoảng trắng trống,
@@ -65,11 +65,11 @@ const FormEvent = ({ initValue, onSave }) => {
         const result = await axios.post(`${DOMAIN}/api/event/pdfs`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log(
-          `kiểu của dữ liệu trả về: ${typeof result.data}. Dữ liệu là: ${
-            result.data
-          }`
-        );
+        //console.log(
+        // `kiểu của dữ liệu trả về: ${typeof result.data}. Dữ liệu là: ${
+        //   result.data
+        // }`
+        //);
         file_pdf = result.data.join(", ");
 
         choose_file = [...chooseFile, file_pdf];

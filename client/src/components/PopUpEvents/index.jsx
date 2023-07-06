@@ -8,13 +8,16 @@ const PopupEvent = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [eventList, setEventList] = useState([]);
   const navigate = useNavigate();
-  const currentDate = Date.now().toString();
-  const lastViewedDate = localStorage.getItem("lastViewedDate");
   useEffect(() => {
-    if (lastViewedDate !== currentDate) {
+    const hasShownPopup = localStorage.getItem("hasShownPopup");
+
+    if (!hasShownPopup) {
       setShowPopup(true);
-      localStorage.setItem("lastViewedDate", currentDate);
+      localStorage.setItem("hasShownPopup", "true");
     }
+    setTimeout(() => {
+      localStorage.removeItem("hasShownPopup");
+    }, 86000);
   }, []);
 
   const handleClosePopup = () => {
@@ -31,6 +34,7 @@ const PopupEvent = () => {
           withCredentials: true,
         }
       );
+      //console.log(result.data);
       setEventList(result.data.eventList[0]);
       //setCount(result.data.countEvent);
     } catch (error) {
@@ -41,7 +45,7 @@ const PopupEvent = () => {
     fetchData();
   }, []);
 
-  console.log(eventList);
+  //console.log(eventList);
 
   return (
     showPopup && (
@@ -51,13 +55,12 @@ const PopupEvent = () => {
             <div className="text-bold text-[#333]">{item.time}</div>;
             <div>heeh</div>;
           })} */}
-        <div className=" relative">
+        <div className="relative cursor-pointer hover:opacity-90 top-[-150px] left-32">
           <div
             onClick={() => {
               navigate(`/events-page/${eventList.id}`);
               setShowPopup(false);
             }}
-            className="popup cursor-pointer hover:opacity-90"
           >
             <img
               src="https://doanhnhanthanhhoahanoi.com/uploads/news/2022_11/dom00292_2.jpg"
@@ -71,6 +74,8 @@ const PopupEvent = () => {
                   <div>{item.title}</div>
                 </div>
               ))} */}
+
+            {/* Your other components */}
           </div>
           <button
             onClick={handleClosePopup}
@@ -79,8 +84,6 @@ const PopupEvent = () => {
           >
             X
           </button>
-
-          {/* Your other components */}
         </div>
       </div>
     )

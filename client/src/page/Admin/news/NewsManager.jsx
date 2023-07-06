@@ -5,7 +5,12 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { AiOutlinePlusCircle, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiOutlinePlusCircle,
+  AiOutlineDelete,
+  AiOutlineCheckCircle,
+} from "react-icons/ai";
+import { ImWarning } from "react-icons/im";
 import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
 import ReactQuillEditor from "../../../components/ReactQuill";
@@ -17,6 +22,8 @@ import NewsInsert from "./NewsInsert";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
+import ModalV1 from "../../../components/Modal/ModalV1";
+import { BiTrash } from "react-icons/bi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_post = [
@@ -89,7 +96,7 @@ const NewsManager = () => {
       url += `id=${currentUser ? currentUser.id : ""}&`;
 
       const res = await axios.get(url);
-      console.log(res);
+      //console.log(res);
       setData(res.data.data);
       setCount(res.data.count);
     } catch (error) {
@@ -134,13 +141,13 @@ const NewsManager = () => {
 
   const handleChangeSelect = (selectOne) => {
     setSelectOne(selectOne);
-    console.log(selectOne.value);
+    //console.log(selectOne.value);
   };
   const handleChangeSelectTwo = (selectedTwo) => {
     setSelectTwo(selectedTwo);
     searchParams.set("page", 1);
     setSearchParams(searchParams);
-    console.log("Select Two value:", selectedTwo.value);
+    //console.log("Select Two value:", selectedTwo.value);
   };
 
   const handleSetStatus = async () => {
@@ -192,7 +199,7 @@ const NewsManager = () => {
   };
 
   const options = listCategory;
-  console.log(options);
+  //console.log(options);
 
   return (
     <div className="relative transition-all ease-linear">
@@ -353,7 +360,7 @@ const NewsManager = () => {
               colorBgr={"bg-red-500"}
               colorText={"text-white"}
               colorHover={"bg-red-800"}
-              icon={<AiOutlineDelete className="text-[18px]" />}
+              icon={<BiTrash className="text-[18px]" />}
             />
             {/* Đặt điều kiện giữa admin và staff ở đây */}
             <Button
@@ -367,109 +374,12 @@ const NewsManager = () => {
               title={"Duyệt các lựa chọn"}
               colorBgr={"bg-yellow-400 hover:bg-yellow-600"}
               colorText={"text-white"}
+              icon={<AiOutlineCheckCircle className="text-[18px]" />}
             />
             {/* Đặt điều kiện giữa admin và staff ở đây */}
           </div>
 
-          {open && (
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-2">
-              <div>
-                <div className="w-full relative">
-                  <input
-                    type="text"
-                    className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
-                      errors.title ? "border-red-500 border-[1px]" : ""
-                    }`}
-                    {...register("title", {
-                      required: "Không được bỏ trống trường này",
-                    })}
-                    placeholder="Thêm Tiêu đề"
-                  />
-                  <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
-                    *
-                  </span>
-                </div>
-                <ErrorMessage
-                  errors={errors}
-                  name="title"
-                  render={({ messages }) => {
-                    //console.log("messages", messages);
-                    return messages
-                      ? Object.entries(messages).map(([type, message]) => (
-                          <p
-                            className="ml-10 text-[14px] text-red-500"
-                            key={type}
-                          >
-                            {message}
-                          </p>
-                        ))
-                      : null;
-                  }}
-                />
-              </div>
-              <div className="mt-2">
-                <div className="w-full relative">
-                  <input
-                    type="text"
-                    className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
-                      errors.sub_title ? "border-red-500 border-[1px]" : ""
-                    }`}
-                    {...register("sub_title", {
-                      required: "Không được bỏ trống trường này",
-                    })}
-                    placeholder="Giới thiệu ngắn gọn"
-                  />
-                  <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
-                    *
-                  </span>
-                </div>
-                <ErrorMessage
-                  errors={errors}
-                  name="sub_title"
-                  render={({ messages }) => {
-                    //console.log("messages", messages);
-                    return messages
-                      ? Object.entries(messages).map(([type, message]) => (
-                          <p
-                            className="ml-10 text-[14px] text-red-500"
-                            key={type}
-                          >
-                            {message}
-                          </p>
-                        ))
-                      : null;
-                  }}
-                />
-              </div>
-              <div className="bg-white">
-                <ReactQuillEditor
-                  {...register("content", {
-                    required: true,
-                  })}
-                  onContentChange={(value) => {
-                    setValue("content", value);
-                  }}
-                  placeholder={"Nhập content..."}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Thêm{" "}
-              </button>
-              <button
-                onClick={() => setOpen(false)}
-                type="button"
-                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-              >
-                Hủy
-              </button>
-            </form>
-          )}
-
-          <Modal
+          <ModalV1
             classNameChildren={"w-[800px]"}
             open={openEditModal}
             setOpen={setOpenEditModal}
@@ -480,8 +390,8 @@ const NewsManager = () => {
               setOpen={setOpenEditModal}
               idItem={idItem}
             />
-          </Modal>
-          <Modal
+          </ModalV1>
+          <ModalV1
             classNameChildren={"w-[800px]"}
             open={openInsertModal}
             setOpen={setOpenInsertModal}
@@ -490,14 +400,16 @@ const NewsManager = () => {
               setOpen={setOpenInsertModal}
               fetchData={fetchDataWithFilter}
             />
-          </Modal>
+          </ModalV1>
 
-          <Modal
-            title={"Xét duyệt bài đăng"}
+          <ModalV1
+            title={
+              <AiOutlineCheckCircle className="m-auto w-10 h-10 text-green-400" />
+            }
             open={openModalStatus}
             setOpen={setOpenModalStatus}
           >
-            <h2 className="text-xl">
+            <h2 className="text-xl my-3">
               Bạn có chắc muốn xét duyệt các bài đăng đã lựa chọn không?
             </h2>
             <div className="flex justify-center mt-3">
@@ -509,24 +421,25 @@ const NewsManager = () => {
                 onClick={handleSetStatus}
               ></Button>
             </div>
-          </Modal>
+          </ModalV1>
 
-          <Modal
-            title={"Lỗi!!!"}
+          <ModalV1
+            title={<ImWarning className="m-auto w-10 h-10 text-yellow-400" />}
             open={openModalError}
             setOpen={setOpenModalError}
+            isCheckedItems={isCheckedItems.length}
           >
-            <h2 className="text-xl font-semibold text-red-600">
+            <h2 className="text-xl col-span-2 font-semibold text-red-600">
               Bạn chưa lựa chọn! Xin vui lòng thử lại...
             </h2>
-          </Modal>
+          </ModalV1>
 
-          <Modal
-            title={"Xóa bài viết"}
+          <ModalV1
+            title={<BiTrash className="m-auto w-10 h-10 text-red-500" />}
             open={openModalDelete}
             setOpen={setOpenModalDelete}
           >
-            <h2 className="text-xl">
+            <h2 className="text-xl my-3">
               Bạn có chắc muốn xóa bài viết đã lựa chọn không?
             </h2>
             <div className="flex justify-center mt-3">
@@ -538,7 +451,7 @@ const NewsManager = () => {
                 onClick={handleDeleteMultiple}
               ></Button>
             </div>
-          </Modal>
+          </ModalV1>
         </div>
       </div>
     </div>
