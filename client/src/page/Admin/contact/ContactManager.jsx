@@ -204,7 +204,7 @@ const ContactManager = () => {
                               <HiOutlineMail className="w-[25px] h-[25px]" />
                             )}
                           </span>
-                          <span>{item.username}hehehehe</span>
+                          <span>{item.username}</span>
                         </div>
                       </td>
 
