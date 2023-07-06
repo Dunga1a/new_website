@@ -22,6 +22,8 @@ import axios from "axios";
 import Select from "react-select";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import { ImWarning } from "react-icons/im";
+import ModalV1 from "../../../components/Modal/ModalV1";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_post = [
@@ -285,18 +287,23 @@ const UserManager = () => {
         />
       </Card>
 
-      <Modal title={"Lỗi!!!"} open={openModalError} setOpen={setOpenModalError}>
-        <h2 className="text-xl font-semibold text-red-600">
+      <ModalV1
+        title={<ImWarning className="m-auto w-10 h-10 text-yellow-400" />}
+        open={openModalError}
+        setOpen={setOpenModalError}
+        isCheckedItems={isCheckedItems.length}
+      >
+        <h2 className="text-xl col-span-2 font-semibold text-red-600">
           Bạn chưa lựa chọn! Xin vui lòng thử lại...
         </h2>
-      </Modal>
+      </ModalV1>
 
-      <Modal
-        title={"Đánh dấu các lựa chọn"}
+      <ModalV1
+        title={<AiFillLock className="m-auto w-10 h-10 text-red-600" />}
         open={closeStatus}
         setOpen={setCloseStatus}
       >
-        <h2 className="text-xl">
+        <h2 className="text-xl mb-5">
           Bạn có chắc muốn khóa các tài khoản lựa chọn đã đánh dấu không?
         </h2>
         <div className="flex justify-center mt-3">
@@ -308,13 +315,13 @@ const UserManager = () => {
             onClick={handleTickClose}
           ></Button>
         </div>
-      </Modal>
-      <Modal
-        title={"Đánh dấu các lựa chọn"}
+      </ModalV1>
+      <ModalV1
+        title={<AiFillUnlock className="m-auto w-10 h-10 text-green-600" />}
         open={openStatus}
         setOpen={setOpenStatus}
       >
-        <h2 className="text-xl">
+        <h2 className="text-xl mb-5">
           Bạn có chắc muốn mở các tài khoản đã đánh dấu không?
         </h2>
         <div className="flex justify-center mt-3">
@@ -326,7 +333,7 @@ const UserManager = () => {
             onClick={handleTickOpen}
           ></Button>
         </div>
-      </Modal>
+      </ModalV1>
 
       {/* <Modal
         classNameChildren={"w-[800px]"}
