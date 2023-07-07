@@ -1,0 +1,14 @@
+.background {
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+}
+
+.bg-children {
+  background-color: #ffdee9;
+  background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
+}
+
+text {
+  font-size: 18px !important;
+  color: black !important;
+  fill: black !important;
+}

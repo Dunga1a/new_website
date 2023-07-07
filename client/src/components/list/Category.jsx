@@ -34,7 +34,7 @@ const Category = () => {
       <ul className="mt-4 uppercase text-sm text-[#494949] px-4">
         {categoryList &&
           categoryList.map((item) => (
-            <li key={item.id} className="py-3 hover:opacity-80">
+            <li key={item.news_category_id} className="py-3 hover:opacity-80">
               <p className="cursor-pointer" onClick={() => handleClick(item)}>
                 {item.name}
               </p>{" "}

@@ -57,10 +57,10 @@ export class PostsController {
     }
   }
 
-  // @Get()
-  // getAllPosts(): Promise<NewsPost[]> {
-  //   return this.newsPostsService.getAllPosts();
-  // }
+  @Get('all-new-posts')
+  getAllPost(): Promise<NewsPost[]> {
+    return this.newsPostsService.getAllPost();
+  }
   @Get()
   async getNewsByCategoryAndStatusWithPagination(
     @Query('category') category: number | null,

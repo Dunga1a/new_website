@@ -4,6 +4,7 @@ import { UpdatePostDto } from './dtos/UpdatePostDto.dto';
 
 export interface IPostService {
   getAllPosts(status: string, page: number, pageSize: number);
+  getAllPost();
   getPostById(id: number);
   getPostBySlug(slug: string);
   getNewsByCategoryAndStatusWithPagination(

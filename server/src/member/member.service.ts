@@ -64,6 +64,10 @@ export class MemberService implements IMemberService {
     return saveMember;
   }
 
+  async getAllMember() {
+    return await this.memberRepository.find();
+  }
+
   async getAllMembers(queryParams: any) {
     const pageSize = 8;
     const page = Number(queryParams.page);

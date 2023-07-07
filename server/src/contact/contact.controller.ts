@@ -33,6 +33,11 @@ export class ContactController {
     return data;
   }
 
+  @Get('all-contacts')
+  getAllContact() {
+    return this.contactService.getAllContacts();
+  }
+
   @Get('contactById/:id')
   getContactById(@Param('id') id: number) {
     const contact = this.contactService.getContactById(id);

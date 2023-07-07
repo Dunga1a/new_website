@@ -26,6 +26,10 @@ export class ContactService implements IContactService {
     return contact;
   }
 
+  async getAllContacts() {
+    return await this.contactRepository.find();
+  }
+
   async getContactById(id: number) {
     const contact = await this.contactRepository.findOne(id, {
       relations: ['replies'],
