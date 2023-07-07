@@ -7,10 +7,11 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
+import EmptyState from "../../components/EmptyState/EmptyState";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const SearchPage = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [count, setCount] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState(null);
@@ -134,7 +135,7 @@ const SearchPage = () => {
                 </ul>
               </div>
             )}
-            {data &&
+            {data.length ? (
               data.map((item) => {
                 return (
                   <div
@@ -149,7 +150,10 @@ const SearchPage = () => {
                     </div>
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <EmptyState />
+            )}
           </div>
           {data && keyword && (
             <PaginationV2
