@@ -54,12 +54,11 @@ const Form = ({ formFields, onSubmit }) => {
 
   //const values = watch();
   const handleFormSubmit = (data) => {
-    console.log("day", { ...data, isEdit });
+    // console.log("day", { ...data, isEdit });
     // const formData = {
     //   ...data,
     //   file: imageURL || (imageURL && imageDeputy),
     // };
-
     onSubmit({ ...data, isEdit });
   };
 
@@ -68,9 +67,8 @@ const Form = ({ formFields, onSubmit }) => {
   };
 
   const handleImageChange = (e, inputName) => {
-    console.log("đây");
     const file = e.target.files[0];
-    console.log(file);
+    // console.log(file);
     if (file) {
       setIsEdit(true);
       const reader = new FileReader();
@@ -124,7 +122,7 @@ const Form = ({ formFields, onSubmit }) => {
     }
 
     if (field.type === "file" && field.name === "image") {
-      console.log(imageDeputy.firstImage);
+      // console.log(imageDeputy.firstImage);
       return (
         <div className={field.col_span ? "col-span-2" : ""} key={field.name}>
           <label>
@@ -142,13 +140,13 @@ const Form = ({ formFields, onSubmit }) => {
               </div>
             ) : (
               <div>
-                <img
+                {/* <img
                   width={200}
                   src={field.value !== "null" ? `/uploads/${field.value}` : ""}
                   alt="Uploaded"
                   style={{ width: "200px" }}
                   className="object-cover"
-                />
+                /> */}
               </div>
             )}
             <input

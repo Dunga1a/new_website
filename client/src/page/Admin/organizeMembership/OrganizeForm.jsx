@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Toggle from "../../../components/Toggle/Toggle";
 
-const OrganizeForm = ({ value, onSave }) => {
+const OrganizeForm = ({ value, onSave, setOpen }) => {
   const [isPublic, setIsPublic] = useState(value.status);
   const [isEdit, setIsEdit] = useState(false);
   const {
@@ -57,7 +57,7 @@ const OrganizeForm = ({ value, onSave }) => {
                   )}
                 </div>
               </div>
-              <div className="col-span-1 flex items-center">
+              <div className="col-span-1 flex ">
                 <div className="mt-2">
                   <Toggle
                     label="Trạng thái"
@@ -72,8 +72,15 @@ const OrganizeForm = ({ value, onSave }) => {
 
         <div className="mt-4 flex items-center justify-end gap-x-6">
           <button
+            onClick={() => setOpen(false)}
+            type="button"
+            className="w-[100px] rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+          >
+            Thoát
+          </button>
+          <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="w-[100px] rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Lưu
           </button>

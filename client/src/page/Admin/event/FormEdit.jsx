@@ -4,9 +4,9 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../context/authContext";
 
 const FormEdit = ({ eventItem, setOpen, fetchData }) => {
+  // console.log("eventItem: ", eventItem.content);
   // const { url } = useContext(AuthContext);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -24,7 +24,7 @@ const FormEdit = ({ eventItem, setOpen, fetchData }) => {
     image: [],
     file_pdf: eventItem.file_pdf,
   });
-  console.log("vao day: ", eventItem);
+  // console.log("vao day: ", eventItem);
 
   const onSave = async (data) => {
     try {
@@ -47,7 +47,7 @@ const FormEdit = ({ eventItem, setOpen, fetchData }) => {
   };
   return (
     <div>
-      <FormEvent initValue={value} onSave={onSave} />
+      <FormEvent initValue={value} onSave={onSave} setOpen={setOpen} />
     </div>
   );
 };

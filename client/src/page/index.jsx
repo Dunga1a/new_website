@@ -8,6 +8,7 @@ import SliderPage from "../components/Slider";
 import Card from "../components/Card";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../components/LoadingPage";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const slides = [
@@ -27,11 +28,15 @@ const slides = [
 
 const HomePage = () => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const fetchData = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(`${DOMAIN}/api/posts/allPost`);
-      console.log(res.data);
+
       setData(res.data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -77,7 +82,10 @@ const HomePage = () => {
           </div>
 
           <ul>
-            {data &&
+            {loading ? (
+              <LoadingPage />
+            ) : (
+              data &&
               data.length > 0 &&
               data.slice(0, 3).map((item) => (
                 <li
@@ -101,49 +109,8 @@ const HomePage = () => {
                     </span>
                   </div>
                 </li>
-              ))}
-            {/* <li className="h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3">
-              <a
-                href=""
-                title="HTBC tham gia Hội nghị Xúc tiến và Kết nối đầu tư, kinh doanh"
-                className="flex justify-between text-[14px] "
-              >
-                HTBC tham gia Hội nghị Xúc tiến và Kết nối đầu tư, kinh doanh
-                <img
-                  className="ml-[20px]"
-                  src="https://doanhnhanthanhhoahanoi.com/assets/news/2022_11/screenshot-2022-11-24-145502.png"
-                  alt=""
-                />
-              </a>
-            </li>
-            <li className="h-[85px] border-b-[1px] border-solid border-[#dadada] mb-3">
-              <a
-                href=""
-                title="HTBC tham gia Hội nghị Xúc tiến và Kết nối đầu tư, kinh doanh"
-                className="flex justify-between text-[14px] "
-              >
-                Doanh nhân Hội viên HTBC ủng hộ Quỹ Vì Người Nghèo Thành phố
-                <img
-                  className="ml-[20px]"
-                  src="https://doanhnhanthanhhoahanoi.com/assets/news/2022_11/screenshot-2022-11-24-145502.png"
-                  alt=""
-                />
-              </a>
-            </li>
-            <li className="h-[85px]">
-              <a
-                href=""
-                title="HTBC tham gia Hội nghị Xúc tiến và Kết nối đầu tư, kinh doanh"
-                className="flex justify-between text-[14px] "
-              >
-                Doanh nhân Thanh Hóa - những người “truyền lửa” cho thế hệ trẻ
-                <img
-                  className="ml-[20px]"
-                  src="https://doanhnhanthanhhoahanoi.com/assets/news/2022_11/screenshot-2022-11-24-145502.png"
-                  alt=""
-                />
-              </a>
-            </li> */}
+              ))
+            )}
           </ul>
         </div>
         <div className="desktop:col-span-1 desktop:block phone:hidden laptop:col-span-1 laptop:block">

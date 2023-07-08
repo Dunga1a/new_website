@@ -15,23 +15,26 @@ const FormBusinessAreaNew = ({ setOpen, fetchData }) => {
 
   const onSave = async (data) => {
     try {
-      const result = await axios.post(`${DOMAIN}/api/business-areas`, data, {
+      await axios.post(`${DOMAIN}/api/business-areas`, data, {
         withCredentials: true,
       });
-      console.log(result);
+
       fetchData();
       setOpen(false);
       toast.success("Thêm lĩnh vực hoạt động thành công.");
       setSearchParams({ page: 1 });
     } catch (error) {
-      console.log(error.message);
       toast.error("Thêm lĩnh vực hoạt động thất bại.");
     }
     // const data =await axios.post('http://localhost:3001/api/event/createEvent', )
   };
   return (
     <div>
-      <FormBusinessArea initValue={initValue} onSave={onSave} />
+      <FormBusinessArea
+        initValue={initValue}
+        onSave={onSave}
+        setOpen={setOpen}
+      />
     </div>
   );
 };

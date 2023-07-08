@@ -89,7 +89,6 @@ const NewsManager = () => {
       url += `id=${currentUser ? currentUser.id : ""}&`;
 
       const res = await axios.get(url);
-      console.log(res);
       setData(res.data.data);
       setCount(res.data.count);
     } catch (error) {
@@ -103,7 +102,6 @@ const NewsManager = () => {
   }, [page, selectOne, selectTwo, idItem]);
 
   const handleEdit = (item) => {
-    console.log(item);
     setIdItem(item);
     setOpenEditModal(true);
   };
@@ -121,7 +119,7 @@ const NewsManager = () => {
       fetchDataWithFilter();
     } catch (error) {
       toast.error("Lỗi không thể xóa! Xin vui lòng thử lại...");
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
@@ -134,13 +132,13 @@ const NewsManager = () => {
 
   const handleChangeSelect = (selectOne) => {
     setSelectOne(selectOne);
-    console.log(selectOne.value);
+    // console.log(selectOne.value);
   };
   const handleChangeSelectTwo = (selectedTwo) => {
     setSelectTwo(selectedTwo);
     searchParams.set("page", 1);
     setSearchParams(searchParams);
-    console.log("Select Two value:", selectedTwo.value);
+    // console.log("Select Two value:", selectedTwo.value);
   };
 
   const handleSetStatus = async () => {
@@ -185,14 +183,14 @@ const NewsManager = () => {
         };
       });
       setListCategory(data);
-      console.log(result.data.getListCategory);
+      // console.log(result.data.getListCategory);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   const options = listCategory;
-  console.log(options);
+  // console.log(options);
 
   return (
     <div className="relative transition-all ease-linear">

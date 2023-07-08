@@ -41,8 +41,6 @@ const PopupEvent = () => {
     fetchData();
   }, []);
 
-  console.log(eventList);
-
   return (
     showPopup && (
       <div className="bg-gray-800 bg-opacity-70 fixed top-0 left-0 w-full h-full flex justify-center items-center z-[2000]">

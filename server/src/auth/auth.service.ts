@@ -35,10 +35,6 @@ export class AuthService implements IAuthService {
       );
     }
 
-    const isPasswordValidhi = await compareHash('1234567', '1234567');
-    const isPassWord = await bcrypt.compare('1234567', '1234567');
-    console.log(isPassWord);
-
     const isPasswordValid = await compareHash(password, user.password);
     if (!isPasswordValid) {
       throw new HttpException(
@@ -46,7 +42,6 @@ export class AuthService implements IAuthService {
         HttpStatus.NOT_FOUND,
       );
     }
-    //console.log('2323', isPasswordValid);
 
     return isPasswordValid ? user : null;
   }

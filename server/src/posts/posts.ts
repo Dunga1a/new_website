@@ -20,5 +20,6 @@ export interface IPostService {
   deleteMultiple(ids: number[]);
   updatePost(postId: number, updatePostDto: UpdatePostDto): Promise<NewsPost>;
   searchByKeyword(keyword: string, page: number, limit: number);
+  getNewsByAction(queryParams: any);
   //paginationPost(page: number, pageSize: number): Promise<NewsPost[]>;
 }

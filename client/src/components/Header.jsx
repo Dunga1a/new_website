@@ -8,7 +8,6 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
 
   const logOut = () => {
     //confirm("Bạn chắc chắn muốn đăng xuất?");

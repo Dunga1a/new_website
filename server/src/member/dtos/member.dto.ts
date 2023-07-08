@@ -26,9 +26,7 @@ export class CreateMemberDto {
   @IsNotEmpty()
   @IsString()
   address: string;
-  @IsNotEmpty()
-  @IsString()
-  intro: string;
+
   @IsNotEmpty()
   @IsString()
   slug: string;

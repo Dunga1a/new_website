@@ -6,9 +6,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const FormBusinessAreaEdit = ({ businessAreaItem, setOpen, fetchData }) => {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
-
   const onSave = async (data) => {
     try {
       await axios.put(`${DOMAIN}/api/business-areas/editOne`, data, {
@@ -25,7 +24,11 @@ const FormBusinessAreaEdit = ({ businessAreaItem, setOpen, fetchData }) => {
   return (
     <div>
       {businessAreaItem ? (
-        <FormBusinessArea initValue={businessAreaItem} onSave={onSave} />
+        <FormBusinessArea
+          initValue={businessAreaItem}
+          onSave={onSave}
+          setOpen={setOpen}
+        />
       ) : null}
     </div>
   );

@@ -13,6 +13,7 @@ const CommentItem = ({
   fetchData,
   postItem,
 }) => {
+  console.log("comment", comment);
   const [hidden, setHidden] = useState(true);
   const handleReplyClick = (commentId) => {
     setOpen(commentId);
@@ -41,14 +42,16 @@ const CommentItem = ({
             <img
               src={
                 comment?.user?.image
-                  ? comment?.user?.image
-                  : "https://doanhnhanthanhhoahanoi.com/uploads/users/avatar_a0254quq_5.jpg"
+                  ? `/uploads/${comment?.user?.image}`
+                  : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg"
               }
               className="rounded-full w-[40px] h-[40px]"
             />
 
             <div className="flex-1 bg-gray-200 rounded-lg px-2 py-1 ">
-              <p>{comment.content}</p>
+              <p>
+                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+              </p>
               <p className="flex gap-2">
                 <p className="flex gap-1 items-center">
                   <FaUserAlt className="font-bold" />

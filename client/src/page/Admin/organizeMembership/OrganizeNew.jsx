@@ -34,7 +34,7 @@ const OrganizeNew = ({ setOpen, fetchData }) => {
   };
   return (
     <div>
-      <OrganizeForm value={initValue} onSave={onSave} />
+      <OrganizeForm value={initValue} onSave={onSave} setOpen={setOpen} />
     </div>
   );
 };

@@ -33,7 +33,7 @@ const ContactManagerDetail = () => {
 
   const fetchData = async () => {
     const response = await axios.get(`${DOMAIN}/api/contact/contactById/` + id);
-    console.log(response.data);
+
     setDataContact(response.data);
   };
 

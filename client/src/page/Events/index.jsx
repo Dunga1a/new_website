@@ -5,11 +5,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
-import { AuthContext } from "../../context/authContext";
+import EmptyState from "../../components/EmptyState/EmptyState";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const PageEvents = () => {
   const navigate = useNavigate();
-  // const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const [eventList, setEventList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,7 +55,7 @@ const PageEvents = () => {
             <h1 className="text-xl my-3 text-red-500 font-medium border-b border-b-slate-500">
               Sự Kiện
             </h1>
-            {eventList ? (
+            {eventList.length ? (
               <table className="w-full text-center border text-[#080808]">
                 <thead className="border ">
                   <tr>
@@ -91,15 +90,17 @@ const PageEvents = () => {
                   ))}
                 </tbody>
               </table>
-            ) : null}
-            {eventList && (
+            ) : (
+              <EmptyState />
+            )}
+            {eventList.length ? (
               <PaginationV2
                 total={count}
                 current={searchParams.get("page") || 1}
                 pageSize="8"
                 onChange={handleChangePage}
               />
-            )}
+            ) : null}
           </div>
         </div>
         <div>

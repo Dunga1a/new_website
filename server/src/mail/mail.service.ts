@@ -56,7 +56,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email.email,
       subject: 'Thư cấp lại mật khẩu',
-      html: `<h2>Mật khẩu mới của bạn là: <b>${password}</b></h2>`,
+      html: `Mật khẩu mới của bạn là: <b>${password}</b>`,
     });
     return password;
   }

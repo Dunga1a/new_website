@@ -33,11 +33,13 @@ const FormEditRole = ({ item, fetchData, setOpen }) => {
 
   return (
     <div>
+      <h3 className="text-[20px] font-semibold mb-2">Sửa Chức Vụ</h3>
+
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="w-full relative">
           <input
             type="text"
-            className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
+            className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[16px] leading-[15px] border-[#cccccc] ${
               errors.name ? "border-red-500 border-[1px]" : ""
             }`}
             {...register("name", {

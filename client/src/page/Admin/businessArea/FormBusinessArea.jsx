@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Toggle from "../../../components/Toggle/Toggle";
 import slugify from "slugify";
 
-const FormBusinessArea = ({ initValue, onSave }) => {
+const FormBusinessArea = ({ initValue, onSave, setOpen }) => {
   const [content, setContent] = useState(initValue.intro);
   const [isContentError, setIsContentError] = useState(false);
   const [isPublic, setIsPublic] = useState(initValue.status);
@@ -122,10 +122,17 @@ const FormBusinessArea = ({ initValue, onSave }) => {
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={() => setOpen(false)}
+            type="button"
+            className="w-[100px] rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
           >
-            Save
+            Thoát
+          </button>
+          <button
+            type="submit"
+            className="w-[100px] rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Lưu
           </button>
         </div>
       </form>

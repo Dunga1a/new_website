@@ -69,9 +69,6 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
     <div className="bg-white py-6">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="px-10 phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
-          <h3 className="font-semibold text-base">
-            Cấp tài khoản cho hội viên
-          </h3>
           <div className="my-4">
             <input
               type="text"

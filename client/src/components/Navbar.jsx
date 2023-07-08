@@ -68,7 +68,6 @@ const contentArr = [
         slug: "",
         onClick: true,
       },
-
     ],
   ],
 ];
@@ -146,7 +145,7 @@ const Navbar = () => {
         }
       );
       const group = groupCommentsByFatherId(category.data.newsCategories);
-      console.log(group);
+
       setArr(group);
       setNewsCategory(category.data.newsCategories);
       setCount(category.data.countCategory);
@@ -159,7 +158,6 @@ const Navbar = () => {
     fetchData();
   }, [page]);
 
-  // console.log(arr);
   const handleClick = (item) => {
     navigate(`/news/${item.slug}`, { state: { item } });
   };

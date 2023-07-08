@@ -1,28 +1,16 @@
-import React, { useContext } from "react";
-import Button from "../../../components/Buttons/Button";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { AuthContext } from "../../../context/authContext";
+import React from "react";
 
-const FormDelete = ({ eventItem, setOpen, fetchData }) => {
-  // const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`${DOMAIN}/api/event/${eventItem.id}`);
-      setOpen(false);
-      fetchData();
-      toast.success("Xóa sự kiện thành công");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+const FormDelete = ({ eventItem }) => {
   return (
-    <div>
-      Bạn có chắc muốn xóa {eventItem.title}{" "}
-      <button onClick={handleDelete}>Xóa</button>{" "}
-    </div>
+    <>
+      <div className="text-[18px] ">
+        <AiOutlineCloseCircle className="w-[60px] h-[60px] text-red-600 m-auto" />
+        <p className="font-bold">Bạn có chắc muốn xóa:</p>{" "}
+        <span>{eventItem.title}</span>
+      </div>
+    </>
   );
 };
 
