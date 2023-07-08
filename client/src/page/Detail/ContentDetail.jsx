@@ -30,14 +30,14 @@ const ContentDetail = () => {
   } = useForm({ criteriaMode: "all" });
   // CẦN LẤY CẢ ID CỦA USER VÀ ID CỦA BÀI POST NỮA
   const { currentUser } = useContext(AuthContext);
-  console.log("currentUser: ", currentUser);
+  //console.log("currentUser: ", currentUser);
   const [postItem, setPostItem] = useState(null);
   const { slug } = useParams();
   const fetchData = async () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
 
-      console.log(res.data);
+      //console.log(res.data);
       setPostItem(res.data);
     } catch (error) {
       console.log(error.message);

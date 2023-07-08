@@ -11,6 +11,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
   const fetchDataStatic = async () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
+
       setPost(res.data);
     } catch (error) {
       console.log(error.message);
@@ -70,6 +71,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
       }
       setOpen(null);
       reset({ content: "" });
+
     } catch (error) {
       console.log(error.message);
     }

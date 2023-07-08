@@ -17,10 +17,10 @@ const Basic = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    console.log(watch(data));
+    // console.log(watch(data));
     try {
       const value = { ...currentUser, ...data };
-      console.log(value);
+      //console.log(value);
       axios.put(`${DOMAIN}/api/users/editUser/${currentUser.id}`, value);
       toast.success("Thay đổi thông tin thành công");
       localStorage.setItem("user", JSON.stringify(value));

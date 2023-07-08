@@ -21,7 +21,7 @@ async function main() {
 
     for (const role of defaultRoles) {
       await roleService.createRole(role);
-      console.log(`Vai trò đã được tạo: ${role.name}`);
+      `Vai trò đã được tạo: ${role.name}`;
     }
 
     // Tạo người dùng mặc định

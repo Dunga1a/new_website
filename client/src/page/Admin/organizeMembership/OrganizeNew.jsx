@@ -14,15 +14,15 @@ const OrganizeNew = ({ setOpen, fetchData }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const onSave = async (data) => {
-    console.log(data);
+    //console.log(data);
     try {
-      console.log("formNew: ", data);
+      //console.log("formNew: ", data);
       const result = await axios.post(
         `${DOMAIN}/api/organize-membership-title`,
         data,
         { withCredentials: true }
       );
-      console.log(result);
+      //console.log(result);
       fetchData();
       setOpen(false);
       toast.success("Thêm chức vụ thành công");

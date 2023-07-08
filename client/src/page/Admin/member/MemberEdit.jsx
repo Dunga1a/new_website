@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import MemberFormRegister from "./MemberFormRegister";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../context/authContext";
+
 
 const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
   // const { url } = useContext(AuthContext);
@@ -40,7 +40,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
           value: item.id_organize_membership,
         }));
 
-      console.log(resultTwo.data);
+      //console.log(resultTwo.data);
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);
     } catch (error) {
@@ -60,6 +60,7 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
       });
       fetchData();
       setOpen(false);
+
       toast.success("Cập nhật hội viên thành công");
     } catch (error) {
       toast.error(error.response.data.message);

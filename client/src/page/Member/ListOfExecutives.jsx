@@ -52,7 +52,7 @@ const ListOfExecutives = () => {
         };
       });
 
-      console.log(dataTwo);
+      //console.log(dataTwo);
 
       setRoleAssociations(dataTwo);
       setBusinessAreas(data);

@@ -3,15 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import Modal from "./Modal/Modal";
 import Button from "./Buttons/Button";
+import { HiOutlineLogout } from "react-icons/hi";
+import ModalV1 from "./Modal/ModalV1";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
+
+
   const logOut = () => {
     //confirm("Bạn chắc chắn muốn đăng xuất?");
     localStorage.setItem("user", null);
+
     window.location.href = "/";
   };
   return (
@@ -52,15 +57,21 @@ const Header = () => {
           </h2>
         </div>
       </div>
-      <Modal open={open} setOpen={setOpen} title={"Bạn muốn đăng xuất ?"}>
-        <div className=" flex justify-center">
+      <ModalV1
+        classNameChildren={"desktop:w-[20%] phone:w-full tablet:w-[50%]"}
+        open={open}
+        setOpen={setOpen}
+        title={<HiOutlineLogout className="w-12 h-12 m-auto " />}
+      >
+        <h1 className="font-semibold text-[18px]">Bạn sẽ đăng xuất?</h1>
+        <div className="flex justify-center mt-3">
           <Button
-            title={"Có"}
+            title={"Đăng xuất"}
             colorBgr={"text-white bg-red-700 hover:bg-red-800 px-8"}
             onClick={logOut}
           />
         </div>
-      </Modal>
+      </ModalV1>
     </div>
   );
 };

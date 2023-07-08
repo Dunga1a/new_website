@@ -71,7 +71,7 @@ const RegisterMember = () => {
         withCredentials: true,
       });
       if (!idBusinessAreas) {
-        console.log(idBusinessAreas);
+        //console.log(idBusinessAreas);
         return toast.error("Vui Lòng Chọn Lĩnh Vực Kinh Doanh");
       }
       const formData = new FormData();
@@ -126,9 +126,20 @@ const RegisterMember = () => {
         image_person: image_person,
         image_company: image_company,
       };
+
       await axios.post(`${DOMAIN}/api/member/createMember`, values, {
         withCredentials: true,
       });
+
+      //console.log(values);
+      const result = await axios.post(
+        `${DOMAIN}/api/member/createMember`,
+        values,
+        {
+          withCredentials: true,
+        }
+      );
+
       reset();
       setSelectedImages({
         firstImg: null,
@@ -140,6 +151,7 @@ const RegisterMember = () => {
       });
       setIntro("");
       setIdBusinessAreas(null);
+
       toast.success("Đăng ký hội viên thành công, vui lòng chờ xét duyệt");
     } catch (error) {
       toast.error(error.response.data.message);

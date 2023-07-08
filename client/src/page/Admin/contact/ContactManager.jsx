@@ -13,6 +13,8 @@ import EmptyState from "../../../components/EmptyState/EmptyState";
 import { Flip, toast } from "react-toastify";
 import Modal from "../../../components/Modal/Modal";
 import { ButtonV2 } from "../../../components/Buttons/ButtonV2";
+import ModalV1 from "../../../components/Modal/ModalV1";
+import { ImWarning } from "react-icons/im";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const ContactManager = () => {
@@ -80,7 +82,7 @@ const ContactManager = () => {
     //console.log(isCheckedItems.map((item) => parseInt(item, 10)));
     try {
       const item = isCheckedItems.map((item) => parseInt(item, 10));
-      console.log(item);
+      // console.log(item);
 
       await axios.post(`${DOMAIN}/api/contact/deletesContact/`, item);
       setOpen(false);
@@ -277,8 +279,12 @@ const ContactManager = () => {
           />
         </Card.Content>
       </Card>
-      <Modal title={"Xóa liên hệ"} open={open} setOpen={setOpen}>
-        <h2 className="text-xl">
+      <ModalV1
+        title={<BiTrash className="m-auto w-12 h-12 text-red-500" />}
+        open={open}
+        setOpen={setOpen}
+      >
+        <h2 className="text-xl my-3 mb-5">
           Bạn có chắc muốn xóa liên hệ đã lựa chọn không?
         </h2>
         <div className="flex justify-center mt-3">
@@ -290,14 +296,14 @@ const ContactManager = () => {
             onClick={handleDeleteMultiple}
           ></Button>
         </div>
-      </Modal>
+      </ModalV1>
 
-      <Modal
-        title={"Đánh dấu các lựa chọn"}
+      <ModalV1
+        title={<HiOutlineMail className="m-auto w-12 h-12 text-red-500" />}
         open={closeStatus}
         setOpen={setCloseStatus}
       >
-        <h2 className="text-xl">
+        <h2 className="text-xl mb-6">
           Bạn có chắc muốn thay đổi các lựa chọn đã đánh dấu thành trạng thái{" "}
           <b>"Chưa Đọc"</b> không?
         </h2>
@@ -310,13 +316,13 @@ const ContactManager = () => {
             onClick={handleTickClose}
           ></Button>
         </div>
-      </Modal>
-      <Modal
-        title={"Đánh dấu các lựa chọn"}
+      </ModalV1>
+      <ModalV1
+        title={<HiOutlineMailOpen className="m-auto w-12 h-12 text-red-500" />}
         open={openStatus}
         setOpen={setOpenStatus}
       >
-        <h2 className="text-xl">
+        <h2 className="text-xl mb-6">
           Bạn có chắc muốn thay đổi các lựa chọn đã đánh dấu thành trạng thái{" "}
           <b>"Đã Đọc"</b> không?
         </h2>
@@ -329,13 +335,18 @@ const ContactManager = () => {
             onClick={handleTickOpen}
           ></Button>
         </div>
-      </Modal>
+      </ModalV1>
 
-      <Modal title={"Lỗi!!!"} open={openModalError} setOpen={setOpenModalError}>
-        <h2 className="text-xl font-semibold text-red-600">
+      <ModalV1
+        title={<ImWarning className="m-auto w-10 h-10 text-yellow-400" />}
+        open={openModalError}
+        setOpen={setOpenModalError}
+        isCheckedItems={isCheckedItems.length}
+      >
+        <h2 className="text-xl col-span-2 font-semibold text-yellow-600">
           Bạn chưa lựa chọn! Xin vui lòng thử lại...
         </h2>
-      </Modal>
+      </ModalV1>
     </>
   );
 };

@@ -109,7 +109,7 @@ const CommentList = ({
   postItem,
 }) => {
   return (
-    <div className={`p-[5px] border border-gray-300`}>
+    <div>
       {postItem &&
         comments.map((comment) => (
           <CommentItem

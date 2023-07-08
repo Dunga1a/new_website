@@ -8,7 +8,7 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
   const [item, setItem] = useState(idItem);
-  console.log(item);
+  //console.log(item);
   const handleFormSubmit = async (data) => {
     // console.log(data);
     try {
@@ -39,7 +39,7 @@ const NewsEdit = ({ idItem, fetchDataWithFilter, setOpen }) => {
         image = `/uploads/${responseImgPerson.data.imageUrl}`;
       }
       // const value = { ...values, slug, image };
-      console.log("vao form edit: ", { ...value, slug, image });
+      //console.log("vao form edit: ", { ...value, slug, image });
       const postValue = { ...value, slug, image };
       const responre = await axios.put(
         `${DOMAIN}/api/posts/update/${item.id}`,

@@ -88,6 +88,7 @@ import MembersDetail from "./page/Admin/member/MembersDetail";
 import BusinessArea from "./page/Admin/businessArea/BusinessArea";
 import Organize from "./page/Admin/organizeMembership/Organize";
 import NewsMemberManager from "./page/Admin/news/NewsMemberManager";
+import NewsDetailMember from "./page/Admin/news/NewsDetailMember";
 
 const prevHref = "/admin";
 
@@ -130,6 +131,10 @@ const AppLayout = ({ currentUser }) => {
           <Route
             path={`/memberManager/newsPost`}
             element={<NewsMemberManager />}
+          />
+          <Route
+            path="/memberManager/newsPost/:id"
+            element={<NewsDetailMember />}
           />
           <Route path="/feeds" element={<RssFeeds />} />
           <Route path="/feeds/:slug" element={<RssDetail />} />
@@ -226,6 +231,10 @@ const AppLayout = ({ currentUser }) => {
         <Route
           path={`/memberManager/newsPost`}
           element={<NewsMemberManager />}
+        />
+        <Route
+          path="/memberManager/newsPost/:id"
+          element={<NewsDetailMember />}
         />
         <Route path="/feeds" element={<RssFeeds />} />
         <Route path="/feeds/:slug" element={<RssDetail />} />

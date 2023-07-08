@@ -36,7 +36,9 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
       });
       setOpen(false);
       fetchData();
+
       toast.success("Sửa danh mục thành công.");
+
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error.message);
@@ -77,6 +79,7 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
               : null;
           }}
         />
+
         <div className="mt-6 flex items-center gap-x-6">
           <button
             onClick={() => setOpen(false)}
@@ -92,6 +95,14 @@ const FormEditCategory = ({ newsCategoryEdit, setOpen, fetchData }) => {
             Lưu{" "}
           </button>
         </div>
+=======
+        <button
+          type="submit"
+          className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+          Lưu{" "}
+        </button>
+
       </form>
     </div>
   );

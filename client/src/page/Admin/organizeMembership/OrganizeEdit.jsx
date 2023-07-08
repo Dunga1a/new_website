@@ -21,7 +21,7 @@ const OrganizeEdit = ({ organizeItem, setOpen, fetchData }) => {
           withCredentials: true,
         }
       );
-      console.log(result.data);
+      //console.log(result.data);
       fetchData();
       setOpen(false);
       toast.success("Cập nhật thành công");

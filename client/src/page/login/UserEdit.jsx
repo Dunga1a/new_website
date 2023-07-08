@@ -36,7 +36,7 @@ const UserEdit = () => {
     window.location.reload();
   };
 
-  console.log("vao day: ", url, path, pathCurrent);
+  //console.log("vao day: ", url, path, pathCurrent);
   return (
     <div>
       <h3 className="mt-5 mb-4 font-bold text-[19px]">Thiết lập tài khoản</h3>

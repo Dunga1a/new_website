@@ -61,7 +61,7 @@ const CategoryManager = () => {
           withCredentials: true,
         }
       );
-      console.log(results);
+      //console.log(results);
       reset({ category: "" });
       fetchData();
     } catch (error) {
@@ -206,7 +206,7 @@ const CategoryManager = () => {
 
   const handleDeleteItems = async (items) => {
     // Call Api delete many category tại đây
-    console.log(items);
+    //console.log(items);
   };
 
   return (
@@ -227,15 +227,15 @@ const CategoryManager = () => {
             <thead>
               <tr>
                 <th scope="col" className="p-4 border border-blue-400">
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <input
                       id="checkbox-all-search"
                       type="checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       checked={isCheckedAll}
                       onChange={handleCheckAll}
                     />
-                    <label for="checkbox-all-search" class="sr-only">
+                    <label for="checkbox-all-search" className="sr-only">
                       checkbox
                     </label>
                   </div>
@@ -262,7 +262,7 @@ const CategoryManager = () => {
                           type="checkbox"
                           classNmae="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
-                        <label for="checkbox-table-search-1" class="sr-only">
+                        <label for="checkbox-table-search-1" className="sr-only">
                           checkbox
                         </label>
                       </div>
@@ -380,14 +380,14 @@ const CategoryManager = () => {
               />
               <button
                 type="submit"
-                class="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
                 Thêm{" "}
               </button>
               <button
                 onClick={() => setOpen(false)}
                 type="button"
-                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
               >
                 Hủy
               </button>
@@ -446,7 +446,7 @@ const CategoryManager = () => {
             />
             <button
               type="submit"
-              class="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Thêm{" "}
             </button>
@@ -456,7 +456,7 @@ const CategoryManager = () => {
                 reset();
               }}
               type="button"
-              class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
               Hủy
             </button>

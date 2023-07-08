@@ -54,7 +54,7 @@ const UserManager = () => {
       url += `page=${page || 1}&`;
 
       const res = await axios.get(url);
-      console.log(res);
+      //console.log(res);
       setData(res.data.data);
       setCount(res.data.count);
     } catch (error) {
@@ -92,7 +92,7 @@ const UserManager = () => {
     setSelectTwo(selectedTwo);
     searchParams.set("page", 1);
     setSearchParams(searchParams);
-    console.log("Select Two value:", selectedTwo.value);
+    //console.log("Select Two value:", selectedTwo.value);
   };
 
   const handleResetFillter = () => {

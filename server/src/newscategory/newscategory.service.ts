@@ -138,7 +138,7 @@ export class NewsCategoryService implements INewsCategoryService {
     const postsToDelete = await this.newsPostRepository.find({
       where: { newsCategory: { id: idNewsCategory } },
     });
-    console.log(postsToDelete);
+    //console.log(postsToDelete);
 
     // return deletedNewsCategory;
   }

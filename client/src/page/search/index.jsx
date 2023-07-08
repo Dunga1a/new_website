@@ -35,7 +35,7 @@ const SearchPage = () => {
     try {
       const sheet = data.page || 1;
       const search = data.keyword || searchkey;
-      console.log(search);
+      //console.log(search);
       const res = await axios.get(
         `${DOMAIN}/api/posts/search?keyword=${search}&page=${sheet}`
       );
@@ -44,14 +44,13 @@ const SearchPage = () => {
       }
       setCount(res.data.total);
       setData(res.data.postList);
-      console.log(res.data);
+      //console.log(res.data);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   useEffect(() => {
-    console.log("vao day: ", page, searchkey);
     const data = {
       page: page,
       keyword: searchkey,

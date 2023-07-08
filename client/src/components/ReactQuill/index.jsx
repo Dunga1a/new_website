@@ -10,6 +10,9 @@ import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
 Quill.register("modules/imageResize", ImageResize);
 Quill.register("modules/imageDrop", ImageDrop);
+const Size = Quill.import("attributors/style/size");
+Size.whitelist = ["10px", "12px", "14px", "16px", "18px", "20px"];
+Quill.register(Size, true);
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
 const fontSizeArr = [
   "8px",
@@ -69,10 +72,12 @@ const ReactQuillEditor = ({ content, setContent }) => {
           { header: "2" },
           { header: [3, 4, 5, 6] },
           { font: [] },
+
           {
             size: fontSizeArr,
           },
         ],
+
         ["bold", "italic", "underline", "strike", "blockquote"],
         [{ list: "ordered" }, { list: "bullet" }],
         ["link", "video", "image"],

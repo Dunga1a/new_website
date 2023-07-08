@@ -71,7 +71,15 @@ const NewsInsert = ({ fetchData, setOpen }) => {
             console.error("Error:", error);
           });
       }
-      // here
+
+      const value = { ...data, slug, image, userId: currentUser.id };
+      //console.log(value);
+      const res = await axios.post(`${DOMAIN}/api/posts/`, value);
+      //console.log(res.data);
+      setOpen(false);
+      toast.success("Thêm bài viết thành công");
+      fetchData();
+
     } catch (error) {
       console.log(error.message);
       // toast.error(error.response.data.message);
@@ -97,7 +105,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         };
       });
       setListCategory(data);
-      // console.log(result.data.getListCategory);
+
     } catch (error) {
       console.log(error.message);
     }
@@ -106,6 +114,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
   useEffect(() => {
     fetchDataStatic();
   }, [page]);
+
 
   const newsFormFields = [
     { name: "title", label: "Tiêu đề", type: "text", col_span: true },
