@@ -3,6 +3,7 @@ import { CreateMemberDto } from './dtos/member.dto';
 
 export interface IMemberService {
   createMember(memberDetails: CreateMemberDto): Promise<Member>;
+  getAllMember();
   getAllMembers(queryParams: any);
   getMemberByRole(queryParams: any);
   getOneMember(idMember: number);

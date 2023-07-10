@@ -80,6 +80,11 @@ export class MemberController {
     return memberList;
   }
 
+  @Get('all-members')
+  async getAllMember() {
+    return await this.memberService.getAllMember();
+  }
+
   @Get('getMemberByRole')
   async getMemberByRole(@Query() queryParams: any) {
     const memberList = await this.memberService.getMemberByRole(queryParams);

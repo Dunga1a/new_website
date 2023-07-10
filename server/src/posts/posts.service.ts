@@ -66,6 +66,10 @@ export class PostsService {
     return savedNewsPost;
   }
 
+  async getAllPost() {
+    return await this.newsPostRepository.find();
+  }
+
   async approvePosts(postIds: number[]) {
     const approvedPosts: NewsPost[] = [];
 

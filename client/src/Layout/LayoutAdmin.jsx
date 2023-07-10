@@ -6,6 +6,7 @@ import {
   MdCardMembership,
   MdOutlineConnectWithoutContact,
 } from "react-icons/md";
+import { HiUserGroup } from "react-icons/hi";
 import { FaUserAlt } from "react-icons/fa";
 import { TbTimelineEventText } from "react-icons/tb";
 
@@ -59,7 +60,7 @@ const navigation = [
   {
     name: "Quản Lý Hội Viên",
     href: `${prevHref}/member`,
-    icon: MdCardMembership,
+    icon: HiUserGroup,
     current: false,
   },
   {
