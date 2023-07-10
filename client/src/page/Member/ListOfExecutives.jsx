@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumb";
 import RightBar from "../../components/list/RightBar";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
-import { AuthContext } from "../../context/authContext";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const ListOfExecutives = () => {
-  const { url } = useContext(AuthContext);
   const [member, setMember] = useState([]);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openConfirmForm, setOpenConfirmForm] = useState(false);
@@ -84,7 +82,6 @@ const ListOfExecutives = () => {
         }
       );
 
-      console.log(result.data.memberList);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
     } catch (error) {

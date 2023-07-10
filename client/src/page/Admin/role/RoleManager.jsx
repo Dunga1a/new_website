@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import Select from "react-select";
 import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
-import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
+
 import Card from "../../../components/Card/Card";
 import Button from "../../../components/Buttons/Button";
 import { FiAlertCircle } from "react-icons/fi";
@@ -12,17 +10,7 @@ import axios from "axios";
 import Modal from "../../../components/Modal/Modal";
 import ListUserByRole from "./ListUserByRole";
 import FormEditRole from "./FormEditRole";
-const options = [
-  { value: "id", label: "Id" },
-  { value: "ten_tai_khoan", label: "Tên tài khoản" },
-  { value: "email", label: "Email" },
-];
 
-const options_role = [
-  { value: "admin", label: "Admin" },
-  { value: "hoi_vien", label: "Hội viên" },
-  { value: "nguoi_dung", label: "Người dùng" },
-];
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RoleManager = () => {
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -32,9 +20,7 @@ const RoleManager = () => {
   const [roleList, setRoleList] = useState([]);
   const [userByRole, setUserByRole] = useState([]);
   const {
-    register,
     formState: { errors },
-    handleSubmit,
   } = useForm({ criteriaMode: "all" });
   const fetchDataStatic = async () => {
     try {
@@ -50,8 +36,6 @@ const RoleManager = () => {
   useEffect(() => {
     fetchDataStatic();
   }, []);
-
-  //const onSubmit = (data) => console.log(data);
 
   const handleOpenFormEdit = (item) => {
     setOpenEditForm(true);
@@ -288,7 +272,8 @@ const RoleManager = () => {
         <Modal
           open={openEditForm}
           setOpen={setOpenEditForm}
-          title="Sửa chức vụ"
+          // title="Sửa chức vụ"
+          displayButtonCancel={false}
         >
           <FormEditRole
             item={roleItem}

@@ -54,9 +54,7 @@ export class BusinessAreasController {
   }
 
   @Put('editOne')
-  async editOneBusinessAreas(
-    @Body() editBusinessDetails: CreateBusinessAreaDto,
-  ) {
+  async editOneBusinessAreas(@Body() editBusinessDetails: any) {
     const updatedBusinessArea =
       await this.businessAreasService.editOneBusinessAreas(editBusinessDetails);
     return updatedBusinessArea;

@@ -13,6 +13,7 @@ const CommentItem = ({
   fetchData,
   postItem,
 }) => {
+  console.log("comment", comment);
   const [hidden, setHidden] = useState(true);
   const handleReplyClick = (commentId) => {
     setOpen(commentId);
@@ -48,7 +49,9 @@ const CommentItem = ({
             />
 
             <div className="flex-1 bg-gray-200 rounded-lg px-2 py-1 ">
-              <p>{comment.content}</p>
+              <p>
+                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+              </p>
               <p className="flex gap-2">
                 <p className="flex gap-1 items-center">
                   <FaUserAlt className="font-bold" />

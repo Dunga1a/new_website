@@ -23,6 +23,7 @@ const FormNew = ({ setOpen, fetchData }) => {
   const onSave = async (data) => {
     try {
       const { selectedFiles, image, ...values } = data;
+      console.log("data: ", data);
       const result = await axios.post(
         `${DOMAIN}/api/event/createEvent`,
         values,
@@ -49,7 +50,7 @@ const FormNew = ({ setOpen, fetchData }) => {
   };
   return (
     <div>
-      <FormEvent initValue={initValue} onSave={onSave} />
+      <FormEvent initValue={initValue} onSave={onSave} setOpen={setOpen} />
     </div>
   );
 };

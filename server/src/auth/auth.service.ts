@@ -1,13 +1,12 @@
 import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
-
+import { compareHash } from 'src/utils/helpers';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { IUserService } from '../users/users';
 import { Services } from '../utils/constants';
 import { PayloadgenerateToken, ValidateUserDetails } from '../utils/types';
 import { IAuthService } from './auth';
 import { User } from 'src/utils/typeorm';
-import { compareHash } from 'src/utils/helpers';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -35,9 +34,11 @@ export class AuthService implements IAuthService {
       );
     }
 
+
     const isPasswordValidhi = await compareHash('1234567', '1234567');
     const isPassWord = await bcrypt.compare('1234567', '1234567');
     //console.log(isPassWord);
+
 
     const isPasswordValid = await compareHash(password, user.password);
     if (!isPasswordValid) {
@@ -46,7 +47,6 @@ export class AuthService implements IAuthService {
         HttpStatus.NOT_FOUND,
       );
     }
-    //console.log('2323', isPasswordValid);
 
     return isPasswordValid ? user : null;
   }

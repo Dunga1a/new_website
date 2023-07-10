@@ -56,7 +56,7 @@ const ContentDetail = () => {
         user: currentUser.id,
       };
 
-      const result = await axios.post(
+      await axios.post(
         `${DOMAIN}/api/comment/createComment`,
 
         values,

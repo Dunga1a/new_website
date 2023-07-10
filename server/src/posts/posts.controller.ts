@@ -162,4 +162,10 @@ export class PostsController {
     );
     return result;
   }
+
+  @Get('getPostAction')
+  async getNewsByAction(@Query() queryParams: any) {
+    const result = await this.newsPostsService.getNewsByAction(queryParams);
+    return result;
+  }
 }

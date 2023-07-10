@@ -3,42 +3,75 @@ import Form from "../../../components/Form";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
-import Button from "../../../components/Buttons/Button";
 import { useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
+
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const NewsInsert = ({ fetchData, setOpen }) => {
   const { currentUser } = useContext(AuthContext);
+
   const handleFormSubmit = async (data) => {
     // Xử lý logic khi submit form
     try {
-      const formData = new FormData();
-
       const slug = slugify(data.title, {
-        replacement: "-", // replace spaces with replacement character, defaults to `-`
-        remove: undefined, // remove characters that match regex, defaults to `undefined`
-        lower: false, // convert to lower case, defaults to `false`
-        strict: false, // strip special characters except replacement, defaults to `false`
-        locale: "vi", // language code of the locale to use
-        trim: true, // trim leading and trailing replacement chars, defaults to `true`
+        replacement: "-",
+        remove: undefined,
+        lower: false,
+        strict: false,
+        locale: "vi",
+        trim: true,
       });
-      //console.log(data);
+
       let image = null;
+
       if (data.image) {
+        const formData = new FormData();
         formData.append("image", data.image[0]);
-        const responseImgPerson = await axios.post(
-          `${DOMAIN}/api/member/uploadFileImage`,
-          formData,
-          {
+
+        // Sử dụng axios để gửi yêu cầu không đồng bộ
+        axios
+          .post(`${DOMAIN}/api/member/uploadFileImage`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-          }
-        );
-        image = `/uploads/${responseImgPerson.data.imageUrl}`;
+            onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              // toast.info("Upload progress: " + percentCompleted + "%");
+            },
+          })
+          .then((response) => {
+            // Xử lý phản hồi sau khi tải lên thành công
+            image = `/uploads/${response.data.imageUrl}`;
+
+            const value = { ...data, slug, image, userId: currentUser.id };
+            return axios.post(`${DOMAIN}/api/posts/`, value);
+          })
+          .then(() => {
+            // Cập nhật dữ liệu mới nhất tại đây
+            fetchData();
+            setOpen(false);
+          })
+          .catch((error) => {
+            // Xử lý lỗi trong quá trình tải lên
+            console.error("Upload error:", error);
+          });
+      } else {
+        const value = { ...data, slug, image, userId: currentUser.id };
+        axios
+          .post(`${DOMAIN}/api/posts/`, value)
+          .then(() => {
+            // Cập nhật dữ liệu mới nhất tại đây
+            fetchData();
+            setOpen(false);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
+
       const value = { ...data, slug, image, userId: currentUser.id };
       //console.log(value);
       const res = await axios.post(`${DOMAIN}/api/posts/`, value);
@@ -46,9 +79,10 @@ const NewsInsert = ({ fetchData, setOpen }) => {
       setOpen(false);
       toast.success("Thêm bài viết thành công");
       fetchData();
+
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log(error);
+      console.log(error.message);
+      // toast.error(error.response.data.message);
     }
   };
   const [searchParams, setSearchParams] = useSearchParams();
@@ -71,7 +105,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         };
       });
       setListCategory(data);
-      //console.log(result.data.getListCategory);
+
     } catch (error) {
       console.log(error.message);
     }
@@ -80,7 +114,8 @@ const NewsInsert = ({ fetchData, setOpen }) => {
   useEffect(() => {
     fetchDataStatic();
   }, [page]);
-  //console.log(listCategory);
+
+
   const newsFormFields = [
     { name: "title", label: "Tiêu đề", type: "text", col_span: true },
     {

@@ -1,14 +1,11 @@
-import axios from "axios";
 import React from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
-const FormDeleteCategory = ({
-  newsCategoryDelete,
-  setOpenDeleteForm,
-  fetchData,
-}) => {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
+ const DOMAIN = process.env.REACT_APP_DOMAIN;
+const FormDeleteCategory = ({ newsCategoryDelete }) => {
+
+ 
   const values = newsCategoryDelete.map((item) => item.news_category_id);
-  //console.log(newsCategoryDelete);
 
   const handleDelete = async () => {
     try {
@@ -26,25 +23,17 @@ const FormDeleteCategory = ({
       console.log(error.message);
     }
   };
+
   return (
     <>
-      <div className="text-[18px] mb-2">
-        Bạn có chắc muốn xóa:{" "}
+      <div className="text-[18px] ">
+        <AiOutlineCloseCircle className="w-[60px] h-[60px] text-red-600 m-auto" />
+        <p className="font-bold">Bạn có chắc muốn xóa:</p>{" "}
         {newsCategoryDelete.map((item) => {
-          return (
-            <p key={item.id} className="font-bold">
-              {item.name}
-            </p>
-          );
+          return <p key={item.id}>{item.name}</p>;
         })}
         Và các bài đăng liên quan?
       </div>
-      <button
-        className="bg-red-500 text-white hover:bg-red-800 focus:outline-none rounded text-sm px-3 py-2 "
-        onClick={() => handleDelete()}
-      >
-        Đồng ý
-      </button>
     </>
   );
 };

@@ -20,18 +20,12 @@ export class CreateMemberDto {
   @IsNotEmpty()
   @IsString()
   email: string;
-
   @IsNotEmpty()
   @IsString()
   code_company: string;
-
   @IsNotEmpty()
   @IsString()
   address: string;
-
-  @IsNotEmpty()
-  @IsString()
-  intro: string;
 
   @IsNotEmpty()
   @IsString()

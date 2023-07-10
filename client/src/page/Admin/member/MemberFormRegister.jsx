@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Select from "react-select";
 import slugify from "slugify";
 import ReactQuillEditor from "../../../components/ReactQuill";
 import axios from "axios";
-import { AuthContext } from "../../../context/authContext";
 
 const optionsStatus = [
   { label: "Đã kích hoạt", value: 1 },
@@ -17,7 +16,6 @@ const MemberFormRegister = ({
   roleAssociations,
   onSave,
 }) => {
-  // const { url } = useContext(AuthContext);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const [selectedImages, setSelectedImages] = useState({
@@ -34,15 +32,12 @@ const MemberFormRegister = ({
     secondImg: memberItem.image_company ? `${memberItem.image_company}` : null,
   });
 
-  // const [isChangeImagePerson, setIsChangeImagePerson] = useState(false);
-  // const [isChangeImageCompany, setIsChangeImageCompany] = useState(false);
   const [isChangImage, setIsChangeImage] = useState({
     firstImg: false,
     secondImg: false,
   });
 
   const [intro, setIntro] = useState(memberItem.intro);
-  //   const [businessAreas, setBusinessAreas] = useState([]);
   const [idBusinessAreas, setIdBusinessAreas] = useState(
     memberItem.id_business_areas.id_business_areas
   );
@@ -154,7 +149,13 @@ const MemberFormRegister = ({
       >
         <div className="px-10 phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
           <h3 className="font-semibold text-base">Thông tin doanh nghiệp</h3>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="text-start block text-sm font-medium leading-6 text-gray-900"
+              htmlFor="name_company"
+            >
+              Tên doanh nghiệp, tổ chức
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -166,8 +167,17 @@ const MemberFormRegister = ({
               defaultValue={memberItem.name_company}
               onChange={() => setUsernameEdit(true)}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="representative"
+            >
+              Người đại diện
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -178,8 +188,17 @@ const MemberFormRegister = ({
               })}
               defaultValue={memberItem.representative}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="role_name"
+            >
+              Chức vụ
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -190,10 +209,19 @@ const MemberFormRegister = ({
               })}
               defaultValue={memberItem.role_name}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="phone"
+            >
+              Số điện thoại
+            </label>
             <input
-              type="number"
+              type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
                            "border-red-500 border-[1px]"
                         `}
@@ -202,8 +230,17 @@ const MemberFormRegister = ({
               })}
               defaultValue={memberItem.phone}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="email"
+            >
+              Email
+            </label>
             <input
               type="email"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -215,8 +252,17 @@ const MemberFormRegister = ({
               defaultValue={memberItem.email}
               onChange={() => setEditEmail(true)}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="code_company"
+            >
+              Mã số doanh nghiệp
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -227,8 +273,17 @@ const MemberFormRegister = ({
               })}
               defaultValue={memberItem.code_company}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="address"
+            >
+              Địa chỉ doanh nghiệp
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -239,8 +294,17 @@ const MemberFormRegister = ({
               })}
               defaultValue={memberItem.address}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start text-sm font-medium leading-6 text-gray-900"
+              htmlFor="representative"
+            >
+              Website
+            </label>
             <input
               type="text"
               className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
@@ -250,24 +314,48 @@ const MemberFormRegister = ({
               defaultValue={memberItem.website ? memberItem.website : ""}
             />
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start  text-sm font-medium leading-6 text-gray-900"
+              htmlFor="representative"
+            >
+              Lĩnh Vực Kinh Doanh
+            </label>
             <Select
               options={businessAreas}
               className="col-span-2"
               placeholder={memberItem.id_business_areas.name}
               onChange={(e) => setIdBusinessAreas(e.value)}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start  text-sm font-medium leading-6 text-gray-900"
+              htmlFor="representative"
+            >
+              Chức Vụ Trong Hội
+            </label>
             <Select
               options={roleAssociations}
               className="col-span-2"
               placeholder={memberItem.id_role_associations.name}
               onChange={(e) => setIdRoleAssociations(e.value)}
             />
+            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
 
-          <div className="my-4">
+          <div className="my-4 relative">
+            <label
+              className="block text-start  text-sm font-medium leading-6 text-gray-900"
+              htmlFor="representative"
+            >
+              Trạng Thái Tài Khoản
+            </label>
             <Select
               options={optionsStatus}
               className="col-span-2"

@@ -411,7 +411,9 @@ const MemberManager = () => {
                 );
               })
             ) : (
-              <EmptyState />
+              <td className="flex items-center justify-center p-2 ">
+                <EmptyState />
+              </td>
             )}
           </tbody>
         </table>
@@ -434,6 +436,7 @@ const MemberManager = () => {
           setOpen={setOpenEditForm}
           title={"Chi Tiết Doanh Nghiệp"}
           classNameChildren={"w-[1000px]"}
+          displayButtonCancel={false}
         >
           <MemberEdit
             memberItem={memberItem}

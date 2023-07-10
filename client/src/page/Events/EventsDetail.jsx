@@ -5,7 +5,8 @@ import RightBar from "../../components/list/RightBar";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
-import { AuthContext } from "../../context/authContext";
+import "react-quill/dist/quill.snow.css";
+
 const EventsDetail = () => {
   const { id } = useParams();
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -49,7 +50,13 @@ const EventsDetail = () => {
             <div>
               <strong>Nhóm sự kiện</strong>
               <div>
-                <div dangerouslySetInnerHTML={{ __html: eventItem.content }} />
+                <div
+                  style={{
+                    "max-height": "unset",
+                  }}
+                  className="ql-editor"
+                  dangerouslySetInnerHTML={{ __html: eventItem.content }}
+                />
               </div>
 
               <p>

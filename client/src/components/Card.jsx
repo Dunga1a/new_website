@@ -16,6 +16,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import EmptyState from "./EmptyState/EmptyState";
+import LoadingPage from "./LoadingPage";
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -53,7 +54,6 @@ const Card = () => {
       });
 
       const posts = await Promise.all(promises);
-
       const promisesTwo = category.data.getListCategory
         .sort((a, b) => b.news_category_id - a.news_category_id)
         .map(async (item) => {
@@ -130,37 +130,39 @@ const Card = () => {
           <div className="bgr_card phone:hidden laptop:block desktop:block">
             <ul className="flex items-center justify-around text-[20px]">
               <div>
-                {loading
-                  ? "loading..."
-                  : arr &&
-                    arr.map((item, idx) => {
-                      return (
-                        <li
-                          className={`${
-                            idx !== arr.length - 1
-                              ? "uppercase inline-block px-5 border-r-[1px] border-r-solid border-r-gray-400"
-                              : "uppercase inline-block px-5"
-                          } cursor-pointer`}
-                          key={idx}
-                          onClick={() => {
-                            setIsActive(idx);
-                            setContent(idx);
-                          }}
-                        >
-                          <h2>
-                            <span
-                              className={`${
-                                isActive === idx
-                                  ? "text-[#000]"
-                                  : "text-[#a5a5a5]"
-                              } block my-[5px] leading-[22px]"`}
-                            >
-                              {item.name}
-                            </span>
-                          </h2>
-                        </li>
-                      );
-                    })}
+                {loading ? (
+                  <LoadingPage />
+                ) : (
+                  arr &&
+                  arr.map((item, idx) => {
+                    return (
+                      <li
+                        className={`${
+                          idx !== arr.length - 1
+                            ? "uppercase inline-block px-5 border-r-[1px] border-r-solid border-r-gray-400"
+                            : "uppercase inline-block px-5"
+                        } cursor-pointer`}
+                        key={idx}
+                        onClick={() => {
+                          setIsActive(idx);
+                          setContent(idx);
+                        }}
+                      >
+                        <h2>
+                          <span
+                            className={`${
+                              isActive === idx
+                                ? "text-[#000]"
+                                : "text-[#a5a5a5]"
+                            } block my-[5px] leading-[22px]"`}
+                          >
+                            {item.name}
+                          </span>
+                        </h2>
+                      </li>
+                    );
+                  })
+                )}
               </div>
               <li className="inline-block">
                 <div className="flex items-center">
@@ -182,83 +184,86 @@ const Card = () => {
           </div>
           <div className="laptop:border-b-[1px] desktop:border-b-[1px]  bobder-b-solid border-b-gray-400 mb-[25px] phone:hidden laptop:block desktop:block phone:border-none">
             <div className="pb-8">
-              <Slider
-                autoplay={true}
-                autoplaySpeed={3000}
-                slidesToShow={
-                  (arrContent &&
-                    arrContent[content] &&
-                    (Array.isArray(arrContent[content])
-                      ? arrContent[content].length === 0
-                      : true)) ||
-                  arrContent[content]?.length === 1
-                    ? 1
-                    : 2
-                }
-                slidesToScroll={2}
-                dots={true}
-                ref={sliderRef}
-                button={false}
-              >
-                {arrContent && arrContent[content] ? (
-                  arrContent[content].length > 0 ? (
-                    arrContent[content].map((item, idx) => {
-                      return (
-                        <div className="p-2" key={idx}>
-                          <div className="grid grid-cols-3 gap-5 p-4 bg-[#f4f4f4] border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                            <div>
-                              <img
-                                className="object-cover w-full max-h-[80px] tablet:h-auto tablet:w-48 tablet:rounded-lg"
-                                src={
-                                  item.image
-                                    ? `${item.image}`
-                                    : "/assets/images/new_default.jpg"
-                                }
-                                alt=""
-                              />
-                              <div className="flex items-center text-[#999999]">
-                                <span className="flex gap-1 items-center">
-                                  <WiTime9 />
-                                  {dayjs(item.created_at).format("DD/MM/YYYY")}
-                                </span>
+              {loading ? (
+                <LoadingPage />
+              ) : (
+                <Slider
+                  autoplay={true}
+                  autoplaySpeed={3000}
+                  slidesToShow={
+                    (arrContent &&
+                      arrContent[content] &&
+                      (Array.isArray(arrContent[content])
+                        ? arrContent[content].length === 0
+                        : true)) ||
+                    arrContent[content]?.length === 1
+                      ? 1
+                      : 2
+                  }
+                  slidesToScroll={2}
+                  dots={true}
+                  ref={sliderRef}
+                  button={false}
+                >
+                  {arrContent && arrContent[content] ? (
+                    arrContent[content].length > 0 ? (
+                      arrContent[content].map((item, idx) => {
+                        return (
+                          <div className="p-2" key={idx}>
+                            <div className="grid grid-cols-3 gap-5 p-4 bg-[#f4f4f4] border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                              <div>
+                                <img
+                                  className="object-cover w-full max-h-[80px] tablet:h-auto tablet:w-48 tablet:rounded-lg"
+                                  src={
+                                    item.image
+                                      ? `${item.image}`
+                                      : "/assets/images/new_default.jpg"
+                                  }
+                                  alt=""
+                                />
+                                <div className="flex items-center text-[#999999]">
+                                  <span className="flex gap-1 items-center">
+                                    <WiTime9 />
+                                    {dayjs(item.created_at).format(
+                                      "DD/MM/YYYY"
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="inline-block text-[#999999]">
+                                  {dayjs(item.created_at).format("h:mm A")}
+                                </div>
                               </div>
-                              <div className="inline-block text-[#999999]">
-                                {dayjs(item.created_at).format("h:mm A")}
-                              </div>
-                            </div>
-                            <div className=" col-span-2 flex flex-col justify-between leading-normal overflow-hidden h-[210px] text-ellipsis">
-                              <h3 className="mb-2 text-[16px] font-bold text-[#494949]">
-                                {item.title}
-                              </h3>
-                              <p className="mb-3 text-[14px] text-gray-700 dark:text-gray-400 line-clamp-4">
-                                {item.subcontent}
-                              </p>
-                              <div onClick={() => nav(`/${item.slug}`)}>
-                                <span className="cursor-pointer bg-[#10bcff] hover:opacity-80 text-[12px] text-white p-1">
-                                  Chi tiết
-                                </span>
+                              <div className=" col-span-2 flex flex-col justify-between leading-normal overflow-hidden h-[210px] text-ellipsis">
+                                <h3 className="mb-2 text-[16px] font-bold text-[#494949]">
+                                  {item.title}
+                                </h3>
+                                <p className="mb-3 text-[14px] text-gray-700 dark:text-gray-400 line-clamp-4">
+                                  {item.subcontent}
+                                </p>
+                                <div onClick={() => nav(`/${item.slug}`)}>
+                                  <span className=" bg-[#10bcff] text-[12px] text-white p-1">
+                                    Chi tiết
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })
+                        );
+                      })
+                    ) : (
+                      <EmptyState />
+                    )
                   ) : (
                     <EmptyState />
-                  )
-                ) : (
-                  <EmptyState />
-                )}
-              </Slider>
+                  )}
+                </Slider>
+              )}
             </div>
           </div>
           <div className="grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-1 phone:grid-cols-1 gap-3 pb-8 border-b-[1px] bobder-b-solid border-b-gray-400 ">
             {arrNew.map((item) => {
               return (
-                <div
-                  key={item.id}
-                  className="p-[15px] border-[1px] border-solid border-gray-400 rounded"
-                >
+                <div className="p-[15px] border-[1px] border-solid border-gray-400 rounded">
                   <div className="py-3">
                     <h2 className="uppercase text-[#494949] font-bold text-[20px] pb-1 border-b-[2px] border-b-solid border-b-[#fba919]">
                       <p className=" block leading-[1.5]">
@@ -276,20 +281,22 @@ const Card = () => {
                             : "/assets/images/new_default.jpg"
                         }
                         alt=""
-                        className="float-left mt-[4px] mr-[15px] max-w-full w-[170px] max-h-[100px] object-cover"
+                        className="float-left mt-[4px] mr-[15px] max-width-full w-[170px]"
                       />
                     </div>
                     <h3 className="text-[16px] font-bold text-[#494949]">
-                      <p className="line-clamp-3">{item.title}</p>
+                      <p>{item.title}</p>
                     </h3>
-                    <p className="text-[14px] ">{item.subcontent}</p>
+                    <p className="text-[14px]">{item.subcontent}</p>
                   </div>
-                  <p
-                    className="mt-3 text-[#1f9cf8] hover:text-blue-800 flex items-center float-right cursor-pointer"
-                    onClick={() => nav(`/${item.slug}`)}
-                  >
-                    Xem tiếp
-                    <IoMdArrowDropright />
+                  <p className="mt-3 text-[#1f9cf8]">
+                    <p
+                      className="flex items-center float-right cursor-pointer"
+                      onClick={() => nav(`/${item.slug}`)}
+                    >
+                      <span>Xem tiếp</span>
+                      <IoMdArrowDropright />
+                    </p>
                   </p>
                 </div>
               );

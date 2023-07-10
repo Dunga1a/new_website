@@ -1,4 +1,6 @@
 import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 import {
   BrowserRouter,
@@ -215,6 +217,8 @@ const AppLayout = ({ currentUser }) => {
           <Route path="/detailFeedback" element={<DetailFeedback />} />
 
           {/* <Route path="/page" element={<Page />} /> */}
+          <Route path="/notfound" element={<NotFound />} />
+
           <Route path="/:slug" element={<ContentDetail />} />
         </Route>
       </Routes>
@@ -305,8 +309,8 @@ const AppLayout = ({ currentUser }) => {
         <Route path="/detailFeedback" element={<DetailFeedback />} />
 
         {/* <Route path="/page" element={<Page />} /> */}
+        <Route path="/notfound" element={<NotFound />} />
         <Route path="/:slug" element={<ContentDetail />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </Layout>
   );

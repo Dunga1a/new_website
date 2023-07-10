@@ -207,7 +207,6 @@ export default function LayoutAdmin() {
                     className="flex flex-row p-2 border-b border-b-red-600"
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log("oke");
                     }}
                   >
                     <span className="">

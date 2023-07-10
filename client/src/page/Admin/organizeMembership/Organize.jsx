@@ -99,6 +99,9 @@ const Organize = () => {
 
   const handleChangeStatusOn = async (items) => {
     try {
+      if (!items.length) {
+        return toast.error("Vui lòng chọn một chức vụ.");
+      }
       const status = 1; // Giá trị status muốn truyền
       const data = {
         ids: items,
@@ -116,12 +119,14 @@ const Organize = () => {
       toast.success("Cập nhật trạng thái thành công");
     } catch (error) {
       toast.error("Cập nhật trạng thái thất bại");
-      console.log(error.message);
     }
   };
 
   const handleChangeStatusOff = async (items) => {
     try {
+      if (!items.length) {
+        return toast.error("Vui lòng chọn một chức vụ.");
+      }
       const status = 2; // Giá trị status muốn truyền
       const data = {
         ids: items,
@@ -245,13 +250,15 @@ const Organize = () => {
                         />
                       </td>
                       <td className="flex items-center justify-center p-2">
-                        <Button
-                          onClick={() => handleEditOrganization(item)}
-                          colorText={"text-white"}
-                          colorBgr={"bg-blue-600"}
-                          colorHover={"bg-blue-700"}
-                          icon={<TbEdit className="text-[18px]" />}
-                        />
+                        {item.name !== "Hội Viên" ? (
+                          <Button
+                            onClick={() => handleEditOrganization(item)}
+                            colorText={"text-white"}
+                            colorBgr={"bg-blue-600"}
+                            colorHover={"bg-blue-700"}
+                            icon={<TbEdit className="text-[18px]" />}
+                          />
+                        ) : null}
                       </td>
                     </tr>
                   );
@@ -295,6 +302,7 @@ const Organize = () => {
         setOpen={setOpenNewForm}
         title={"Thêm mới chức vụ trong hội"}
         classNameChildren={"w-[600px]"}
+        displayButtonCancel={false}
       >
         <OrganizeNew setOpen={setOpenNewForm} fetchData={fetchData} />
       </Modal>
@@ -305,6 +313,7 @@ const Organize = () => {
           setOpen={setOpenEditForm}
           title={"Sửa chức vụ trong hội"}
           classNameChildren={"w-[600px]"}
+          displayButtonCancel={false}
         >
           <OrganizeEdit
             organizeItem={organizeItem}

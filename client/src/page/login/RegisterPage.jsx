@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import LayoutLoginPage from "../../Layout/LayoutLoginPage";
 import { useForm } from "react-hook-form";
 import { BsFillCaretRightFill } from "react-icons/bs";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+
 import { GrPowerReset } from "react-icons/gr";
 import Modal from "../../components/Modal/Modal";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RegisterPage = () => {
-  // ${DOMAIN}
   const {
     register,
     handleSubmit,
@@ -22,12 +22,17 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const password = watch("password");
   const [captcha, setCaptcha] = useState(generateCaptcha);
-
+  const [checked, setChecked] = useState(true);
+  const [seePass, setSeePass] = useState(false);
+  const [seePassConfirm, setSeePassConfirm] = useState(false);
   const onSubmit = async (data) => {
     if (!data) {
       alert("Đăng ký không thành công!");
     } else {
       try {
+        if (!checked) {
+          return toast.error("Vui lòng đồng ý với điều khoản hội.");
+        }
         const { confirmPassword, checkCaptcha, ...values } = data;
 
         const value = { ...values, status: 1 };
@@ -40,10 +45,6 @@ const RegisterPage = () => {
       } catch (error) {
         toast.error(error.response.data.message);
       }
-
-      // localStorage.setItem("user", JSON.stringify(username));
-      // localStorage.setItem("user", JSON.stringify(password));
-      // navigate("/user/login");
     }
   };
   const [open, setOpen] = useState(false);
@@ -56,6 +57,7 @@ const RegisterPage = () => {
   const resetFields = () => {
     reset();
   };
+
   return (
     <div>
       <LayoutLoginPage
@@ -71,13 +73,15 @@ const RegisterPage = () => {
               placeholder="Họ và tên đệm"
               className={`w-full outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             />
-
-            {errors.firstName && (
-              <span className="text-sm text-red-500">
-                {errors.firstName.message}
-              </span>
-            )}
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
+          {errors.firstname && (
+            <span className="text-sm text-red-500">
+              {errors.firstname.message}
+            </span>
+          )}
 
           {/* include validation with required or other standard HTML validation rules */}
           <div className="relative">
@@ -93,9 +97,9 @@ const RegisterPage = () => {
               *
             </span>
           </div>
-          {errors.lastName && (
+          {errors.lastname && (
             <span className="text-sm text-red-500">
-              {errors.lastName.message}
+              {errors.lastname.message}
             </span>
           )}
 
@@ -143,7 +147,7 @@ const RegisterPage = () => {
 
           <div className="relative">
             <input
-              type="password"
+              type={seePass ? "text" : "password"}
               {...register("password", {
                 required: "Trường này không được để trống",
                 minLength: {
@@ -155,6 +159,12 @@ const RegisterPage = () => {
               placeholder="Mật khẩu"
               className={`w-full outline-none h-full px-3 py-2 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             />
+            <span
+              className="absolute top-[50%] right-[30px] translate-y-[-30%]"
+              onClick={() => setSeePass(!seePass)}
+            >
+              {seePass ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </span>
             {/* errors will return when field validation fails  */}
             <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
               *
@@ -168,7 +178,7 @@ const RegisterPage = () => {
 
           <div className="relative">
             <input
-              type="password"
+              type={seePassConfirm ? "text" : "password"}
               {...register("confirmPassword", {
                 required: "Trường này không được để trống",
                 minLength: {
@@ -182,6 +192,13 @@ const RegisterPage = () => {
               placeholder="Xác thực mật khẩu"
               className={`w-full outline-none h-full px-3 py-2 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             />
+            <span
+              className="absolute top-[50%] right-[30px] translate-y-[-30%]"
+              onClick={() => setSeePassConfirm(!seePassConfirm)}
+            >
+              {seePassConfirm ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </span>
+
             {/* errors will return when field validation fails  */}
             <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
               *
@@ -225,6 +242,9 @@ const RegisterPage = () => {
               />
               <span className="text-sm">Nữ</span>
             </label>
+            <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+              *
+            </span>
           </div>
 
           {errors.gender && (
@@ -232,20 +252,11 @@ const RegisterPage = () => {
               Vui lòng chọn giới tính
             </span>
           )}
-          <div className="mt-3 relative">
+          <div className="relative">
             <input
               type="date"
               {...register("birthday", {
                 required: "Vui lòng chọn ngày sinh",
-
-                // validate: (value) => {
-                //   const birthDate = new Date(value);
-                //   const ageLimitDate = new Date();
-                //   ageLimitDate.setFullYear(ageLimitDate.getFullYear() - 16);
-                //   if (birthDate > ageLimitDate) {
-                //     return "Chưa đủ 16 tuổi";
-                //   }
-                // },
               })}
               className={`w-full outline-none h-full px-3 pt-3 bg-gray-200 pb-0 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             />
@@ -259,55 +270,17 @@ const RegisterPage = () => {
             </span>
           )}
 
-          {/* <div className="mt-2">
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="2"
-              className="w-full text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg"
-              placeholder="Chữ ký"
-              {...register("signature", {
-                required: true,
-              })}
-            ></textarea>
-          </div>
-          {errors.signature && (
-            <span className="text-sm text-red-500">
-              Vui lòng không được để trống
-            </span>
-          )} */}
-
-          {/* <div className="mt-1 flex items-center">
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="Câu hỏi bảo mật"
-              className={`w-full outline-none h-full px-3 py-2 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
-            />
-            <span className="py-[7.5px] px-[9px] border-[1px] border-[#ccc] rounded-r">
-              <AiOutlineCaretDown />
-            </span>
-          </div>
-
-          <div className="mt-1">
-            <input
-              type="text"
-              name=""
-              id=""
-              className={`w-full outline-none h-full px-3 py-2 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
-              placeholder="Trả lời câu hỏi"
-            />
-          </div> */}
-
           <div className="mt-1 bg-white shadow-lg border-[1px] border-[#ccc] rounded-sm p-2 flex items-center justify-center gap-2">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={checked}
+              onClick={() => setChecked(!checked)}
+            />
             <span className="text-[13px]">Tôi đồng ý với</span>
             <input
               type="text"
               value="Quy định đăng ký thành viên"
-              className="p-0 text-[12px] text-white cursor-pointer hover:bg-[#ccc] hover:border-[1px] hover:border-[#333] rounded-lg border-none outline-none"
+              className="p-0 text-[12px] w-[23%] cursor-pointer bg-[#ccc] text-black font-bold border-[1px] border-[#333] rounded-lg border-none outline-none"
               onClick={() => setOpen(true)}
               readOnly
             />
@@ -358,19 +331,22 @@ const RegisterPage = () => {
             </button>
           </div>
 
-          <div className="text-center cursor-pointer text-[14px] mt-4">
+          {/* <div className="text-center cursor-pointer text-[14px] mt-4">
             Đã đăng ký nhưng không nhận được link kích hoạt?
-          </div>
+          </div> */}
 
           <ul className="flex justify-start gap-3 mt-3 text-[13px]">
             <li
               className="flex items-center cursor-pointer"
               onClick={() => navigate("/user/login")}
             >
-              <BsFillCaretRightFill />
-              <span>Đăng nhập</span>
+              <BsFillCaretRightFill className=" text-red-500 hover:text-red-900 " />
+              <span className="font-bold text-red-700">Đăng nhập</span>
             </li>
-            <li className="flex items-center cursor-pointer">
+            <li
+              className="flex items-center cursor-pointer hover:font-semibold"
+              onClick={() => navigate("/user/lostpass")}
+            >
               <BsFillCaretRightFill />
               <span>Khôi phục mật khẩu</span>
             </li>
@@ -381,12 +357,11 @@ const RegisterPage = () => {
             open={open}
             setOpen={setOpen}
           >
-            <p>
+            <p className="text-justify text-[14px]">
               Để trở thành thành viên, bạn phải cam kết đồng ý với các điều
               khoản dưới đây. Chúng tôi có thể thay đổi lại những điều khoản này
               vào bất cứ lúc nào và chúng tôi sẽ cố gắng thông báo đến bạn kịp
               thời.
-              <br />
               <br />
               <br />
               Bạn cam kết không gửi bất cứ bài viết có nội dung lừa đảo, thô
@@ -399,11 +374,9 @@ const RegisterPage = () => {
               khoản cam kết này trong trường hợp bạn không tuân thủ.
               <br />
               <br />
-              <br />
               Bạn đồng ý rằng website có quyền gỡ bỏ, sửa, di chuyển hoặc khoá
               bất kỳ bài viết nào trong website vào bất cứ lúc nào tuỳ theo nhu
               cầu công việc.
-              <br />
               <br />
               <br />
               Đăng ký làm thành viên của chúng tôi, bạn cũng phải đồng ý rằng,

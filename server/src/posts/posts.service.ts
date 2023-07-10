@@ -7,7 +7,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NewsPost, NewsCategory, User, Member } from 'src/utils/typeorm';
+import {
+  NewsPost,
+  NewsCategory,
+  User,
+  Member,
+  Comment,
+} from 'src/utils/typeorm';
 import { CreatePostDto } from './dtos/CreatePostDto.dtos';
 import { UpdatePostDto } from './dtos/UpdatePostDto.dto';
 
@@ -21,6 +27,8 @@ export class PostsService {
     private readonly memberRepository: Repository<Member>,
     @InjectRepository(NewsCategory)
     private readonly newsCategoryRepository: Repository<NewsCategory>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async createPost(
@@ -270,7 +278,17 @@ export class PostsService {
       .orWhere('category.father_id = :father_id', { father_id: item })
       .skip((page - 1) * pageSize)
       .take(pageSize)
+      .orderBy('post.id', 'DESC')
       .getMany();
+    for (const item of query) {
+      const count = await this.commentRepository
+        .createQueryBuilder('comment')
+        .leftJoinAndSelect('comment.post', 'post')
+        .where('post.id = :id', { id: item.id })
+        .getCount();
+      item['count'] = count;
+      // console.log('item: ', item);
+    }
 
     const queryCount = await this.newsPostRepository
       .createQueryBuilder('post')
@@ -279,6 +297,36 @@ export class PostsService {
         news_category_id: item,
       })
       .orWhere('category.father_id = :father_id', { father_id: item })
+      .getCount();
+    return { query, queryCount };
+  }
+
+  async getNewsByAction(queryParams: any) {
+    const pageSize = 8;
+    const page = Number(queryParams.page);
+    const searchKey = 'hoạt động';
+    const query = await this.newsPostRepository
+      .createQueryBuilder('post')
+      .where('post.title LIKE :searchKey', {
+        searchKey: `%${searchKey}%`,
+      })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getMany();
+    for (const item of query) {
+      const count = await this.commentRepository
+        .createQueryBuilder('comment')
+        .leftJoinAndSelect('comment.post', 'post')
+        .where('post.id = :id', { id: item.id })
+        .getCount();
+      item['count'] = count;
+      // console.log('item: ', item);
+    }
+    const queryCount = await this.newsPostRepository
+      .createQueryBuilder('post')
+      .where('post.title LIKE :searchKey', {
+        searchKey: `%${searchKey}%`,
+      })
       .getCount();
     return { query, queryCount };
   }

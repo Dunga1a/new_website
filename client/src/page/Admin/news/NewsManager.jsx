@@ -4,19 +4,15 @@ import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
 import {
   AiOutlinePlusCircle,
-  AiOutlineDelete,
   AiOutlineCheckCircle,
 } from "react-icons/ai";
 import { ImWarning } from "react-icons/im";
 import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
-import ReactQuillEditor from "../../../components/ReactQuill";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { FiAlertCircle } from "react-icons/fi";
-import Modal from "../../../components/Modal/Modal";
 import NewsEdit from "./NewsEdit";
 import NewsInsert from "./NewsInsert";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
@@ -96,7 +92,7 @@ const NewsManager = () => {
       url += `id=${currentUser ? currentUser.id : ""}&`;
 
       const res = await axios.get(url);
-      //console.log(res);
+
       setData(res.data.data);
       setCount(res.data.count);
     } catch (error) {
@@ -110,7 +106,6 @@ const NewsManager = () => {
   }, [page, selectOne, selectTwo, idItem]);
 
   const handleEdit = (item) => {
-    console.log(item);
     setIdItem(item);
     setOpenEditModal(true);
   };
@@ -128,7 +123,7 @@ const NewsManager = () => {
       fetchDataWithFilter();
     } catch (error) {
       toast.error("Lỗi không thể xóa! Xin vui lòng thử lại...");
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
@@ -141,13 +136,13 @@ const NewsManager = () => {
 
   const handleChangeSelect = (selectOne) => {
     setSelectOne(selectOne);
-    //console.log(selectOne.value);
+
   };
   const handleChangeSelectTwo = (selectedTwo) => {
     setSelectTwo(selectedTwo);
     searchParams.set("page", 1);
     setSearchParams(searchParams);
-    //console.log("Select Two value:", selectedTwo.value);
+
   };
 
   const handleSetStatus = async () => {
@@ -192,14 +187,13 @@ const NewsManager = () => {
         };
       });
       setListCategory(data);
-      console.log(result.data.getListCategory);
+      // console.log(result.data.getListCategory);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   const options = listCategory;
-  //console.log(options);
 
   return (
     <div className="relative transition-all ease-linear">

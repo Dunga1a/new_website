@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import MemberFormRegister from "./MemberFormRegister";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../context/authContext";
+
 
 const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
   // const { url } = useContext(AuthContext);
@@ -55,20 +55,15 @@ const MemberEdit = ({ memberItem, setOpen, fetchData }) => {
   const onSave = async (data) => {
     // console.log(data);
     try {
-      const result = await axios.put(
-        `${DOMAIN}/api/member/updateMember`,
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`${DOMAIN}/api/member/updateMember`, data, {
+        withCredentials: true,
+      });
       fetchData();
       setOpen(false);
-      //console.log(result);
+
       toast.success("Cập nhật hội viên thành công");
     } catch (error) {
       toast.error(error.response.data.message);
-      console.log(error.response.data.message);
     }
   };
 

@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import Button from "../../../components/Buttons/Button";
 import Modal from "../../../components/Modal/Modal";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineCloseCircle } from "react-icons/ai";
+
 import { TbEdit } from "react-icons/tb";
 import { GrPowerReset } from "react-icons/gr";
 import FormNew from "./FormNew";
@@ -14,14 +15,12 @@ import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../context/authContext";
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const EventManager = () => {
-  const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
-
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openDeleteMany, setOpenDeleteMany] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [eventList, setEventList] = useState([]);
   const [count, setCount] = useState();
@@ -149,15 +148,12 @@ const EventManager = () => {
 
   const handleDeleteManyItems = async (items) => {
     try {
-      const option = window.confirm("Are you sure");
-      if (!option) {
-        return;
-      }
       await axios.delete(`${DOMAIN}/api/event/deletedManyEvent`, {
         data: items,
         withCredentials: true,
       });
       fetchData();
+      setOpenDeleteMany(false);
       toast.success("Xóa các sự kiện thành công");
     } catch (error) {
       toast.error(error.message);
@@ -167,6 +163,17 @@ const EventManager = () => {
   const handleDelete = async (item) => {
     setEventItem(item);
     setOpenDelete(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await axios.delete(`${DOMAIN}/api/event/${eventItem.id}`);
+      setOpenDelete(false);
+      fetchData();
+      toast.success("Xóa sự kiện thành công");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -308,7 +315,13 @@ const EventManager = () => {
               colorBgr={"bg-red-500"}
               colorText={"text-white"}
               colorHover={"bg-red-800"}
-              onClick={() => handleDeleteManyItems(isCheckedItems)}
+              // onClick={() => handleDeleteManyItems(isCheckedItems)}
+              onClick={() => {
+                if (!isCheckedItems.length) {
+                  return toast.warning("Vui lòng chọn 1 sự kiện!");
+                }
+                setOpenDeleteMany(true);
+              }}
             />
           </div>
           {eventList.length ? (
@@ -327,6 +340,7 @@ const EventManager = () => {
         setOpen={setOpen}
         title={"Thêm mới sự kiện"}
         classNameChildren={"w-[1000px]"}
+        displayButtonCancel={false}
       >
         <FormNew setOpen={setOpen} fetchData={fetchData} />
       </Modal>
@@ -336,6 +350,7 @@ const EventManager = () => {
         setOpen={setOpenEdit}
         title={"Sửa sự kiện"}
         classNameChildren={"w-[1000px]"}
+        displayButtonCancel={false}
       >
         <FormEdit
           eventItem={eventItem}
@@ -345,13 +360,31 @@ const EventManager = () => {
         />
       </Modal>
 
-      <Modal open={openDelete} setOpen={setOpenDelete}>
-        {eventItem ? (
-          <FormDelete
-            eventItem={eventItem}
-            setOpen={setOpenDelete}
-            fetchData={fetchData}
-          />
+      <Modal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        classNameButtonOk="bg-red-600 text-white font-bold"
+        displayButtonOk={true}
+        onOK={handleConfirmDelete}
+      >
+        {eventItem ? <FormDelete eventItem={eventItem} /> : null}
+      </Modal>
+
+      {/* delete many */}
+      <Modal
+        open={openDeleteMany}
+        setOpen={setOpenDeleteMany}
+        classNameButtonOk="bg-red-600 text-white font-bold"
+        displayButtonOk={true}
+        onOK={() => handleDeleteManyItems(isCheckedItems)}
+      >
+        {isCheckedItems.length ? (
+          <div className="text-[18px] ">
+            <AiOutlineCloseCircle className="w-[60px] h-[60px] text-red-600 m-auto" />
+            <p className="font-bold">
+              Bạn có chắc muốn xóa các sự kiện đã chọn ?
+            </p>{" "}
+          </div>
         ) : null}
       </Modal>
     </>

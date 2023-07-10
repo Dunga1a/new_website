@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { IMemberService } from './member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getRepository } from 'typeorm';
-import { Member, Role, User } from 'src/utils/typeorm';
+import { Member, OrganizeMembershipTitle, Role, User } from 'src/utils/typeorm';
 import { CreateMemberDetails, CreateUserDetails } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/users/users';
@@ -14,6 +14,9 @@ export class MemberService implements IMemberService {
     private readonly memberRepository: Repository<Member>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
+    @InjectRepository(OrganizeMembershipTitle)
+    private readonly organizeMembershipTitleRepository: Repository<OrganizeMembershipTitle>,
+
     @Inject(Services.USERS) private readonly userService: IUserService,
   ) {}
 
@@ -153,12 +156,20 @@ export class MemberService implements IMemberService {
     const roleAssociationParam = Number(queryParams.roleAssociationParam);
     const businessIdParam = Number(queryParams.businessIdParam);
     const memberStatus = queryParams.memberStatus;
+    const getRoleOrganize =
+      await this.organizeMembershipTitleRepository.findOne({
+        where: {
+          name: 'Hội Viên',
+        },
+      });
 
     const query = this.memberRepository
       .createQueryBuilder('member')
       .leftJoinAndSelect('member.id_role_associations', 'role_association')
       .leftJoinAndSelect('member.id_business_areas', 'business_area')
-      .where('member.id_role_associations <> 1')
+      .where(
+        `member.id_role_associations <> ${getRoleOrganize.id_organize_membership}`,
+      )
       .skip((page - 1) * pageSize)
       .take(pageSize);
 
@@ -187,7 +198,9 @@ export class MemberService implements IMemberService {
       .createQueryBuilder('member')
       .leftJoinAndSelect('member.id_role_associations', 'role_association')
       .leftJoinAndSelect('member.id_business_areas', 'business_area')
-      .where('member.id_role_associations <> 1');
+      .where(
+        `member.id_role_associations <> ${getRoleOrganize.id_organize_membership}`,
+      );
 
     if (roleAssociationParam) {
       queryCount.andWhere(

@@ -4,7 +4,7 @@ import "./index.css";
 const NavbarArr = ({ arr }) => {
   const navigate = useNavigate();
   const href = arr[0].href;
-  //console.log(href);
+
   const handleClick = (item) => {
     navigate(`${href}/${item.slug}`, { state: { item } });
   };

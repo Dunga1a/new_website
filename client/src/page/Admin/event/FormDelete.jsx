@@ -1,24 +1,12 @@
-import React, { useContext } from "react";
-import Button from "../../../components/Buttons/Button";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { AuthContext } from "../../../context/authContext";
+import React from "react";
 
-const FormDelete = ({ eventItem, setOpen, fetchData }) => {
-  // const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`${DOMAIN}/api/event/${eventItem.id}`);
-      setOpen(false);
-      fetchData();
-      toast.success("Xóa sự kiện thành công");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+const FormDelete = ({ eventItem }) => {
   return (
+
+    
+
     <div className=" text-base">
       <p className="mb-5">
         Bạn có chắc muốn xóa <b>{eventItem.title}</b>
@@ -30,6 +18,7 @@ const FormDelete = ({ eventItem, setOpen, fetchData }) => {
         Xóa
       </button>{" "}
     </div>
+
   );
 };
 

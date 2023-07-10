@@ -7,22 +7,63 @@ import ImageResize from "quill-image-resize-module-react";
 import { ImageDrop } from "quill-image-drop-module";
 import { supabase } from "../../libs/supbase";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
 Quill.register("modules/imageResize", ImageResize);
 Quill.register("modules/imageDrop", ImageDrop);
 const Size = Quill.import("attributors/style/size");
 Size.whitelist = ["10px", "12px", "14px", "16px", "18px", "20px"];
 Quill.register(Size, true);
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
-
+const fontSizeArr = [
+  "8px",
+  "10px",
+  "12px",
+  "14px",
+  "16px",
+  "20px",
+  "24px",
+  "32px",
+  "42px",
+  "54px",
+  "68px",
+  "84px",
+  "98px",
+];
 const ReactQuillEditor = ({ content, setContent }) => {
   const quillRef = useRef(null);
+  const Size = Quill.import("attributors/style/size");
+  Size.whitelist = fontSizeArr;
+  Quill.register(Size, true);
 
   useEffect(() => {
+    const sanitizedContent = DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: [
+        "p",
+        "strong",
+        "em",
+        "u",
+        "ol",
+        "ul",
+        "li",
+        "a",
+        "img",
+        "div",
+        "span",
+        "sub",
+        "sup",
+        "iframe",
+      ],
+      ALLOWED_ATTR: ["href", "class", "src", "alt", "style"],
+    });
+
+    setContent(sanitizedContent);
     if (quillRef.current) {
       const quillInstance = quillRef.current.getEditor();
       quillInstance.getModule("toolbar").addHandler("image", imageHandler);
+      quillInstance.getModule("toolbar").addHandler("video", videoHandler);
     }
   }, []);
+
   const modules = {
     toolbar: {
       container: [
@@ -31,7 +72,10 @@ const ReactQuillEditor = ({ content, setContent }) => {
           { header: "2" },
           { header: [3, 4, 5, 6] },
           { font: [] },
-          { size: [] },
+
+          {
+            size: fontSizeArr,
+          },
         ],
 
         ["bold", "italic", "underline", "strike", "blockquote"],
@@ -120,6 +164,47 @@ const ReactQuillEditor = ({ content, setContent }) => {
         // Đóng toast loading và hiển thị toast thành công
         toast.dismiss("uploading-toast");
         toast.success("Ảnh được thêm thành công");
+      }
+    };
+    fileInput.click();
+  }
+
+  function videoHandler() {
+    const fileInput = document.createElement("input");
+    fileInput.setAttribute("type", "file");
+    fileInput.setAttribute("accept", "video/*");
+    fileInput.classList.add("ql-video");
+    fileInput.onchange = async (e) => {
+      const file = fileInput.files[0];
+      const fileExt = file.name.split(".").pop();
+      const filePath = `images/${Date.now()}-${file.name}`;
+      console.log(file, fileExt, filePath);
+      // Hiển thị toast loading khi đang upload ảnh
+      toast.info("Đang tải video lên...", {
+        toastId: "uploading-toast",
+        autoClose: false,
+      });
+      const { data, error } = await supabase.storage
+        .from(SUPABASE_BUCKET)
+        .upload(filePath, file);
+      // console.log("fileInput: ", fileInput);
+      if (error) {
+        console.error("Error uploading image:", error);
+        toast.error("Error uploading image");
+      } else {
+        const videoUrl = supabase.storage
+          .from(SUPABASE_BUCKET)
+          .getPublicUrl(filePath);
+        const quillInstance = quillRef.current.getEditor();
+        const range = quillInstance.getSelection(true);
+        quillInstance.insertEmbed(
+          range.index,
+          "video",
+          videoUrl.data.publicUrl
+        );
+        // Đóng toast loading và hiển thị toast thành công
+        toast.dismiss("uploading-toast");
+        toast.success("Video được thêm thành công");
       }
     };
     fileInput.click();

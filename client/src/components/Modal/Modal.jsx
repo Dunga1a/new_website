@@ -9,6 +9,11 @@ export default function Modal({
   setOpen,
   className,
   classNameChildren,
+  displayButtonOk,
+  displayButtonCancel = true,
+  okText = "Đồng Ý",
+  onOK,
+  classNameButtonOk,
 }) {
   const cancelButtonRef = useRef(null);
 
@@ -48,27 +53,50 @@ export default function Modal({
                   classNameChildren ? classNameChildren : " w-[500px]"
                 } max-h-[700px] overflow-y-auto m-auto relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg`}
               >
-                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div className="bg-white px-4 pb-4 pt-2 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900 border-2"
-                      >
-                        {title}
-                      </Dialog.Title>
-                      <div className="mt-2 text-[12px]">{children}</div>
+                    <div className="text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      {title && (
+                        <Dialog.Title
+                          as="h3"
+                          className="text-base font-semibold leading-6 text-gray-900 border-2 mb-2 text-[18px]"
+                        >
+                          {title}
+                        </Dialog.Title>
+                      )}
+                      <div className="text-[12px]">{children}</div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                {/* {(displayButtonOk || displayButtonCancel) && (
+                  
+                )} */}
+                <div
+                  className={`${
+                    displayButtonOk || displayButtonCancel
+                      ? "flex justify-around"
+                      : "hidden"
+                  } bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6`}
+                >
+                  {displayButtonOk && (
+                    <button
+                      type="button"
+                      className={`${classNameButtonOk} w-[30%] mt-3 inline-flex justify-center rounded-md  px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300  sm:mt-0 sm:w-auto`}
+                      onClick={onOK}
+                    >
+                      {okText}
+                    </button>
+                  )}
+
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className={`${displayButtonOk ? "w-[30%]" : "w-[100%]"} ${
+                      displayButtonCancel ? "inline-flex" : "hidden"
+                    }  mt-3  justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     onClick={() => setOpen(false)}
                     ref={cancelButtonRef}
                   >
-                    Cancel
+                    Thoát
                   </button>
                 </div>
               </Dialog.Panel>

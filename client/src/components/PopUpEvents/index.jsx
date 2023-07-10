@@ -45,7 +45,6 @@ const PopupEvent = () => {
     fetchData();
   }, []);
 
-  //console.log(eventList);
 
   return (
     showPopup && (

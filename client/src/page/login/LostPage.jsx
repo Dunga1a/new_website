@@ -74,7 +74,7 @@ const LostPage = () => {
                   },
                 })}
                 className="w-full outline-none border-none h-full px-2 py-0 rounded-r-md text-[13px]"
-                placeholder="Tên đăng nhập hoặc email"
+                placeholder="Nhập email đã đăng ký tài khoản"
               />
               <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
                 *

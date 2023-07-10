@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import CategoryFormAdd from "./CategoryFormAdd";
 import Modal from "../../../components/Modal/Modal";
 import FormEditCategory from "./FormEditCategory";
@@ -6,7 +6,7 @@ import axios from "axios";
 import FormDeleteCategory from "./FormDeleteCategory";
 import { GrAdd } from "react-icons/gr";
 import { AiTwotoneEdit, AiTwotoneDelete } from "react-icons/ai";
-import { AuthContext } from "../../../context/authContext";
+import { toast } from "react-toastify";
 
 const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -36,6 +36,24 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
       console.log(error.message);
     }
   };
+
+  const handleConfirmDelete = async () => {
+    const values = newsCategoryDelete.map((item) => item.news_category_id);
+
+    try {
+      await axios.delete(`${DOMAIN}/api/newscategory/deletedManyCategory`, {
+        data: values,
+        withCredentials: true,
+      });
+
+      fetchData();
+      setOpenDeleteForm(false);
+      toast.success("Xóa danh mục thành công.");
+    } catch (error) {
+      toast.error("Xóa danh mục thất bại.");
+    }
+  };
+
   return (
     <div>
       <div
@@ -84,7 +102,12 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
           </div>
         )}
       </div>
-      <Modal open={openEditForm} setOpen={setOpenEditForm} title="Sửa danh mục">
+      <Modal
+        open={openEditForm}
+        setOpen={setOpenEditForm}
+        // title="Sửa danh mục"
+        displayButtonCancel={false}
+      >
         <FormEditCategory
           newsCategoryEdit={newsCategoryEdit}
           setOpen={setOpenEditForm}
@@ -96,13 +119,11 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
         <Modal
           open={openDeleteForm}
           setOpen={setOpenDeleteForm}
-          title="Xóa danh mục"
+          classNameButtonOk="bg-red-600 text-white font-bold"
+          displayButtonOk={true}
+          onOK={handleConfirmDelete}
         >
-          <FormDeleteCategory
-            newsCategoryDelete={newsCategoryDelete}
-            setOpenDeleteForm={setOpenDeleteForm}
-            fetchData={fetchData}
-          />
+          <FormDeleteCategory newsCategoryDelete={newsCategoryDelete} />
         </Modal>
       ) : null}
     </div>

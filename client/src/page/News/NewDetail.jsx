@@ -14,10 +14,12 @@ import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 import { useSearchParams } from "react-router-dom";
 import EmptyState from "../../components/EmptyState/EmptyState";
+import LoadingPage from "../../components/LoadingPage";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const NewDetail = () => {
   const { state } = useLocation();
   const props = state ? state.item : "";
+  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -29,6 +31,7 @@ const NewDetail = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const sheet = page ? page : 1;
 
       let url = `${DOMAIN}/api/posts/allPost?`;
@@ -37,11 +40,17 @@ const NewDetail = () => {
       const result = await axios.get(
         `${DOMAIN}/api/posts/getPostBySlugOfCategory/${state.item.news_category_id}?page=${sheet}`
       );
+      // const resultTwo = await axios.get(
+      //   `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
 
-      // console.log(result);
       setData(res.data.data);
       setCount(result.data.queryCount);
       setPostlist(result.data.query);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -56,7 +65,6 @@ const NewDetail = () => {
     setSearchParams(newSearchParams.toString());
     navigate(`/news/tin-hoi-vien?page=${page}`, { state: state });
   };
-  //console.log(postList);
 
   return (
     <div className="bg-white pt-6">
@@ -69,7 +77,9 @@ const NewDetail = () => {
         <div className="pt-4 col-span-3 phone:col-span-4 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3">
           <HeaderTitle title={props ? props.name : ""} />
           <div className="desktop:pr-5 list phone:pr-0">
-            {postList ? (
+            {loading ? (
+              <LoadingPage />
+            ) : postList ? (
               postList.length ? (
                 postList.map((post) => {
                   return (
@@ -114,7 +124,7 @@ const NewDetail = () => {
                           <span className="inline-block mr-1">
                             <BiMessageRounded />
                           </span>
-                          Phản hồi: {post.reply}
+                          Phản hồi: {post.count}
                         </span>
                       </div>
                       <p className="desktop:line-clamp-none tablet:line-clamp-none laptop:line-clamp-none phone:line-clamp-3">

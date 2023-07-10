@@ -2,7 +2,6 @@ import React from "react";
 import Card from "../../../components/Card/Card";
 import { useState } from "react";
 import { useEffect } from "react";
-import TableV2 from "../../../components/Table/TableV2";
 import Button from "../../../components/Buttons/Button";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -16,9 +15,12 @@ import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import { toast } from "react-toastify";
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import Loading from "../../../components/Loading/Loading";
+import LoadingPage from "../../../components/LoadingPage";
 
+const DOMAIN = process.env.REACT_APP_DOMAIN;
 const BusinessArea = () => {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
+  const [loading, setLoading] = useState(false);
   const [openNewForm, setOpenNewForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
@@ -40,6 +42,7 @@ const BusinessArea = () => {
   };
   const fetchData = async () => {
     try {
+      setLoading(true);
       const sheet = page ? page : 1;
       const search = searchKey ? searchKey : "";
       const result = await axios.get(
@@ -47,10 +50,12 @@ const BusinessArea = () => {
       );
       setBusinessAreaList(result.data.businessAreas);
       setCount(result.data.countBusinessAreas);
-      //console.log(result);
-      // setBusinessArea(newData);
+      setLoading(false);
+
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -75,7 +80,7 @@ const BusinessArea = () => {
   }, [businessAreaList, isCheckedItems]);
 
   const handleCheckAll = (event) => {
-    //console.log("vao day: ", businessAreaList);
+
     const isChecked = event.target.checked;
     setIsCheckedAll(isChecked);
 
@@ -115,6 +120,10 @@ const BusinessArea = () => {
 
   const handleChangeStatusOnManyItems = async (items) => {
     try {
+      if (!items.length) {
+        return toast.error("Vui lòng chọn một lĩnh vực.");
+      }
+
       const status = 1; // Giá trị status muốn truyền
       const data = {
         ids: items,
@@ -130,15 +139,19 @@ const BusinessArea = () => {
         }
       );
       fetchData();
+      toast.success("Cập nhật trạng thái thành công");
       setIsCheckedItems([]);
     } catch (error) {
-      console.log(error.message);
+      toast.error("Cập nhật trạng thái thất bại");
     }
-    //console.log(items);
+
   };
 
   const handleChangeStatusOff = async (items) => {
     try {
+      if (!items.length) {
+        return toast.error("Vui lòng chọn một lĩnh vực.");
+      }
       const status = 2; // Giá trị status muốn truyền
       const data = {
         ids: items,
@@ -177,7 +190,9 @@ const BusinessArea = () => {
           />
         </div>
         <Card.Content>
-          {businessAreaList.length ? (
+          {loading ? (
+            <LoadingPage />
+          ) : businessAreaList.length ? (
             <table className="border border-blue-400 w-full bg-white">
               <thead>
                 <tr>
@@ -234,6 +249,7 @@ const BusinessArea = () => {
                           checked={item.status}
                         />
                       </td>
+
                       <td className="flex items-center justify-center p-2">
                         <Button
                           onClick={() => handleEditBusinessArea(item)}
@@ -251,6 +267,7 @@ const BusinessArea = () => {
           ) : (
             <EmptyState />
           )}
+
           <div className="mt-5 flex gap-1">
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
@@ -285,6 +302,7 @@ const BusinessArea = () => {
         setOpen={setOpenNewForm}
         title={"Thêm mới lĩnh vực kinh doanh"}
         classNameChildren={"w-[600px]"}
+        displayButtonCancel={false}
       >
         <FormBusinessAreaNew setOpen={setOpenNewForm} fetchData={fetchData} />
       </Modal>
@@ -295,6 +313,7 @@ const BusinessArea = () => {
           setOpen={setOpenEditForm}
           title={"Sửa lĩnh vực kinh doanh"}
           classNameChildren={"w-[600px]"}
+          displayButtonCancel={false}
         >
           <FormBusinessAreaEdit
             businessAreaItem={businessAreaItem}

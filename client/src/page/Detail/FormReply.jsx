@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const FormReply = ({ value, user, fetchData, setOpen }) => {
-  // console.log("value: ", user);
   const [post, setPost] = useState(null);
+
   const { slug } = useParams();
   const fetchDataStatic = async () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
-      //console.log(res.data);
+
       setPost(res.data);
     } catch (error) {
       console.log(error.message);
@@ -24,36 +24,58 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    setValue,
     formState: { errors },
   } = useForm({ criteriaMode: "all" });
   const onSubmit = async (data) => {
     try {
-      const values = {
+      const textChildren = `@ ${value.user.username}`;
+      // const text = data.content.split(`@${value.user.username}`).join('').trim();
+      // console.log();
+      let values = {
         ...data,
         father_id: value.id,
         // TODO: cần lấy theo id của người đăng nhập
         user: user.id,
         post: post.id,
       };
-      const result = await axios.post(
-        `${DOMAIN}/api/comment/createComment`,
-        values,
-        { withCredentials: true }
-      );
+      if (data.content.includes(value.user.username)) {
+        const text = data.content
+          .split(`@${value.user.username}`)
+          .join("")
+          .trim();
+
+        values = {
+          ...data,
+          content: `<b>${textChildren}</b> ${text}`,
+          father_id: value.id,
+          // TODO: cần lấy theo id của người đăng nhập
+          user: user.id,
+          post: post.id,
+        };
+      } else {
+        values = {
+          ...data,
+          father_id: value.id,
+          // TODO: cần lấy theo id của người đăng nhập
+          user: user.id,
+          post: post.id,
+        };
+      }
+
+      await axios.post(`${DOMAIN}/api/comment/createComment`, values, {
+        withCredentials: true,
+      });
       if (fetchData) {
         fetchData();
       }
       setOpen(null);
       reset({ content: "" });
-      //console.log(result);
+
     } catch (error) {
       console.log(error.message);
     }
   };
-  const [isFirstRender, setIsFirstRender] = useState(true);
 
   return (
     <div>
@@ -97,7 +119,7 @@ const FormReply = ({ value, user, fetchData, setOpen }) => {
               {...register("content", {
                 required: true,
               })}
-              defaultValue={`@ ${value.user.username}`}
+              defaultValue={`@${value.user.username}`}
             />
           </div>
         </div>
