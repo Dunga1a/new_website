@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "react-toastify";
@@ -38,19 +38,15 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
           withCredentials: true,
         }
       );
-
+      toast.success("Thêm Danh Mục Thành Công");
       fetchData();
       setOpen(null);
     } catch (error) {
-      toast.error("error.response.data.message");
+      toast.error(error.response.data.message);
       console.log(error.message);
     }
   };
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      //console.log("vao day");
-    }
-  };
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full my-1">
@@ -64,7 +60,6 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
               required: "Không được bỏ trống trường này",
             })}
             placeholder="Thêm danh mục"
-            onKeyDown={handleKeyDown}
           />
           <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
             *
@@ -74,7 +69,6 @@ const CategoryFormAdd = ({ value, setOpen, fetchData }) => {
           errors={errors}
           name="name"
           render={({ messages }) => {
-            //console.log("messages", messages);
             return messages
               ? Object.entries(messages).map(([type, message]) => (
                   <p className="ml-10 text-[14px] text-red-500" key={type}>

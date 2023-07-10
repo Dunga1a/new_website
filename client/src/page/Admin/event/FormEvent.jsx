@@ -63,11 +63,7 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
         const result = await axios.post(`${DOMAIN}/api/event/pdfs`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        //console.log(
-        // `kiểu của dữ liệu trả về: ${typeof result.data}. Dữ liệu là: ${
-        //   result.data
-        // }`
-        //);
+
         file_pdf = result.data.join(", ");
 
         choose_file = [...chooseFile, file_pdf];

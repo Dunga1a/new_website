@@ -86,6 +86,7 @@ const RegisterMember = () => {
       });
       let image_person = null;
       let image_company = null;
+      toast.success("Đăng ký hội viên thành công, vui lòng chờ xét duyệt");
 
       if (imageUrl.firstImg) {
         formData.append("image", imageUrl.firstImg);
@@ -131,15 +132,6 @@ const RegisterMember = () => {
         withCredentials: true,
       });
 
-      //console.log(values);
-      const result = await axios.post(
-        `${DOMAIN}/api/member/createMember`,
-        values,
-        {
-          withCredentials: true,
-        }
-      );
-
       reset();
       setSelectedImages({
         firstImg: null,
@@ -151,8 +143,6 @@ const RegisterMember = () => {
       });
       setIntro("");
       setIdBusinessAreas(null);
-
-      toast.success("Đăng ký hội viên thành công, vui lòng chờ xét duyệt");
     } catch (error) {
       toast.error(error.response.data.message);
     }

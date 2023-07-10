@@ -229,7 +229,6 @@ export class PostsService {
     }
 
     if (user.roles.find((role) => role.name === 'admin')) {
-      console.log('đây là admin');
     } else {
       queryBuilder.andWhere('User.id = :id', { id: id });
     }

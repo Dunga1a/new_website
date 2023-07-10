@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import FormEvent from "./FormEvent";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../context/authContext";
 
 const initValue = {
   title: "",
@@ -23,29 +22,20 @@ const FormNew = ({ setOpen, fetchData }) => {
   const onSave = async (data) => {
     try {
       const { selectedFiles, image, ...values } = data;
-      console.log("data: ", data);
-      const result = await axios.post(
-        `${DOMAIN}/api/event/createEvent`,
-        values,
-        {
+      await axios
+        .post(`${DOMAIN}/api/event/createEvent`, values, {
           withCredentials: true,
-        }
-      );
-      fetchData();
-      setOpen(false);
-      console.log(result);
-      toast.success("🦄 Thêm sự kiện thành công!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+        })
+        .then(() => {
+          toast.success("Thêm sự kiện thành công!", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+          setOpen(false);
+          fetchData();
+        });
     } catch (error) {
-      toast.error("🦄 Thêm sự kiện thất bại!");
+      toast.error("Thêm sự kiện thất bại!");
     }
   };
   return (

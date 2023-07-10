@@ -10,7 +10,7 @@ const ListUserByRole = ({ item }) => {
           src={
             item.image
               ? `/uploads/${item.image}`
-              : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
+              : "/assets/images/logo-107x107.png"
           }
           className="w-[60px] h-[60px] m-auto p-2"
         />

@@ -28,7 +28,6 @@ const RoleManager = () => {
         withCredentials: true,
       });
       setRoleList(result.data);
-      //console.log(result.data);
     } catch (error) {
       console.log(error);
     }

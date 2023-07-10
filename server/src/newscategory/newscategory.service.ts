@@ -85,7 +85,6 @@ export class NewsCategoryService implements INewsCategoryService {
   }
 
   async editCategory(newsCategoryDetails: NewsCategoryDetails) {
-    // console.log(newsCategoryDetails);
     if (newsCategoryDetails.isEdit) {
       const findNewsCategoryDB = await this.newsCategoryRepository.findOne({
         where: {

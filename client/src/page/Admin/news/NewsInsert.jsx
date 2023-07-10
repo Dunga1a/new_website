@@ -5,6 +5,7 @@ import axios from "axios";
 import slugify from "slugify";
 import { useSearchParams } from "react-router-dom";
 import { AuthContext } from "../../../context/authContext";
+import { toast } from "react-toastify";
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -51,6 +52,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
           })
           .then(() => {
             // Cập nhật dữ liệu mới nhất tại đây
+            toast.success("Thêm Bài Viết Thành Công");
             fetchData();
             setOpen(false);
           })
@@ -64,6 +66,8 @@ const NewsInsert = ({ fetchData, setOpen }) => {
           .post(`${DOMAIN}/api/posts/`, value)
           .then(() => {
             // Cập nhật dữ liệu mới nhất tại đây
+            toast.success("Thêm Bài Viết Thành Công");
+
             fetchData();
             setOpen(false);
           })
@@ -71,15 +75,6 @@ const NewsInsert = ({ fetchData, setOpen }) => {
             console.error("Error:", error);
           });
       }
-
-      const value = { ...data, slug, image, userId: currentUser.id };
-      //console.log(value);
-      const res = await axios.post(`${DOMAIN}/api/posts/`, value);
-      //console.log(res.data);
-      setOpen(false);
-      toast.success("Thêm bài viết thành công");
-      fetchData();
-
     } catch (error) {
       console.log(error.message);
       // toast.error(error.response.data.message);
@@ -105,7 +100,6 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         };
       });
       setListCategory(data);
-
     } catch (error) {
       console.log(error.message);
     }
@@ -114,7 +108,6 @@ const NewsInsert = ({ fetchData, setOpen }) => {
   useEffect(() => {
     fetchDataStatic();
   }, [page]);
-
 
   const newsFormFields = [
     { name: "title", label: "Tiêu đề", type: "text", col_span: true },
