@@ -6,16 +6,12 @@ import { canvasPreview } from "./canvasPreview";
 import { useDebounceEffect } from "./useDebounceEffect";
 
 import "react-image-crop/dist/ReactCrop.css";
-import { supabase } from "../../../libs/supbase";
 import { useContext } from "react";
 import { AuthContext } from "../../../context/authContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
-const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
-// This is to demonstate how to make and center a % aspect crop
-// which is a bit trickier so we use some helper functions.
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
     makeAspectCrop(
@@ -67,23 +63,23 @@ export default function ImageCrop({
     }
   }
 
-  function onDownloadCropClick() {
-    if (!previewCanvasRef.current) {
-      throw new Error("Crop canvas does not exist");
-    }
+  // function onDownloadCropClick() {
+  //   if (!previewCanvasRef.current) {
+  //     throw new Error("Crop canvas does not exist");
+  //   }
 
-    previewCanvasRef.current.toBlob((blob) => {
-      if (!blob) {
-        throw new Error("Failed to create blob");
-      }
-      if (blobUrlRef.current) {
-        URL.revokeObjectURL(blobUrlRef.current);
-      }
-      blobUrlRef.current = URL.createObjectURL(blob);
-      hiddenAnchorRef.current.href = blobUrlRef.current;
-      hiddenAnchorRef.current.click();
-    });
-  }
+  //   previewCanvasRef.current.toBlob((blob) => {
+  //     if (!blob) {
+  //       throw new Error("Failed to create blob");
+  //     }
+  //     if (blobUrlRef.current) {
+  //       URL.revokeObjectURL(blobUrlRef.current);
+  //     }
+  //     blobUrlRef.current = URL.createObjectURL(blob);
+  //     hiddenAnchorRef.current.href = blobUrlRef.current;
+  //     hiddenAnchorRef.current.click();
+  //   });
+  // }
 
   useDebounceEffect(
     async () => {

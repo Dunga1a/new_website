@@ -54,13 +54,14 @@ const CategoryManager = () => {
       const values = { name: data.category, slug };
       // console.log(values);
 
-      const results = await axios.post(
+      await axios.post(
         `${DOMAIN}/api/newscategory/createNewsCategory`,
         values,
         {
           withCredentials: true,
         }
       );
+      toast.success("Thêm Danh Mục Thành Công");
       //console.log(results);
       reset({ category: "" });
       fetchData();

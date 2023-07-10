@@ -110,13 +110,13 @@ const ListOfExecutives = () => {
                     }
                     className="bg-white border cursor-pointer hover:bg-gray-100 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
                   >
-                    <div>
+                    <div className="bg-gray-300">
                       <img
-                        className=" max-h-[250px] max-w-full object-cover m-auto"
+                        className="h-[250px] max-w-full object-contain m-auto "
                         src={
                           member.image_person
                             ? `/uploads/${member.image_person}`
-                            : "https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
+                            : "/assets/images/default_member.jpg"
                         }
                         alt=""
                       />

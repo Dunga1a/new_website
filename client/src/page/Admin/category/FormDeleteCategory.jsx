@@ -1,29 +1,7 @@
 import React from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
- const DOMAIN = process.env.REACT_APP_DOMAIN;
 const FormDeleteCategory = ({ newsCategoryDelete }) => {
-
- 
-  const values = newsCategoryDelete.map((item) => item.news_category_id);
-
-  const handleDelete = async () => {
-    try {
-      const result = await axios.delete(
-        `${DOMAIN}/api/newscategory/deletedManyCategory`,
-        {
-          data: values,
-          withCredentials: true,
-        }
-      );
-      //console.log(result);
-      fetchData();
-      setOpenDeleteForm(false);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   return (
     <>
       <div className="text-[18px] ">

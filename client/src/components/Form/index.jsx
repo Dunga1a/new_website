@@ -55,7 +55,6 @@ const Form = ({ formFields, onSubmit }) => {
 
   //const values = watch();
   const handleFormSubmit = (data) => {
-
     // console.log("day", { ...data, isEdit });
 
     //console.log("day", { ...data, isEdit });
@@ -72,12 +71,10 @@ const Form = ({ formFields, onSubmit }) => {
   };
 
   const handleImageChange = (e, inputName) => {
-
     const file = e.target.files[0];
     // console.log(file);
 
     //console.log("đây");
-    const file = e.target.files[0];
     //console.log(file);
 
     if (file) {
@@ -134,8 +131,6 @@ const Form = ({ formFields, onSubmit }) => {
     }
 
     if (field.type === "file" && field.name === "image") {
-
-
       return (
         <div className={field.col_span ? "col-span-2" : ""} key={field.name}>
           <label>
