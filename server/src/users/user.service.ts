@@ -267,4 +267,13 @@ export class UserService implements IUserService {
 
     return savedUser;
   }
+
+  async updateImage(userId: string) {
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ image: null })
+      .where('id=:id', { id: userId })
+      .execute();
+  }
 }

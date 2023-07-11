@@ -26,4 +26,6 @@ export interface IUserService {
 
   createAdminUser(username: string, password: string);
   registerUser(createUser: any);
+
+  updateImage(userId: string);
 }
