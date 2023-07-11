@@ -216,13 +216,18 @@ const Form = ({ formFields, onSubmit }) => {
     return (
       <label key={field.name}>
         <span className="block font-semibold text-sm ">{field.label}</span>
-        <input
-          type={field.type}
-          {...register(field.name)}
-          defaultValue={field.value}
-          className="w-full rounded h-[36px] border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
-          required
-        />
+        <div className=" relative">
+          <input
+            type={field.type}
+            {...register(field.name)}
+            defaultValue={field.value}
+            className="w-full relative rounded h-[36px] border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+            required
+          />
+          <span className=" absolute text-red-600 font-medium text-[14px] top-2 right-2">
+            *
+          </span>
+        </div>
       </label>
     );
   };

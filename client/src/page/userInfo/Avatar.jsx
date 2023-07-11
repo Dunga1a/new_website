@@ -3,14 +3,16 @@ import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 
 import { supabase } from "../../libs/supbase.js";
+import ModalV1 from "../../components/Modal/ModalV1.jsx";
 import Modal from "../../components/Modal/Modal.jsx";
 import ImageCrop from "./cropImage/index.jsx";
 import axios from "axios";
 import { AuthContext } from "../../context/authContext.js";
+import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const defaltImg =
-  "https://tsddbwptfwiyathksqae.supabase.co/storage/v1/object/public/images/1683254955152-avatar.png";
+  "/assets/images/default-avatar-profile-icon-of-social-media-user-vector";
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || "";
 export default function AvatarUser() {
   const {
@@ -23,6 +25,7 @@ export default function AvatarUser() {
   const { currentUser } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
+  const [openDelelte, setOpenDelete] = useState(false);
   const onDrop = useCallback((acceptedFiles) => {
     setValue("avatar", acceptedFiles[0]);
     setAvatarPreviewUrl(URL.createObjectURL(acceptedFiles[0]));
@@ -52,13 +55,28 @@ export default function AvatarUser() {
     // }
   };
 
+  const deleteImageUser = async () => {
+    try {
+      const value = { ...currentUser, image: null };
+      await axios.patch(`${DOMAIN}/api/users/${currentUser.id}/remove-image`);
+      toast.success("Xóa ảnh thành công");
+      localStorage.setItem("user", JSON.stringify(value));
+      window.location.reload();
+    } catch (error) {
+      toast.error("Lỗi! Xóa ảnh không thành công...");
+      console.log(error.message);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-[100px] h-[100px] ">
         {avatarPreviewUrl && (
           <img
             src={
-              currentUser ? `/uploads/${currentUser.image}` : avatarPreviewUrl
+              currentUser && currentUser.image
+                ? `/uploads/${currentUser.image}`
+                : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg"
             }
             alt="Avatar preview"
             className="w-full h-full object-cover center"
@@ -81,7 +99,10 @@ export default function AvatarUser() {
           </button>
         </div>
         <div>
-          <button className="bg-red-600 text-white text-[12px] px-2 py-1 rounded-md">
+          <button
+            onClick={() => setOpenDelete(true)}
+            className="bg-red-600 text-white text-[12px] px-2 py-1 rounded-md"
+          >
             Xóa
           </button>
         </div>
@@ -89,7 +110,6 @@ export default function AvatarUser() {
 
       {/* <input type="file" accept="image/*" onChange={(e) => handleUpload(e)} />
       <button type="submit">Submit</button> */}
-
       <Modal open={open} setOpen={setOpen}>
         <ImageCrop
           avatarPreviewUrl={avatarPreviewUrl}
@@ -97,6 +117,18 @@ export default function AvatarUser() {
           setOpen={setOpen}
         />
       </Modal>
+      <ModalV1
+        open={openDelelte}
+        setOpen={setOpenDelete}
+        title={"Bạn có chắc chắn muốn xóa ảnh đại diện ?"}
+      >
+        <button
+          onClick={deleteImageUser}
+          className="bg-red-600 text-white text-[14px] px-3 py-2 rounded-md hover:bg-red-700"
+        >
+          Đồng ý
+        </button>
+      </ModalV1>
     </form>
   );
 }
