@@ -7,9 +7,14 @@ import { Services } from 'src/utils/constants';
 import { UsersModule } from 'src/users/users.module';
 import { EmailService } from './email.service';
 import { RoleModule } from 'src/role/role.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Module({
   imports: [
+    MulterModule.register({
+      storage: memoryStorage(),
+    }),
     TypeOrmModule.forFeature([Member, User, Role, OrganizeMembershipTitle]),
     UsersModule,
     RoleModule,

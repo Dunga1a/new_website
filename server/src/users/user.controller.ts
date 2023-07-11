@@ -6,6 +6,7 @@ import {
   Put,
   Body,
   Post,
+  Patch,
   Query,
   UseInterceptors,
   UploadedFile,
@@ -185,6 +186,12 @@ export class UsersController {
   @Post('registerUser')
   async registerUser(@Body() createUser: any) {
     return await this.userService.registerUser(createUser);
+  }
+
+  @Patch(':id/remove-image')
+  async removeImage(@Param('id') userId: string) {
+    await this.userService.updateImage(userId);
+    return { message: 'Image removed successfully' };
   }
 
   // @Post('forgotPassword')
