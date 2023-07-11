@@ -188,7 +188,7 @@ export class UsersController {
     return await this.userService.registerUser(createUser);
   }
 
-  
+
   @Patch(':id/remove-image')
   async removeImage(@Param('id') userId: string) {
     await this.userService.updateImage(userId);

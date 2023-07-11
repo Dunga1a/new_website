@@ -8,6 +8,7 @@ import { IUserService } from './users';
 import { Services } from 'src/utils/constants';
 import { IRoleService } from 'src/role/role';
 import { MailService } from 'src/mail/mail.service';
+import * as fs from 'fs';
 
 @Injectable()
 export class UserService implements IUserService {

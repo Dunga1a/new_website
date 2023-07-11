@@ -7,6 +7,9 @@ import {
   Get,
   Put,
   ParseIntPipe,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
   Query,
   Delete,
   UseInterceptors,
@@ -20,6 +23,9 @@ import { EmailService } from './email.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+//import { SharpPipe } from 'src/sharp.pipe';
+import * as path from 'path';
+import * as sharp from 'sharp';
 @Controller(Routes.MEMBER)
 export class MemberController {
   constructor(
@@ -37,7 +43,6 @@ export class MemberController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: '../client/public/uploads',
         filename: (req, file, callback) => {
           const randomName = Array(4)
             .fill(null)
@@ -48,8 +53,27 @@ export class MemberController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return { imageUrl: file.filename };
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const originalName = path.parse(file.originalname).name;
+    //console.log(originalName);
+    console.log(file);
+
+    const filename =
+      Array(4)
+        .fill(null)
+        .map(() => Math.round(Math.random() * 4).toString(16))
+        .join('') + extname(file.originalname);
+    //hehe
+    //console.log(filename);
+
+    await sharp(file.path)
+      .resize(800)
+      //.webp({ effort: 3 })
+      .toFile(path.join('../client/public/uploads', filename));
+    //console.log(file.filename);
+
+    return { imageUrl: filename };
+    //return { imageUrl: file.filename };
   }
 
   @Post('uploadMultipleImages')
