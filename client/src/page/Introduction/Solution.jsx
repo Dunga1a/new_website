@@ -72,7 +72,9 @@ const Solution = () => {
                     <h3 className="font-bold text-[#333] mb-5 cursor-pointer uppercase">
                       {item.title}
                     </h3>
-                    <p className="text-[12px]">{item.subcontent}</p>
+                    <p className="text-[12px] line-clamp-5">
+                      {item.subcontent}
+                    </p>
                   </div>
                 </div>
               ))
