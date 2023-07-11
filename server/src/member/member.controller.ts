@@ -63,6 +63,7 @@ export class MemberController {
         .fill(null)
         .map(() => Math.round(Math.random() * 4).toString(16))
         .join('') + extname(file.originalname);
+    //hehe
     //console.log(filename);
 
     await sharp(file.path)
