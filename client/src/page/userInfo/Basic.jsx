@@ -141,18 +141,6 @@ const Basic = () => {
           />
         </div>
 
-        <div className="flex items-center">
-          <p className="w-[23%] text-end mr-2 text-[14px]">Hiển thị Email</p>
-
-          <select
-            {...register("statusemail")}
-            className={`w-[27%] outline-none h-full px-3 py-0  mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
-          >
-            <option value="Có">Có</option>
-            <option value="Không">Không</option>
-          </select>
-        </div>
-
         <div className="text-center text-[13px] mt-3">
           <button
             className="bg-gray-50 p-2 mr-4 rounded-lg"
