@@ -26,7 +26,7 @@ export class Event {
   @Column({ type: 'longtext' })
   content: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'longtext', nullable: true })
   file_pdf: string;
 
   @Column({ default: 0 })
