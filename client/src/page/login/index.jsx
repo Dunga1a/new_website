@@ -16,9 +16,9 @@ const UserAuth = () => {
             <Outlet />
           </div>
 
-          <div>
+          
             <Category />
-          </div>
+          
         </div>
       </div>
     </div>
