@@ -26,7 +26,6 @@ const LoginPage = ({ className }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-
     if (data === null) {
       alert("Bạn chưa có thông tin đăng nhập");
     }
@@ -144,7 +143,6 @@ const LoginPage = ({ className }) => {
                   <button
                     type="button"
                     className="bg-gray-100 p-2 mr-4 rounded-lg hover:bg-gray-300"
-                    type="button"
                     onClick={() => reset()}
                   >
                     Thiết lập lại

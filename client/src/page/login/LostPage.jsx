@@ -54,7 +54,7 @@ const LostPage = () => {
           "desktop:w-[45%] phone:w-full laptop:w-[45%] tablet:w-[50%] mx-auto rounded-md shadow-lg mt-6"
         }
         title="Khôi phục mật khẩu thành viên"
-        subtitle="Nếu còn nhớ tên tài khoản hoặc email mà bạn đã tự khai báo khi đăng ký thành viên, hãy khai báo chúng vào ô trống dưới đây. Sau khi kiểm tra tính hợp lệ, chúng tôi sẽ tạo cho bạn mật khẩu mới."
+        subtitle="Nếu còn nhớ email mà bạn đã tự khai báo khi đăng ký thành viên, hãy khai báo chúng vào ô trống dưới đây. Sau khi kiểm tra tính hợp lệ, chúng tôi sẽ tạo cho bạn mật khẩu mới."
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center w-full mb-4 border border-gray-400 h-[35px] rounded-md mt-4">

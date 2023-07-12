@@ -60,24 +60,41 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
         for (let i = 0; i < selectedPdf.length; i++) {
           formData.append("pdfs", selectedPdf[i]);
         }
-        const result = await axios.post(`${DOMAIN}/api/event/pdfs`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        // const result = await axios.post(`${DOMAIN}/api/event/pdfs`, formData, {
+        //   headers: { "Content-Type": "multipart/form-data" },
+        // });
+
+        // file_pdf = result.data.join(", ");
+
+        // choose_file = [...chooseFile, file_pdf].join(",");
+        await axios
+          .post(`${DOMAIN}/api/event/pdfs`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+          .then((response) => {
+            file_pdf = response.data.join(", ");
+
+            choose_file = [...chooseFile, file_pdf];
+            onSave({
+              ...data,
+              content: content,
+              selectedFiles: selectedFiles,
+              file_pdf: choose_file.join(","),
+            });
+          });
+      } else {
+        await onSave({
+          ...data,
+          content: content,
+
+          selectedFiles: selectedFiles,
+          // file_pdf: choose_file.join(","),
+          file_pdf: choose_file.join(","),
+
+          // chooseFile: chooseFile,
+          // choose_file: choose_file,
         });
-
-        file_pdf = result.data.join(", ");
-
-        choose_file = [...chooseFile, file_pdf];
       }
-
-      await onSave({
-        ...data,
-        content: content,
-
-        selectedFiles: selectedFiles,
-        file_pdf: choose_file.join(","),
-        chooseFile: chooseFile,
-        choose_file: choose_file,
-      });
     } catch (error) {
       console.log(error.message);
     }
@@ -157,7 +174,7 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[30px] translate-y-[-30%]">
                   *
                 </span>
               </div>

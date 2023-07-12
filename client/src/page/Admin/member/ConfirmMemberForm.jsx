@@ -59,7 +59,7 @@ const ConfirmMemberForm = ({ memberItem, setOpen, fetchData }) => {
       fetchData();
       setOpen(false);
     } catch (error) {
-      toast.success("Cấp tài khoản hội viên thất bại");
+      toast.error("Cấp tài khoản hội viên thất bại");
 
       console.log(error.message);
     }

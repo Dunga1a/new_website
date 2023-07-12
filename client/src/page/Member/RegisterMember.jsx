@@ -7,6 +7,7 @@ import slugify from "slugify";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
 import { useSearchParams } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcrumb";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RegisterMember = () => {
   const { url } = useContext(AuthContext);
@@ -192,266 +193,273 @@ const RegisterMember = () => {
   );
 
   return (
-    <div className="bg-white py-6">
-      <form
-        className="grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="px-10 phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
-          <h3 className="font-semibold text-base">Thông tin doanh nghiệp</h3>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="name_company"
-            >
-              Nhập tên doanh nghiệp, tổ chức
-            </label>
+    <div className="bg-white pt-6">
+      <Breadcrumbs title={"Đăng Ký Hội Viên"} />
 
-            <input
-              required
-              type="text"
-              id="name_company"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("name_company", {
-                required: true,
-              })}
-            />
+      <div className=" py-6">
+        <form
+          className="grid desktop:grid-cols-2 laptop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="px-10 phone:col-span-2 desktop:col-span-1 laptop:col-span-1 tablet:col-span-1">
+            <h3 className="font-semibold text-base">Thông tin doanh nghiệp</h3>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="name_company"
+              >
+                Nhập tên doanh nghiệp, tổ chức
+              </label>
 
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="representative"
-            >
-              Người đại diện
-            </label>
-            <input
-              required
-              type="text"
-              id="representative"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("representative", {
-                required: true,
-              })}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="role_name"
-            >
-              Chức vụ
-            </label>
-            <input
-              required
-              type="text"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("role_name", {
-                required: true,
-              })}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="phone"
-            >
-              Số điện thoại
-            </label>
-            <input
-              required
-              type="text"
-              id="phone"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("phone", {
-                required: true,
-              })}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="email"
-            >
-              Nhập email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("email", {
-                required: true,
-              })}
-              required
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label className="block text-sm font-medium leading-6 text-gray-900">
-              Lĩnh Vực Hoạt Động
-            </label>
-            <Select
-              options={businessAreas}
-              className="col-span-2"
-              placeholder={
-                selectedOption
-                  ? `------ ${selectedOption.label} ------`
-                  : "------ Chọn Lĩnh Vực Hoạt Động ------"
-              }
-              onChange={(e) => setIdBusinessAreas(e.value)}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="code_company"
-            >
-              Mã số doanh nghiệp
-            </label>
-            <input
-              required
-              type="text"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("code_company", {
-                required: true,
-              })}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4 relative">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="address"
-            >
-              Địa chỉ doanh nghiệp
-            </label>
-            <input
-              required
-              type="text"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("address", {
-                required: true,
-              })}
-            />
-            <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-              *
-            </span>
-          </div>
-          <div className="my-4">
-            <label
-              className="block text-sm font-medium leading-6 text-gray-900"
-              htmlFor="representative"
-            >
-              Website
-            </label>
-            <input
-              type="text"
-              className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
-                           "border-red-500 border-[1px]"
-                        `}
-              {...register("website")}
-            />
-          </div>
-        </div>
-
-        <div className="p-10">
-          <div>
-            <h3 className="font-semibold text-base">Ảnh người đại diện:</h3>
-            <div className="flex items-center">
               <input
-                type="file"
-                accept=".jpg, .png, .jpeg, .svg"
-                placeholder="Chưa...chọn"
-                onChange={(e) => handleImageChange(e, "firstImg")}
+                required
+                type="text"
+                id="name_company"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("name_company", {
+                  required: true,
+                })}
               />
-              {selectedImages && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      selectedImages.firstImg
-                        ? `${selectedImages.firstImg}`
-                        : "/assets/images/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )}
+
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="representative"
+              >
+                Người đại diện
+              </label>
+              <input
+                required
+                type="text"
+                id="representative"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("representative", {
+                  required: true,
+                })}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="role_name"
+              >
+                Chức vụ
+              </label>
+              <input
+                required
+                type="text"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("role_name", {
+                  required: true,
+                })}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="phone"
+              >
+                Số điện thoại
+              </label>
+              <input
+                required
+                type="text"
+                id="phone"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("phone", {
+                  required: true,
+                })}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="email"
+              >
+                Nhập email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("email", {
+                  required: true,
+                })}
+                required
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label className="block text-sm font-medium leading-6 text-gray-900">
+                Lĩnh Vực Hoạt Động
+              </label>
+              <Select
+                options={businessAreas}
+                className="col-span-2"
+                placeholder={
+                  selectedOption
+                    ? `------ ${selectedOption.label} ------`
+                    : "------ Chọn Lĩnh Vực Hoạt Động ------"
+                }
+                onChange={(e) => setIdBusinessAreas(e.value)}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="code_company"
+              >
+                Mã số doanh nghiệp
+              </label>
+              <input
+                required
+                type="text"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("code_company", {
+                  required: true,
+                })}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4 relative">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="address"
+              >
+                Địa chỉ doanh nghiệp
+              </label>
+              <input
+                required
+                type="text"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("address", {
+                  required: true,
+                })}
+              />
+              <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
+                *
+              </span>
+            </div>
+            <div className="my-4">
+              <label
+                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="representative"
+              >
+                Website
+              </label>
+              <input
+                type="text"
+                className={`block focus:outline-none w-full h-[40px] text-[13px] leading-[15px] rounded border-[#cccccc] 
+                           "border-red-500 border-[1px]"
+                        `}
+                {...register("website")}
+              />
             </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-base">
-              Ảnh doanh nghiệp (Logo):
-            </h3>
 
-            <div className="flex items-center">
-              <input
-                type="file"
-                accept=".jpg, .png, .jpeg, .svg"
-                placeholder="Chưa...chọn"
-                onChange={(e) => handleImageChange(e, "secondImg")}
-              />
-              {selectedImages && (
-                <div className="border border-dashed">
-                  <img
-                    className="max-h-[100px] max-w-full object-cover m-auto"
-                    src={
-                      selectedImages.secondImg
-                        ? `${selectedImages.secondImg}`
-                        : "/assets/images/logo-107x107.png"
-                    }
-                    alt="Selected Img One"
-                  />
-                </div>
-              )}
+          <div className="p-10">
+            <div>
+              <h3 className="font-semibold text-base">Ảnh người đại diện:</h3>
+              <div className="flex items-center">
+                <input
+                  type="file"
+                  accept=".jpg, .png, .jpeg, .svg"
+                  placeholder="Chưa...chọn"
+                  onChange={(e) => handleImageChange(e, "firstImg")}
+                />
+                {selectedImages && (
+                  <div className="border border-dashed">
+                    <img
+                      className="max-h-[100px] max-w-full object-cover m-auto"
+                      src={
+                        selectedImages.firstImg
+                          ? `${selectedImages.firstImg}`
+                          : "/assets/images/logo-107x107.png"
+                      }
+                      alt="Selected Img One"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-base">
+                Ảnh doanh nghiệp (Logo):
+              </h3>
+
+              <div className="flex items-center">
+                <input
+                  type="file"
+                  accept=".jpg, .png, .jpeg, .svg"
+                  placeholder="Chưa...chọn"
+                  onChange={(e) => handleImageChange(e, "secondImg")}
+                />
+                {selectedImages && (
+                  <div className="border border-dashed">
+                    <img
+                      className="max-h-[100px] max-w-full object-cover m-auto"
+                      src={
+                        selectedImages.secondImg
+                          ? `${selectedImages.secondImg}`
+                          : "/assets/images/logo-107x107.png"
+                      }
+                      alt="Selected Img One"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-span-2 px-10">
-          <ReactQuillEditor content={intro} setContent={handleChangeContent} />
-        </div>
-        <div className="col-span-2 text-center">
-          <button
-            type="submit"
-            className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
-          >
-            Đăng ký
-          </button>
-        </div>
-      </form>
+          <div className="col-span-2 px-10">
+            <ReactQuillEditor
+              content={intro}
+              setContent={handleChangeContent}
+            />
+          </div>
+          <div className="col-span-2 text-center">
+            <button
+              type="submit"
+              className="px-10 py-3 bg-blue-600 text-white font-medium text-base uppercase rounded hover:bg-blue-500"
+            >
+              Đăng ký
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

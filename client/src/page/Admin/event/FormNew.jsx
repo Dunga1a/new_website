@@ -27,10 +27,7 @@ const FormNew = ({ setOpen, fetchData }) => {
           withCredentials: true,
         })
         .then(() => {
-          toast.success("Thêm sự kiện thành công!", {
-            position: "top-right",
-            autoClose: 3000,
-          });
+          toast.success("Thêm sự kiện thành công!");
           setOpen(false);
           fetchData();
         });
