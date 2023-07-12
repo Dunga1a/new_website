@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+
 import { ErrorMessage } from "@hookform/error-message";
 import { toast } from "react-toastify";
 //import * as bcrypt from "bcrypt";
@@ -9,6 +11,7 @@ import axios from "axios";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const Email = () => {
+  const [see, setSee] = useState(false);
   const salt = bcrypt.genSalt();
   const {
     register,
@@ -128,7 +131,7 @@ const Email = () => {
           <div className="flex items-center relative">
             <p className="w-[23%] text-end mr-2 text-[14px]">Mật khẩu</p>
             <input
-              type="password"
+              type={see ? "text" : "password"}
               className={`block focus:outline-none w-[50%] rounded h-[32px] text-[13px] leading-[15px] border-[#cccccc] shadow-lg ${
                 errors.password ? "border-red-500 border-[1px]" : ""
               }`}
@@ -137,6 +140,12 @@ const Email = () => {
               })}
               // defaultValue={currentUser ? currentUser.displayName : ""}
             />
+            <span
+              className="absolute top-[50%] right-[30%] translate-y-[-30%]"
+              onClick={() => setSee(!see)}
+            >
+              {see ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </span>
             <span className=" text-red-600 text-[18px] absolute top-[50%] right-[28%] translate-y-[-30%]">
               *
             </span>

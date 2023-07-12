@@ -38,6 +38,10 @@ export class EventController {
           callback(null, fileName); // Tên file được lưu
         },
       }),
+      limits: {
+        fileSize: 100 * 1024 * 1024,
+        fieldSize: 100 * 1024 * 1024,
+      },
     }),
   )
   async uploadPDFs(@UploadedFiles() files: Express.Multer.File[]) {
