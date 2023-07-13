@@ -54,6 +54,25 @@ const RegisterMember = () => {
     }
   };
 
+  async function uploadImage(formData) {
+    try {
+      const response = await axios.post(
+        `${DOMAIN}/api/member/uploadFileImageMember`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return response.data.imageUrl;
+    } catch (error) {
+      console.error("Upload error:", error);
+      throw new Error("Image upload failed");
+    }
+  }
+
   const onSubmit = async (data) => {
     try {
       if (!imageUrl.firstImg) {
@@ -87,63 +106,91 @@ const RegisterMember = () => {
       });
       let image_person = null;
       let image_company = null;
-      toast.success("Đăng ký hội viên thành công, vui lòng chờ xét duyệt");
 
-      if (imageUrl.firstImg) {
-        formData.append("image", imageUrl.firstImg);
-        const responseImgPerson = await axios.post(
-          `${DOMAIN}/api/member/uploadFileImage`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        image_person = responseImgPerson.data.imageUrl;
+      if (imageUrl.firstImg && imageUrl.secondImg) {
+        const imagePromises = [];
+
+        // Tạo và gắn dữ liệu vào formData
+        const formData1 = new FormData();
+        formData1.append("image", imageUrl.firstImg);
+        imagePromises.push(uploadImage(formData1));
+
+        const formData2 = new FormData();
+        formData2.append("image", imageUrl.secondImg);
+        imagePromises.push(uploadImage(formData2));
+
+        try {
+          // Gửi các yêu cầu tải lên cùng một lúc
+          const [responseImgPerson, responseImgCompany] = await Promise.all(
+            imagePromises
+          );
+
+          image_person = responseImgPerson;
+          image_company = responseImgCompany;
+          const values = {
+            ...data,
+            id_business_areas: idBusinessAreas,
+            id_role_associations: idRoleAssociations,
+            slug: slug,
+            intro,
+
+            image_person: image_person,
+            image_company: image_company,
+          };
+
+          await axios
+            .post(`${DOMAIN}/api/member/createMember`, values, {
+              withCredentials: true,
+            })
+            .then(() => {
+              toast.success(
+                "Đăng ký hội viên thành công, vui lòng chờ xét duyệt"
+              );
+
+              reset();
+              setSelectedImages({
+                firstImg: null,
+                secondImg: null,
+              });
+              setImageUrl({
+                firstImg: null,
+                secondImg: null,
+              });
+              setIntro("");
+              // setIdBusinessAreas(null);
+            })
+            .catch(() => {
+              toast.error("Thất Bại");
+            });
+        } catch (error) {
+          // Xử lý lỗi tải lên
+          console.error("Image upload error:", error);
+          // Thực hiện các hành động cần thiết khi xảy ra lỗi
+        }
+
+        // formData.append("image", imageUrl.firstImg);
+        // const responseImgPerson = await axios.post(
+        //   `${DOMAIN}/api/member/uploadFileImageMember`,
+        //   formData,
+        //   {
+        //     headers: {
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //   }
+        // );
+        // image_person = responseImgPerson.data.imageUrl;
+        // formDataTwo.append("image", imageUrl.secondImg);
+        // const responseImgCompany = await axios.post(
+        //   `${DOMAIN}/api/member/uploadFileImageMember`,
+        //   formDataTwo,
+        //   {
+        //     headers: {
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //   }
+        // );
+        // image_company = responseImgCompany.data.imageUrl;
       }
-      if (imageUrl.secondImg) {
-        formDataTwo.append("image", imageUrl.secondImg);
-        const responseImgCompany = await axios.post(
-          `${DOMAIN}/api/member/uploadFileImage`,
-          formDataTwo,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        image_company = responseImgCompany.data.imageUrl;
-      }
-
-      // console.log(image_person, image_company);
-
-      const values = {
-        ...data,
-        id_business_areas: idBusinessAreas,
-        id_role_associations: idRoleAssociations,
-        slug: slug,
-        intro,
-
-        image_person: image_person,
-        image_company: image_company,
-      };
-
-      await axios.post(`${DOMAIN}/api/member/createMember`, values, {
-        withCredentials: true,
-      });
-
-      reset();
-      setSelectedImages({
-        firstImg: null,
-        secondImg: null,
-      });
-      setImageUrl({
-        firstImg: null,
-        secondImg: null,
-      });
-      setIntro("");
-      setIdBusinessAreas(null);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -392,15 +439,19 @@ const RegisterMember = () => {
           </div>
 
           <div className="p-10">
-            <div>
-              <h3 className="font-semibold text-base">Ảnh người đại diện:</h3>
-              <div className="flex items-center">
+            <div className="relative">
+              <h3 className="font-semibold text-base ">Ảnh người đại diện:</h3>
+              <span className=" text-red-600 text-[18px] absolute top-[10px] left-[154px] translate-y-[-30%]">
+                *
+              </span>
+              <div className="flex items-center ">
                 <input
                   type="file"
                   accept=".jpg, .png, .jpeg, .svg"
                   placeholder="Chưa...chọn"
                   onChange={(e) => handleImageChange(e, "firstImg")}
                 />
+
                 {selectedImages && (
                   <div className="border border-dashed">
                     <img
@@ -416,11 +467,13 @@ const RegisterMember = () => {
                 )}
               </div>
             </div>
-            <div>
+            <div className="relative">
               <h3 className="font-semibold text-base">
                 Ảnh doanh nghiệp (Logo):
               </h3>
-
+              <span className=" text-red-600 text-[18px] absolute top-[10px] left-[194px] translate-y-[-30%]">
+                *
+              </span>
               <div className="flex items-center">
                 <input
                   type="file"

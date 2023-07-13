@@ -190,7 +190,7 @@ export default function LayoutAdmin() {
           <div className="flex-1 text-sm font-semibold leading-6 text-white">
             Dashboard
           </div>
-          <div className="relative mr-8 drop-shadow-new">
+          {/* <div className="relative mr-8 drop-shadow-new">
             <BiBell
               className="text-[26px] text-white cursor-pointer"
               onClick={(e) => {
@@ -283,7 +283,7 @@ export default function LayoutAdmin() {
                 </ul>
               </div>
             )}
-          </div>
+          </div> */}
           <div className="relative">
             <span className="sr-only">Your profile</span>
             <img

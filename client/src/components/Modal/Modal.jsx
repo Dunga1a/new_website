@@ -14,6 +14,7 @@ export default function Modal({
   okText = "Đồng Ý",
   onOK,
   classNameButtonOk,
+  borderTitle = true,
 }) {
   const cancelButtonRef = useRef(null);
 
@@ -59,7 +60,9 @@ export default function Modal({
                       {title && (
                         <Dialog.Title
                           as="h3"
-                          className="text-base font-semibold leading-6 text-gray-900 border-2 mb-2 text-[18px]"
+                          className={`text-base font-semibold leading-6 text-gray-900 ${
+                            borderTitle ? " border-2" : ""
+                          } mb-2 text-[18px]`}
                         >
                           {title}
                         </Dialog.Title>
