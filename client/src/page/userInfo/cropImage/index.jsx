@@ -146,10 +146,11 @@ export default function ImageCrop({
       );
       toast.success("Thay đổi ảnh đại diện thành công");
 
-      localStorage.setItem("user", JSON.stringify(response.data));
+      const values = { ...currentUser, image: response.data.image };
+      localStorage.setItem("user", JSON.stringify(values));
 
       setOpen(false);
-      //window.location.reload();
+      window.location.reload();
       //console.log(response.data); // The response from the server after uploading
     } catch (error) {
       console.error(error);
