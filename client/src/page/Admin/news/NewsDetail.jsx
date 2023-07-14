@@ -39,9 +39,10 @@ const NewsDetail = () => {
     setOpenEditModal(true);
   };
 
-  const handleDelete = async (item) => {
+  const handleDelete = async () => {
+    //console.log(item);
     try {
-      await axios.delete(`${DOMAIN}/api/posts/delete/` + item);
+      await axios.delete(`${DOMAIN}/api/posts/delete/` + id);
       toast.success("Bạn đã xóa thành công");
       navigate("/admin/news");
     } catch (error) {
