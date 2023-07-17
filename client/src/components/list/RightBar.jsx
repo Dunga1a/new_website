@@ -13,17 +13,17 @@ const RightBar = () => {
         </a>
       </div>
       <div className="my-3">
-        <a href="https://chinhphu.vn/portal/page/portal/chinhphu/congdan/dichvucong">
+        <a href="https://dichvucong.gov.vn/p/home/dvc-dich-vu-cong-truc-tuyen.html">
           <img src="/assets/images/qc2.jpg" alt="" />
         </a>
       </div>
       <div className="my-3">
-        <a href="">
+        <a href="https://dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh.html">
           <img src="/assets/images/qc3.jpg" alt="" />
         </a>
       </div>
       <div className="my-3">
-        <a href="/">
+        <a href="http://mod.gov.vn/vn/danh-sach-bai-viet/sa-qlcddh/voi-cong-dan/tra-loi-cu-tri">
           <img src="/assets/images/qc4.jpg" alt="" />
         </a>
       </div>
