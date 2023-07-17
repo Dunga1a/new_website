@@ -71,7 +71,7 @@ const HomePage = () => {
               </div>
               <div>
                 <h2 className="mt-2 font-bold text-lg text-gray-700">
-                  <a href="#">{item.title}</a>
+                  <span>{item.title}</span>
                 </h2>
                 <span className="text-sm">{item.subcontent}</span>
               </div>

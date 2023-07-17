@@ -22,7 +22,7 @@ const prevHref = "/admin";
 
 const navigation = [
   {
-    name: "Dashboard",
+    name: "Trang chủ",
     href: `${prevHref}`,
     icon: AiFillDashboard,
     current: true,
@@ -93,6 +93,7 @@ export default function LayoutAdmin() {
   const [openUser, setOpenUser] = useState(false);
   const url = window.location.href;
   const path = new URL(url).pathname;
+  console.log(path);
   const [pathCurrent, setPathCurrent] = useState(path);
   const { currentUser } = useContext(AuthContext);
 

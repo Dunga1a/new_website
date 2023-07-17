@@ -39,28 +39,29 @@ const Password = () => {
           toast.error("Mật khẩu nhập lại không khớp. Vui lòng nhập lại");
 
           setConfirmPassword("");
+          return false;
         }
         if (passConfirm && passNew) {
           setConfirmPassword(passConfirm);
+          try {
+            const response = await axios.post(
+              `${DOMAIN}/api/users/change-password/${currentUser.id}`,
+              { newPassword: confirmPassword }
+            );
+            //console.log(response);
+            setConfirmPassword("");
+            const pass = response.data.password;
+            console.log(pass);
+            const values = { ...currentUser, password: pass };
+            // console.log(values);
+            localStorage.setItem("user", JSON.stringify(values));
+            toast.success("Bạn đã thay đổi mật khẩu thành công");
+            reset();
+          } catch (error) {
+            console.log(error.message);
+          }
+          reset(watch(passConfirm));
         }
-        try {
-          const response = await axios.post(
-            `${DOMAIN}/api/users/change-password/${currentUser.id}`,
-            { newPassword: confirmPassword }
-          );
-          //console.log(response);
-          setConfirmPassword("");
-          const pass = response.data.password;
-          console.log(pass);
-          const values = { ...currentUser, password: pass };
-          // console.log(values);
-          localStorage.setItem("user", JSON.stringify(values));
-          toast.success("Bạn đã thay đổi mật khẩu thành công");
-          reset();
-        } catch (error) {
-          console.log(error.message);
-        }
-        reset(watch(passConfirm));
       } else {
         toast.error("Mật khẩu cũ của bạn chưa chính xác");
         reset({ passwordOld: "" });
