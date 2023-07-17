@@ -303,6 +303,7 @@ const Organize = () => {
         title={"Thêm mới chức vụ trong hội"}
         classNameChildren={"w-[600px]"}
         displayButtonCancel={false}
+        borderTitle={false}
       >
         <OrganizeNew setOpen={setOpenNewForm} fetchData={fetchData} />
       </Modal>

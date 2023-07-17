@@ -27,14 +27,13 @@ const EventManager = () => {
   const [eventItem, setEventItem] = useState();
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const [isCheckedItems, setIsCheckedItems] = useState([]);
-  const [dateStartValue, setDateStartValue] = useState(null);
-  const [dateEndValue, setDateEndValue] = useState(null);
 
   const page = searchParams.get("page") || 1;
   const searchKey = searchParams.get("searchKey") || "";
   const dateStart = searchParams.get("dateStart") || "";
   const dateEnd = searchParams.get("dateEnd") || "";
-
+  const [dateStartValue, setDateStartValue] = useState(dateStart);
+  const [dateEndValue, setDateEndValue] = useState(dateEnd);
   const [searchName, setSearchName] = useState(searchKey);
 
   const queryParams = {
@@ -106,9 +105,15 @@ const EventManager = () => {
       dateStart: "",
       dateEnd: "",
     });
+    setSearchName("");
     setDateStartValue(null);
     setDateEndValue(null);
   };
+
+  useEffect(() => {
+    setDateStartValue(dateStart);
+    setDateEndValue(dateEnd);
+  }, [dateStart, dateEnd]);
 
   useEffect(() => {
     // Kiểm tra nếu tất cả các checkbox phụ đã được chọn

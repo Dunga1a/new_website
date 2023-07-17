@@ -24,6 +24,11 @@ const LoginPage = ({ className }) => {
     reset,
     formState: { errors, isSubmitted },
   } = useForm();
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
 
   const onSubmit = async (data) => {
     if (data === null) {
@@ -38,11 +43,17 @@ const LoginPage = ({ className }) => {
       if (result.data.user.status !== 1) {
         return;
       }
+      // navigate("/");
 
       // if(result.data.user)
       toast.success("Đăng nhập thành công");
       // navigate("/user/editinfo");
-      window.location.reload();
+      // window.location.reload();
+      setTimeout(() => {
+        // navigate("/user/editinfo");
+        navigate("/");
+        window.location.reload();
+      }, 500);
     } catch (error) {
       toast.error(error.response.data.message, {
         position: "top-center",
@@ -51,12 +62,6 @@ const LoginPage = ({ className }) => {
     }
   };
 
-  const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
-
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
-  );
   const handleLogin = () => {
     signInWithPopup(auth, provider).then((data) => {
       setUser(data.user);
@@ -176,7 +181,7 @@ const LoginPage = ({ className }) => {
                   </li>
                   <li
                     onClick={() => navigate("/user/lostpass")}
-                    className="flex items-center text-blue-700 cursor-pointer hover:opacity-80"
+                    className="flex items-center  cursor-pointer hover:opacity-80"
                   >
                     <BsFillCaretRightFill />
                     <span>Khôi phục mật khẩu</span>
