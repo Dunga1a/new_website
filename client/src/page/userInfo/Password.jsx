@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+
 import bcrypt from "bcryptjs";
 import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -20,6 +22,8 @@ const Password = () => {
   };
   const { currentUser } = useContext(AuthContext);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [seePass, setSeePass] = useState(false);
+
   const handleInputChange = (event) => {
     setConfirmPassword(event.target.value);
   };
@@ -76,7 +80,7 @@ const Password = () => {
             Mật khẩu cũ
           </p>
           <input
-            type="password"
+            type={seePass ? "text" : "password"}
             {...register("passwordOld", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
@@ -84,6 +88,12 @@ const Password = () => {
             className={`desktop:w-[50%] laptop:w-[50%] tablet:w-[50%] phone:w-[70%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
+          <span
+            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            onClick={() => setSeePass(!seePass)}
+          >
+            {seePass ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </span>
           <span className=" text-red-600 text-[18px] absolute top-[50%] desktop:right-[28%] laptop:right-[28%] tablet:right-[28%] phone:right-[5%] translate-y-[-30%]">
             *
           </span>
@@ -98,7 +108,7 @@ const Password = () => {
             Mật khẩu mới
           </p>
           <input
-            type="password"
+            type={seePass ? "text" : "password"}
             {...register("passwordNew", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
@@ -121,7 +131,7 @@ const Password = () => {
           </p>
 
           <input
-            type="password"
+            type={seePass ? "text" : "password"}
             {...register("confirmPassword", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",

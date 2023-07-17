@@ -334,13 +334,16 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                 </div>
               </div>
 
-              <div className="col-span-2">
+              <div className="col-span-2 relative">
                 <label
                   htmlFor="content"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Nội dung
                 </label>
+                <span className=" text-red-600 text-[18px] absolute top-[11px] left-[7%] translate-y-[-30%]">
+                  *
+                </span>
                 <div className="mt-2">
                   <ReactQuillEditor
                     content={content}
