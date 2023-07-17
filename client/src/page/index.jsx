@@ -62,14 +62,16 @@ const HomePage = () => {
             >
               <div className="bg-gray-200 w-[110%] phone:w-full">
                 <img
-                  src={`${item.image}`}
+                  src={
+                    item.image ? item.image : "/assets/images/new_default.jpg"
+                  }
                   alt=""
-                  className="m-auto phone:m-auto w-[90%] h-[215px]"
+                  className="m-auto phone:m-auto w-[90%] h-[215px] object-cover"
                 />
               </div>
               <div>
                 <h2 className="mt-2 font-bold text-lg text-gray-700">
-                  <a href="#">{item.title}</a>
+                  <span>{item.title}</span>
                 </h2>
                 <span className="text-sm">{item.subcontent}</span>
               </div>
@@ -103,7 +105,11 @@ const HomePage = () => {
                     <span className="">
                       <img
                         className=" h-[70px] w-full object-cover"
-                        src={item.image}
+                        src={
+                          item.image
+                            ? item.image
+                            : "/assets/images/new_default.jpg"
+                        }
                         alt=""
                       />
                     </span>
@@ -115,10 +121,7 @@ const HomePage = () => {
         </div>
         <div className="desktop:col-span-1 desktop:block phone:hidden laptop:col-span-1 laptop:block">
           <div className="flex items-center mb-4">
-            <img
-              src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-tittle-map.png"
-              alt=""
-            />
+            <img src="/assets/images/bg-tittle-map.png" alt="" />
             <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>
           </div>
           <div>

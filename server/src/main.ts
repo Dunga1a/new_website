@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
+import * as bodyParser from 'body-parser';
 async function bootstrap() {
   const { PORT } = process.env;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -13,6 +13,8 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
   try {
     await app.listen(PORT, () => {
