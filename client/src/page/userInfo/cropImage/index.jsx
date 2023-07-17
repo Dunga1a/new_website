@@ -128,6 +128,7 @@ export default function ImageCrop({
         }
       );
       toast.success("Thay đổi ảnh đại diện thành công");
+
       const values = { ...currentUser, image: response.data.image };
       localStorage.setItem("user", JSON.stringify(values));
 
