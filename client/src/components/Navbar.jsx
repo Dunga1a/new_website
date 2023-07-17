@@ -417,7 +417,7 @@ const Navbar = () => {
           </span>
           {isOpen && (
             <div
-              class="w-[400px] bg-gradient-to-r from-[#30cfd0] to-[#330867] rounded-lg absolute drop-shadow-new group-active:block left-[-360px] bottom-[-60px] py-[12px] px-[10px]"
+              class="w-[400px] bg-gradient-to-l from-[#30cfd0] to-[#330867] rounded-lg absolute drop-shadow-new group-active:block left-[-360px] bottom-[-60px] py-[12px] px-[10px]"
               ref={inputRef}
             >
               <div class="sm:col-span-12">
@@ -433,7 +433,7 @@ const Navbar = () => {
                     name="first-name"
                     id="first-name"
                     autocomplete="given-name"
-                    className="block w-full text-[#313131] rounded-md font-normal text-[16px] border-0 bg-gradient-to-l from-[rgba(84,212,228,1)-0.2%] to-[ rgba(68,36,164,1)-100%] py-1 pr-8 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[#66afe9]"
+                    className="block w-full text-[#0c0c0c] rounded-md font-normal text-[15px] border-0 bg-gradient-to-l from-[rgba(84,212,228,1)-0.2%] to-[rgba(170,221,241,1)-100%] py-1 pr-8 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[#66afe9]"
                   />
                   {/* background-color: #8EC5FC;
 background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); */}
@@ -442,7 +442,7 @@ background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); */}
                   100%); */}
                   {/* background-image: linear-gradient( 270.3deg,
                   rgba(84,212,228,1) 0.2%, 100% ); */}
-                  <span className=" absolute right-[10px] top-[10px] text-[16px] font-semibold text-white">
+                  <span className=" absolute right-[10px] top-[8px] text-[18px] font-bold text-black">
                     <IoSearch onClick={handleSearch} />
                   </span>
                 </div>
