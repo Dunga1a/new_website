@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import "./index.css";
+import ModalV1 from "../Modal/ModalV1";
+import { HiOutlineLogout } from "react-icons/hi";
+import Button from "../Buttons/Button";
 const NavbarArr = ({ arr }) => {
   const navigate = useNavigate();
   const href = arr[0].href;
+  const [open, setOpen] = useState(false);
 
   const handleClick = (item) => {
     navigate(`${href}/${item.slug}`, { state: { item } });
@@ -12,11 +16,11 @@ const NavbarArr = ({ arr }) => {
   const handleSubItemClick = (subItem) => {
     navigate(`${href}/${subItem.slug}`, { state: { item: subItem } });
   };
-  const logOut = () => {
-    const option = window.confirm("Bạn có chắc muốn đăng xuất không?");
-    if (!option) {
-      return;
-    }
+  const openModalLogout = () => {
+    setOpen(true);
+  };
+
+  const handleLogout = () => {
     localStorage.setItem("user", null);
     window.location.reload();
   };
@@ -28,7 +32,7 @@ const NavbarArr = ({ arr }) => {
             key={idx}
             onClick={() => {
               if (item.onClick) {
-                logOut();
+                openModalLogout();
               }
               handleClick(item);
             }}
@@ -60,6 +64,23 @@ const NavbarArr = ({ arr }) => {
           </li>
         );
       })}
+      <ModalV1
+        classNameChildren={"desktop:w-[20%] phone:w-full tablet:w-[50%]"}
+        open={open}
+        setOpen={setOpen}
+        title={<HiOutlineLogout className="w-12 h-12 m-auto " />}
+      >
+        <h1 className="font-semibold text-[18px]">
+          Bạn có chắc muốn đăng xuất?
+        </h1>
+        <div className="flex justify-center mt-3">
+          <Button
+            title={"Đồng Ý"}
+            colorBgr={"text-white bg-red-700 hover:bg-red-800 px-8"}
+            onClick={handleLogout}
+          />
+        </div>
+      </ModalV1>
     </ul>
   );
 };

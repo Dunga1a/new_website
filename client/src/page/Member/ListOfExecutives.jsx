@@ -6,14 +6,16 @@ import axios from "axios";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 import { AuthContext } from "../../context/authContext";
 import EmptyState from "../../components/EmptyState/EmptyState";
+
+import ListOfExecutiveGroup from "./ListOfExecutiveGroup";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const ListOfExecutives = () => {
+  const nav = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
   const [member, setMember] = useState([]);
-  const [openEditForm, setOpenEditForm] = useState(false);
-  const [openConfirmForm, setOpenConfirmForm] = useState(false);
-  const [memberItem, setMemberItem] = useState();
+  const [memberGroup, setMemberGroup] = useState([]);
+
   const [count, setCount] = useState();
 
   const [businessAreas, setBusinessAreas] = useState([]);
@@ -85,7 +87,23 @@ const ListOfExecutives = () => {
           withCredentials: true,
         }
       );
+      const groupedMembers = result.data.memberList.reduce((groups, member) => {
+        const roleId = member.id_role_associations.id_organize_membership;
+        if (!groups[roleId]) {
+          groups[roleId] = [];
+        }
+        groups[roleId].push(member);
+        return groups;
+      }, {});
+      const groupArrays = Object.values(groupedMembers);
+      const sortedGroupArrays = groupArrays.sort((a, b) => {
+        const roleIdA = a[0].id_role_associations.id_organize_membership;
+        const roleIdB = b[0].id_role_associations.id_organize_membership;
+        return roleIdB - roleIdA;
+      });
 
+      // console.log("sortedGroupArrays: ", sortedGroupArrays[0]);
+      setMemberGroup(sortedGroupArrays);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
     } catch (error) {
@@ -95,9 +113,11 @@ const ListOfExecutives = () => {
   useEffect(() => {
     fetchData();
   }, [page, roleAssociationParam, businessIdParam, memberStatus]);
-  const navigate = useNavigate();
   const handleChangePage = async (page) => {
     setSearchParams({ ...queryParams, page: page.toString() });
+  };
+  const handleNav = () => {
+    nav("/dang-ky-hoi-vien");
   };
   return (
     <div className="bg-white pt-6">
@@ -107,8 +127,8 @@ const ListOfExecutives = () => {
         (currentUser.roles.some((item) => item.name === "admin") ||
           currentUser.member) ? (
           <div className="pt-4 col-span-3 ">
-            <div className="grid grid-cols-3 gap-3">
-              {member && member.length
+            <div>
+              {/* {member && member.length
                 ? member.map((member) => (
                     <div
                       key={member.id}
@@ -140,7 +160,12 @@ const ListOfExecutives = () => {
                       </div>
                     </div>
                   ))
-                : null}
+                : null} */}
+              {memberGroup.map((item) => {
+                const title = item[0].id_role_associations.name;
+                // console.log("item: ", item);
+                return <ListOfExecutiveGroup title={title} item={item} />;
+              })}
             </div>
 
             {member ? (
@@ -148,7 +173,7 @@ const ListOfExecutives = () => {
                 <PaginationV2
                   total={count}
                   current={searchParams.get("page") || 1}
-                  pageSize="5"
+                  pageSize="6"
                   onChange={handleChangePage}
                 />
               ) : null
@@ -156,7 +181,16 @@ const ListOfExecutives = () => {
           </div>
         ) : (
           <div className="col-span-3">
-            <EmptyState />
+            <div className="bg-[#f2dede] p-5 border-[1px] border-[#ebccd1] rounded-md text-[16px]">
+              Bạn cần đăng nhập với tư cách là <strong>Hội Viên Của Hội</strong>{" "}
+              để có thể xem danh sách hội viên. Đăng ký trở thành hội viên{" "}
+              <strong
+                className="cursor-pointer hover:underline"
+                onClick={handleNav}
+              >
+                tại đây.
+              </strong>
+            </div>
           </div>
         )}
 

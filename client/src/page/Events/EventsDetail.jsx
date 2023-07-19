@@ -59,7 +59,7 @@ const EventsDetail = () => {
                 />
               </div>
 
-              <p>
+              {/* <p>
                 - Thời gian: {eventItem.time},{" "}
                 {dayjs(eventItem.date_start)
                   .locale("vi")
@@ -71,11 +71,13 @@ const EventsDetail = () => {
                   : ""}
               </p>
               <p>- Địa điểm: {eventItem.address}.</p>
-              <p>- Chủ trì: {eventItem.leader}.</p>
+              <p>- Chủ trì: {eventItem.leader}.</p> */}
 
               {eventItem.file_pdf ? (
                 <>
-                  <p>Thông tin chi tiết xin vui lòng xem file đính kèm</p>
+                  <p className="font-bold text-[16px]">
+                    Thông tin chi tiết xin vui lòng xem file đính kèm
+                  </p>
                   {eventItem.file_pdf.split(",").map((item) => {
                     return (
                       <>

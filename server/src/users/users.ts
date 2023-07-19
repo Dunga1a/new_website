@@ -4,6 +4,7 @@ import { CreateUserDetails, Useremail, editUser } from '../utils/types';
 export interface IUserService {
   createUser(userDetails: CreateUserDetails): Promise<User>;
   findByUsername(userName: string): Promise<User>;
+  findByUsernameGoogle(username: string);
   findById(id: string): Promise<User>;
   editUser(editUser: editUser): Promise<User>;
 
@@ -26,6 +27,7 @@ export interface IUserService {
 
   createAdminUser(username: string, password: string);
   registerUser(createUser: any);
+  registerUserGoogle(createUserGoogle: any);
 
   updateImage(userId: string);
 }

@@ -182,7 +182,7 @@ const Card = () => {
               </li>
             </ul>
           </div>
-          <div className="laptop:border-b-[1px] desktop:border-b-[1px]  bobder-b-solid border-b-gray-400 mb-[25px] phone:hidden laptop:block desktop:block phone:border-none">
+          <div className="laptop:border-b-[1px] desktop:border-b-[1px]  border-b-solid border-b-gray-400 mb-[25px] phone:hidden laptop:block desktop:block phone:border-none">
             <div className="pb-8">
               {loading ? (
                 <LoadingPage />
@@ -263,7 +263,10 @@ const Card = () => {
           <div className="grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-1 phone:grid-cols-1 gap-3 pb-8 border-b-[1px] bobder-b-solid border-b-gray-400 ">
             {arrNew.map((item) => {
               return (
-                <div className="p-[15px] border-[1px] border-solid border-gray-400 rounded" key={item.id}>
+                <div
+                  className="p-[15px] border-[1px] border-solid border-gray-400 rounded"
+                  key={item.id}
+                >
                   <div className="py-3">
                     <h2 className="uppercase text-[#494949] font-bold text-[20px] pb-1 border-b-[2px] border-b-solid border-b-[#fba919]">
                       <p className=" block leading-[1.5]">

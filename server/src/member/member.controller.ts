@@ -81,16 +81,16 @@ export class MemberController {
       storage: diskStorage({
         destination: '../client/public/uploads',
         filename: (req, file, callback) => {
-          const randomName = Array(4)
+          const randomName = Array(6)
             .fill(null)
-            .map(() => Math.round(Math.random() * 4).toString(16))
+            .map(() => Math.round(Math.random() * 6).toString(16))
             .join('');
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
       limits: {
-        fileSize: 20 * 1024 * 1024,
-        fieldSize: 20 * 1024 * 1024,
+        fileSize: 10 * 1024 * 1024,
+        fieldSize: 10 * 1024 * 1024,
       },
     }),
   )
@@ -104,9 +104,9 @@ export class MemberController {
       storage: diskStorage({
         destination: '../client/public/uploads',
         filename: (req, file, callback) => {
-          const randomName = Array(4)
+          const randomName = Array(6)
             .fill(null)
-            .map(() => Math.round(Math.random() * 4).toString(16))
+            .map(() => Math.round(Math.random() * 6).toString(16))
             .join('');
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
@@ -128,6 +128,12 @@ export class MemberController {
   async getAllMembers(@Query() queryParams: any) {
     const memberList = await this.memberService.getAllMembers(queryParams);
     return memberList;
+  }
+
+  @Get('getAllMembers')
+  async getAllMembersGroupBy() {
+    const member = await this.memberService.getAllMembersGroupBy();
+    return member;
   }
 
   @Get('all-members')

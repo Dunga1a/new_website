@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import Breadcrumbs from "../components/Breadcrumb";
-
 import { AiFillStar } from "react-icons/ai";
 
 import SliderPage from "../components/Slider";
@@ -9,6 +7,7 @@ import Card from "../components/Card";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "../components/LoadingPage";
+
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const slides = [
@@ -47,7 +46,13 @@ const HomePage = () => {
     fetchData();
   }, []);
 
-  //console.log(data.slice(0, 1));
+  const handleClick = () => {
+    window.open(
+      "https://www.google.com/maps/@21.0730303,105.7703402,15z?entry=ttu",
+      "_blank"
+    );
+  };
+
   return (
     <div className="max-w-[1080px] m-auto drop-shadow-new">
       <SliderPage slides={slides} />
@@ -56,7 +61,7 @@ const HomePage = () => {
           data.length > 0 &&
           data.slice(0, 1).map((item) => (
             <div
-              className="col-span-2 desktop:col-span-2 tablet:col-span-3 phone:col-span-5 laptop:col-span-2"
+              className="col-span-2 desktop:col-span-2 tablet:col-span-3 phone:col-span-5 laptop:col-span-2 cursor-pointer"
               key={item.id}
               onClick={() => navigate(`/${item.slug}`)}
             >
@@ -69,7 +74,7 @@ const HomePage = () => {
               </div>
               <div>
                 <h2 className="mt-2 font-bold text-lg text-gray-700">
-                  <a href="#">{item.title}</a>
+                  <p>{item.title}</p>
                 </h2>
                 <span className="text-sm">{item.subcontent}</span>
               </div>
@@ -115,13 +120,20 @@ const HomePage = () => {
         </div>
         <div className="desktop:col-span-1 desktop:block phone:hidden laptop:col-span-1 laptop:block">
           <div className="flex items-center mb-4">
-            <img
-              src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-tittle-map.png"
-              alt=""
-            />
-            <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>
+            <a
+              href="https://www.google.com/maps/@21.0730303,105.7703402,15z?entry=ttu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center "
+            >
+              <img
+                src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-tittle-map.png"
+                alt=""
+              />
+              <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>
+            </a>
           </div>
-          <div>
+          <div onClick={handleClick} className="cursor-pointer">
             <img src="/assets/images/bandohc.jpg" alt="" />
           </div>
         </div>

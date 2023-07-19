@@ -22,7 +22,9 @@ const Password = () => {
   };
   const { currentUser } = useContext(AuthContext);
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [seePass, setSeePass] = useState(false);
+  const [seePassOld, setSeePassOld] = useState(false);
+  const [seePassNew, setSeePassNew] = useState(false);
+  const [seePassConfirm, setSeePassConfirm] = useState(false);
 
   const handleInputChange = (event) => {
     setConfirmPassword(event.target.value);
@@ -79,7 +81,7 @@ const Password = () => {
             Mật khẩu cũ
           </p>
           <input
-            type={seePass ? "text" : "password"}
+            type={seePassOld ? "text" : "password"}
             {...register("passwordOld", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
@@ -89,9 +91,9 @@ const Password = () => {
           />
           <span
             className="absolute top-[50%] left-[68%] translate-y-[-30%]"
-            onClick={() => setSeePass(!seePass)}
+            onClick={() => setSeePassOld(!seePassOld)}
           >
-            {seePass ? <AiFillEyeInvisible /> : <AiFillEye />}
+            {seePassOld ? <AiFillEyeInvisible /> : <AiFillEye />}
           </span>
           <span className=" text-red-600 text-[18px] absolute top-[50%] desktop:right-[28%] laptop:right-[28%] tablet:right-[28%] phone:right-[5%] translate-y-[-30%]">
             *
@@ -107,7 +109,7 @@ const Password = () => {
             Mật khẩu mới
           </p>
           <input
-            type={seePass ? "text" : "password"}
+            type={seePassNew ? "text" : "password"}
             {...register("passwordNew", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
@@ -115,6 +117,12 @@ const Password = () => {
             className={`desktop:w-[50%] laptop:w-[50%] tablet:w-[50%] phone:w-[70%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
+          <span
+            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            onClick={() => setSeePassNew(!seePassNew)}
+          >
+            {seePassNew ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </span>
           <span className=" text-red-600 text-[18px] absolute top-[50%] desktop:right-[28%] laptop:right-[28%] tablet:right-[28%] phone:right-[5%] translate-y-[-30%]">
             *
           </span>
@@ -130,7 +138,7 @@ const Password = () => {
           </p>
 
           <input
-            type={seePass ? "text" : "password"}
+            type={seePassConfirm ? "text" : "password"}
             {...register("confirmPassword", {
               required:
                 "Chú ý: Bạn cần khai báo tất cả các ô có đánh dấu hoa thị (*)",
@@ -140,6 +148,12 @@ const Password = () => {
             className={`desktop:w-[50%] laptop:w-[50%] tablet:w-[50%] phone:w-[70%] outline-none h-full px-3 py-2 mt-2 my-2 text-[13px] border-[1px] border-[#ccc] rounded-md shadow-lg`}
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
+          <span
+            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            onClick={() => setSeePassConfirm(!seePassConfirm)}
+          >
+            {seePassConfirm ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </span>
           <span className=" text-red-600 text-[18px] absolute top-[50%] desktop:right-[28%] laptop:right-[28%] tablet:right-[28%] phone:right-[5%] translate-y-[-30%]">
             *
           </span>

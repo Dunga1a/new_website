@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Test from "../../components/ShareSocial/ShareFaceBook";
 import axios from "axios";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const Basic = () => {
@@ -121,6 +122,11 @@ const Basic = () => {
               required: "Trường này không được để trống",
             })}
             className={`desktop:w-[27%] laptop:w-[27%] tablet:w-[27%] phone:w-[65%] outline-none h-full px-3 py-1 bg-gray-100 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
+            defaultValue={
+              currentUser.birthday
+                ? dayjs(currentUser.birthday).format("YYYY-MM-DD")
+                : ""
+            }
           />
           <span className=" text-red-600 text-[18px] absolute top-[50%] right-[65px] translate-y-[-35%]">
             *

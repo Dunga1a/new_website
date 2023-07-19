@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-select";
 
-import { AiOutlineDelete, AiOutlineCheckCircle } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
 import { FiAlertCircle } from "react-icons/fi";
@@ -10,11 +9,11 @@ import axios from "axios";
 import Modal from "../../../components/Modal/Modal";
 import MemberEdit from "./MemberEdit";
 import ConfirmMemberForm from "./ConfirmMemberForm";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import EmptyState from "../../../components/EmptyState/EmptyState";
-import { AuthContext } from "../../../context/authContext";
+import LoadingPage from "../../../components/LoadingPage";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_status = [
@@ -24,9 +23,7 @@ const options_status = [
 ];
 
 const MemberManager = () => {
-  // const { url } = useContext(AuthContext);
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
-
+  const [loading, setLoading] = useState(false);
   const [member, setMember] = useState([]);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openConfirmForm, setOpenConfirmForm] = useState(false);
@@ -38,7 +35,8 @@ const MemberManager = () => {
   const [selectedOptionBusiness, setSelectedOptionBusiness] = useState(null);
   const [selectedRoleAssociation, setSelectedRoleAssociation] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
-
+  const [isCheckedAll, setIsCheckedAll] = useState(false);
+  const [isCheckedItems, setIsCheckedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const roleAssociationParam = searchParams.get("roleAssociationParam") || "";
@@ -90,6 +88,7 @@ const MemberManager = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const sheet = page ? page : 1;
       const roleAssociationParamId = roleAssociationParam
         ? roleAssociationParam
@@ -107,12 +106,19 @@ const MemberManager = () => {
       // console.log("result.data:", result.data);
       setMember(result.data.memberList);
       setCount(result.data.countMemberList);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
   useEffect(() => {
-    fetchData();
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [page, roleAssociationParam, businessIdParam, memberStatus]);
 
   const handleEditMember = async (id) => {
@@ -182,10 +188,6 @@ const MemberManager = () => {
     (option) => option.value === Number(memberStatus)
   );
 
-  //console.log(selectedChooseStatus);
-
-  const [isCheckedAll, setIsCheckedAll] = useState(false);
-  const [isCheckedItems, setIsCheckedItems] = useState([]);
   useEffect(() => {
     // Kiểm tra nếu tất cả các checkbox phụ đã được chọn
     const isAllChecked = member?.every((item) =>
@@ -222,38 +224,38 @@ const MemberManager = () => {
     setIsCheckedItems(updatedCheckedItems);
   };
 
-  const handleDeleteItems = async (items) => {
-    try {
-      const option = window.confirm("Bạn chắc chắn muốn xóa?");
-      if (!option) {
-        return;
-      }
-      //console.log(items);
-      const result = await axios.delete(
-        `${DOMAIN}/api/member/deleteManyMember`,
+  // const handleDeleteItems = async (items) => {
+  //   try {
+  //     const option = window.confirm("Bạn chắc chắn muốn xóa?");
+  //     if (!option) {
+  //       return;
+  //     }
+  //     //console.log(items);
+  //     const result = await axios.delete(
+  //       `${DOMAIN}/api/member/deleteManyMember`,
 
-        {
-          data: items,
-          withCredentials: true,
-        }
-      );
-      //console.log(result);
-      fetchData();
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  //       {
+  //         data: items,
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     //console.log(result);
+  //     fetchData();
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  const handleDeleteMember = async (idMember) => {
-    try {
-      const result = await axios.delete(`${DOMAIN}/api/member/${idMember}`, {
-        withCredentials: true,
-      });
-      //console.log(result);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const handleDeleteMember = async (idMember) => {
+  //   try {
+  //     const result = await axios.delete(`${DOMAIN}/api/member/${idMember}`, {
+  //       withCredentials: true,
+  //     });
+  //     //console.log(result);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   const handleResetQuery = () => {
     setSearchParams({
@@ -309,36 +311,38 @@ const MemberManager = () => {
             Đặt lại
           </button>
         </div>
-        <table className="border border-blue-400 w-full mt-10 bg-white overflow-y-auto relative">
-          <thead>
-            <tr>
-              <th scope="col" className="p-4 border border-blue-400">
-                <div className="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    checked={isCheckedAll}
-                    onChange={handleCheckAll}
-                  />
-                  <label htmlFor="checkbox-all-search" className="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </th>
-              <th className="border border-blue-400">Tên doanh nghiệp</th>
-              <th className="border border-blue-400">Người đại diện</th>
-              <th className="border border-blue-400">Chức vụ</th>
-              <th className="border border-blue-400">Mô tả</th>
-              <th className="border border-blue-400">Số điện thoại</th>
-              <th className="border border-blue-400">Lĩnh vực hoạt động</th>
-              <th className="border border-blue-400">Trạng thái</th>
-              <th className="border border-blue-400">Chức năng</th>
-            </tr>
-          </thead>
-          <tbody>
-            {member.length ? (
-              member.map((item) => {
+        {loading ? (
+          <LoadingPage />
+        ) : member.length ? (
+          <table className="border border-blue-400 w-full mt-10 bg-white overflow-y-auto relative">
+            <thead>
+              <tr>
+                <th scope="col" className="p-4 border border-blue-400">
+                  <div className="flex items-center">
+                    <input
+                      id="checkbox-all-search"
+                      type="checkbox"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      checked={isCheckedAll}
+                      onChange={handleCheckAll}
+                    />
+                    <label htmlFor="checkbox-all-search" className="sr-only">
+                      checkbox
+                    </label>
+                  </div>
+                </th>
+                <th className="border border-blue-400">Tên doanh nghiệp</th>
+                <th className="border border-blue-400">Người đại diện</th>
+                <th className="border border-blue-400">Chức vụ</th>
+                <th className="border border-blue-400">Mô tả</th>
+                <th className="border border-blue-400">Số điện thoại</th>
+                <th className="border border-blue-400">Lĩnh vực hoạt động</th>
+                <th className="border border-blue-400">Trạng thái</th>
+                <th className="border border-blue-400">Chức năng</th>
+              </tr>
+            </thead>
+            <tbody>
+              {member.map((item) => {
                 return (
                   <tr>
                     <td className="w-4 p-4 text-center">
@@ -409,14 +413,12 @@ const MemberManager = () => {
                     </td>
                   </tr>
                 );
-              })
-            ) : (
-              <td className="flex items-center justify-center p-2 ">
-                <EmptyState />
-              </td>
-            )}
-          </tbody>
-        </table>
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <EmptyState />
+        )}
 
         {/* <div className="mt-5">
           <div className="flex">

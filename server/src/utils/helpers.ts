@@ -7,6 +7,9 @@ export async function hashPassword(rawPassword: string) {
 }
 
 export async function compareHash(rawPassword: string, hashedPassword: string) {
+  // console.log('rawPassword:', rawPassword);
+  // console.log('hashedPassword:', hashedPassword);
+
   const isPassWord = await bcrypt.compare(rawPassword, hashedPassword);
   if (isPassWord) return isPassWord;
 }
