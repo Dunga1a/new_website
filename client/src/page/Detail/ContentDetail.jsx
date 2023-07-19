@@ -37,8 +37,17 @@ const ContentDetail = () => {
     try {
       const res = await axios.get(`${DOMAIN}/api/posts/details-slug/` + slug);
 
-      //console.log(res.data);
+      // console.log(res.data);
+      // const result = await axios.get(
+      //   `${DOMAIN}/api/comment/getCommentByPost/${res.data.id}`,
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+      // const groupedComments = groupCommentsByFatherId(result.data);
+      // console.log("vao day: ", groupedComments);
       setPostItem(res.data);
+      // setArr(groupedComments);
     } catch (error) {
       console.log(error.message);
     }
@@ -116,8 +125,8 @@ const ContentDetail = () => {
           withCredentials: true,
         }
       );
-
       const groupedComments = groupCommentsByFatherId(result.data);
+      // console.log("vao day: ", groupedComments);
       setArr(groupedComments);
     } catch (error) {
       console.log(error.message);
@@ -183,8 +192,10 @@ const ContentDetail = () => {
                 postItem={postItem}
               />
             ) : null}
+
             {currentUser &&
-              (currentUser.member ||
+              (currentUser ||
+                currentUser.member ||
                 (currentUser.roles &&
                   currentUser.roles.some((item) => item.name === "admin"))) && (
                 <form

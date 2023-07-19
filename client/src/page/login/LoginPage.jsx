@@ -39,7 +39,7 @@ const LoginPage = ({ className }) => {
         withCredentials: true,
       });
 
-      setUser(result.data.user);
+      setUser({ ...result.data.user, provider: null });
       if (result.data.user.status !== 1) {
         return;
       }
@@ -63,9 +63,70 @@ const LoginPage = ({ className }) => {
   };
 
   const handleLogin = () => {
-    signInWithPopup(auth, provider).then((data) => {
-      setUser(data.user);
-      login(data.user);
+    signInWithPopup(auth, provider).then(async (data) => {
+      // call api
+      console.log(data.user);
+      try {
+        const values = {
+          username: data.user.displayName,
+          email: data.user.email,
+          password: "123456",
+        };
+        await axios
+          .post(`${DOMAIN}/api/users/registerUserGoogle`, values, {
+            withCredentials: true,
+          })
+          .then(() => {
+            setUser({ ...data.user, provider: data.user.providerId });
+            login({ ...data.user, provider: data.user.providerId });
+          });
+      } catch (error) {
+        try {
+          const values = {
+            username: data.user.displayName,
+            // password: "123456",
+          };
+          // console.log("data.user.displayName: ", data.user.displayName);
+          await axios
+            .post(`${DOMAIN}/api/users/username`, values, {
+              withCredentials: true,
+            })
+            .then(async (response) => {
+              const value = {
+                username: response.data.username,
+                password: "123456",
+              };
+
+              const result = await axios.post(
+                `${DOMAIN}/api/auth/login`,
+                value,
+                {
+                  withCredentials: true,
+                }
+              );
+
+              setUser({ ...result.data.user, provider: data.user.providerId });
+              if (result.data.user.status !== 1) {
+                return;
+              }
+              // navigate("/");
+
+              // if(result.data.user)
+              toast.success("Đăng nhập thành công");
+              // navigate("/user/editinfo");
+              setTimeout(() => {
+                // navigate("/user/editinfo");
+                navigate("/");
+                window.location.reload();
+              }, 500);
+            });
+        } catch (error) {
+          toast.error(error.response.data.message, {
+            position: "top-center",
+          });
+          reset();
+        }
+      }
     });
   };
 

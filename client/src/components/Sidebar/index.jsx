@@ -23,11 +23,7 @@ const SideBar = ({ props }) => {
 
   const page = searchParams.get("page") || 1;
   const navigate = useNavigate();
-  console.log("props: ", props[1][0].href);
-  // console.log(props[1]);
-  // console.log(props[1][1][1]);
-  const href = props[0][0].href;
-  const hrefLog = props[1][0].href;
+
   const groupCommentsByFatherId = (comments) => {
     const commentMap = {};
     const topLevelComments = [];

@@ -8,7 +8,6 @@ import { IUserService } from './users';
 import { Services } from 'src/utils/constants';
 import { IRoleService } from 'src/role/role';
 import { MailService } from 'src/mail/mail.service';
-import * as fs from 'fs';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -96,6 +95,24 @@ export class UserService implements IUserService {
       );
     }
     return user;
+  }
+
+  async findByUsernameGoogle(user: any) {
+    // console.log('username: ', user);
+
+    const userOne = await this.userRepository.findOne(
+      {
+        username: user.username,
+      },
+      { relations: ['member'] },
+    );
+    if (!userOne) {
+      throw new HttpException(
+        'Tên đăng nhập không tồn tại ',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return userOne;
   }
 
   async findById(id: string) {
@@ -266,6 +283,34 @@ export class UserService implements IUserService {
       roleId: String(findRole.id),
     });
 
+    return savedUser;
+  }
+
+  async registerUserGoogle(createUserGoogle: any) {
+    const exisUserEmail = await this.userRepository.findOne({
+      email: createUserGoogle.email,
+    });
+    if (exisUserEmail) {
+      throw new HttpException('Email này đã được đăng ký', HttpStatus.CONFLICT);
+    }
+    const exisUserGoogleByName = await this.userRepository.findOne({
+      username: createUserGoogle.username,
+    });
+    if (exisUserGoogleByName) {
+      throw new HttpException(
+        'Tên người dùng đã được sử dụng',
+        HttpStatus.CONFLICT,
+      );
+    }
+    // console.log('createUserGoogle: ', createUserGoogle);
+    const password = await hashPassword(createUserGoogle.password);
+    // console.log('createUserGoogle: ', password);
+
+    const registerUser = await this.userRepository.create({
+      ...createUserGoogle,
+      password,
+    });
+    const savedUser = await this.userRepository.save(registerUser);
     return savedUser;
   }
 

@@ -5,6 +5,7 @@ import {
   Body,
   Get,
   Param,
+  Delete,
   ParseIntPipe,
 } from '@nestjs/common';
 import { Routes, Services } from 'src/utils/constants';
@@ -29,5 +30,39 @@ export class CommentController {
   async getCommentByPost(@Param('idPost', ParseIntPipe) idPost: number) {
     const commentList = await this.commentService.getCommentByIdPost(idPost);
     return commentList;
+  }
+
+  @Get('getOneCommentById/:id')
+  async getOneCommentById(@Param('id', ParseIntPipe) id: number) {
+    const comment = await this.commentService.getOneCommentById(id);
+    return comment;
+  }
+
+  @Post('editComment')
+  async editComment(@Body() commentEditDetails: any) {
+    const editedComment = await this.commentService.editComment(
+      commentEditDetails,
+    );
+    return editedComment;
+  }
+
+  @Get('comment/:id')
+  async getCommentsById(@Param('id', ParseIntPipe) id: number) {
+    const comment = await this.commentService.getCommentsById(id);
+    return comment;
+  }
+
+  @Get('commentUnique/:id')
+  async getUniqueCommentById(@Param('id', ParseIntPipe) id: number) {
+    const comment = await this.commentService.getUniqueCommentById(id);
+    return comment;
+  }
+
+  @Delete('deletedManyEvent')
+  async deleteManyComments(@Body() commentDeleteId: number[]) {
+    const result = await this.commentService.deleteManyComments(
+      commentDeleteId,
+    );
+    return result;
   }
 }

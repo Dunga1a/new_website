@@ -14,9 +14,11 @@ import dayjs from "dayjs";
 import { useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import LoadingPage from "../../../components/LoadingPage";
 import { toast } from "react-toastify";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const EventManager = () => {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -49,6 +51,7 @@ const EventManager = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const sheet = page ? page : 1;
       const search = searchKey ? searchKey : "";
       const date_start = dateStart ? dateStart : "";
@@ -62,13 +65,20 @@ const EventManager = () => {
 
       setEventList(result.data.eventList);
       setCount(result.data.countEvent);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [page, searchKey, dateStart, dateEnd]);
 
   const handleSearchName = async (e) => {
@@ -227,7 +237,9 @@ const EventManager = () => {
           </div>
         </div>
         <Card.Content>
-          {eventList.length ? (
+          {loading ? (
+            <LoadingPage />
+          ) : eventList.length ? (
             <table className="border border-blue-400 w-full bg-white">
               <thead>
                 <tr>
@@ -313,22 +325,25 @@ const EventManager = () => {
           ) : (
             <EmptyState />
           )}
-          <div className="mt-5 flex gap-1">
-            <Button
-              icon={<AiOutlineDelete className="text-[18px]" />}
-              title={"Xóa các lựa chọn"}
-              colorBgr={"bg-red-500"}
-              colorText={"text-white"}
-              colorHover={"bg-red-800"}
-              // onClick={() => handleDeleteManyItems(isCheckedItems)}
-              onClick={() => {
-                if (!isCheckedItems.length) {
-                  return toast.warning("Vui lòng chọn 1 sự kiện!");
-                }
-                setOpenDeleteMany(true);
-              }}
-            />
-          </div>
+          {eventList.length ? (
+            <div className="mt-5 flex gap-1">
+              <Button
+                icon={<AiOutlineDelete className="text-[18px]" />}
+                title={"Xóa các lựa chọn"}
+                colorBgr={"bg-red-500"}
+                colorText={"text-white"}
+                colorHover={"bg-red-800"}
+                // onClick={() => handleDeleteManyItems(isCheckedItems)}
+                onClick={() => {
+                  if (!isCheckedItems.length) {
+                    return toast.warning("Vui lòng chọn 1 sự kiện!");
+                  }
+                  setOpenDeleteMany(true);
+                }}
+              />
+            </div>
+          ) : null}
+
           {eventList.length ? (
             <PaginationV2
               total={count}
@@ -346,6 +361,7 @@ const EventManager = () => {
         title={"Thêm mới sự kiện"}
         classNameChildren={"w-[1000px]"}
         displayButtonCancel={false}
+        borderTitle={false}
       >
         <FormNew setOpen={setOpen} fetchData={fetchData} />
       </Modal>

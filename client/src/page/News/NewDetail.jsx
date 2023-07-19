@@ -63,7 +63,7 @@ const NewDetail = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("page", page);
     setSearchParams(newSearchParams.toString());
-    navigate(`/news/tin-hoi-vien?page=${page}`, { state: state });
+    navigate(`/news/${state.item.slug}?page=${page}`, { state: state });
   };
 
   return (

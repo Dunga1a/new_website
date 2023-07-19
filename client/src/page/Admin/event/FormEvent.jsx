@@ -115,7 +115,7 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
       <form className="text-start" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-4">
-            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="col-span-2 relative">
                 <label
                   htmlFor="title"
@@ -292,7 +292,10 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   htmlFor="file_pdf"
                   className="text-sm font-medium leading-6 text-gray-900 flex"
                 >
-                  File đính kèm ({selectedFiles.length}) <b> PDF </b> được chọn
+                  File đính kèm{" "}
+                  <span className="font-semibold ml-1">(PDF, EXCEL, WORD)</span>
+                  <span className="mx-1">({selectedFiles.length})</span> được
+                  chọn
                   <span>
                     <ImFolderUpload className="w-[40px] h-[24px]" />
                   </span>
@@ -303,7 +306,10 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     name="file_pdf"
                     id="file_pdf"
                     multiple
-                    accept="application/pdf, .docx, .xlsx"
+
+                    // accept="application/pdf"
+                    accept=".pdf, .xlsx, .docx"
+
                     autoComplete="given-name"
                     className="hidden w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={handleFileChange}

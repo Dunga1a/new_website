@@ -156,8 +156,9 @@ const NewsMemberManager = () => {
   const handlePageChange = async (page) => {
     searchParams.set("page", page);
     setSearchParams(searchParams);
-    // setPage(page);
-    navigate(`/admin/news?page=${page}&category=${category}&status=${status}`);
+    navigate(
+      `/memberManager/newsPost?page=${page}&category=${category}&status=${status}`
+    );
   };
 
   const handleChangeSelect = (selectOne) => {

@@ -85,7 +85,8 @@ export class MemberService implements IMemberService {
 
       .skip((page - 1) * pageSize)
       .take(pageSize)
-      .orderBy('member.id', 'DESC');
+      .orderBy('member.id', 'DESC')
+      .addOrderBy('role_association.id_organize_membership', 'DESC');
 
     if (roleAssociationParam) {
       query.andWhere(
@@ -141,6 +142,32 @@ export class MemberService implements IMemberService {
     const countMemberList = await queryCount.getCount();
 
     return { memberList, countMemberList };
+  }
+
+  async getAllMembersGroupBy() {
+    const query = this.memberRepository
+      .createQueryBuilder('member')
+      .select([
+        'MAX(member.id) as maxId',
+        'member.name_company',
+        'member.role_name',
+        'member.representative',
+        'member.phone',
+        'member.email',
+        'member.code_company',
+        'member.image_person',
+        'member.image_company',
+        'member.website',
+        'member.address',
+        'member.intro',
+        'member.slug',
+        'member.status',
+      ])
+      .leftJoin('member.id_role_associations', 'role_association')
+      .groupBy('role_association.id_organize_membership')
+      .getMany();
+
+    return query;
   }
 
   async getOneMember(idMember: number) {
@@ -410,6 +437,16 @@ export class MemberService implements IMemberService {
     if (findUserByUsername) {
       throw new HttpException(
         'Tên doanh nghiệp này đã được người dùng khác đăng ký',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const findMemberByCodeCompany = await this.memberRepository.findOne({
+      code_company: errorDetails.code_company,
+    });
+    if (findMemberByCodeCompany) {
+      throw new HttpException(
+        'Mã doanh nghiệp đã tồn tại',
         HttpStatus.CONFLICT,
       );
     }

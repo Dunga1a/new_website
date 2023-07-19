@@ -61,7 +61,7 @@ export default function Modal({
                         <Dialog.Title
                           as="h3"
                           className={`text-base font-semibold leading-6 text-gray-900 ${
-                            borderTitle ? " border-2" : ""
+                            borderTitle ? " border-2" : "text-[24px]"
                           } mb-2 text-[18px]`}
                         >
                           {title}

@@ -86,6 +86,7 @@ const RegisterMember = () => {
       const valueCheck = {
         email: data.email,
         name_company: data.name_company,
+        code_company: data.code_company,
       };
       await axios.post(`${DOMAIN}/api/member/checkError`, valueCheck, {
         withCredentials: true,
@@ -94,8 +95,8 @@ const RegisterMember = () => {
         //console.log(idBusinessAreas);
         return toast.error("Vui Lòng Chọn Lĩnh Vực Kinh Doanh");
       }
-      const formData = new FormData();
-      const formDataTwo = new FormData();
+      // const formData = new FormData();
+      // const formDataTwo = new FormData();
       const slug = slugify(data.name_company, {
         replacement: "-", // replace spaces with replacement character, defaults to `-`
         remove: undefined, // remove characters that match regex, defaults to `undefined`
@@ -160,7 +161,7 @@ const RegisterMember = () => {
               // setIdBusinessAreas(null);
             })
             .catch(() => {
-              toast.error("Thất Bại");
+              toast.error("Lỗi ảnh");
             });
         } catch (error) {
           // Xử lý lỗi tải lên

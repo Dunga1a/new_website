@@ -9,13 +9,13 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://192.168.1.100:3000'],
+    // origin: ['http://localhost:3000', 'http://192.168.1.100:3000'],
+    origin: true,
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-
+  app.use(bodyParser.json({ limit: '100mb' }));
+  app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
   try {
     await app.listen(PORT, () => {
       console.log(`Running on Port ${PORT}`);

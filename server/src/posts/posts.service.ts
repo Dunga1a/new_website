@@ -271,10 +271,14 @@ export class PostsService {
     const query = await this.newsPostRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.newsCategory', 'category')
-      .where('category.news_category_id = :news_category_id', {
-        news_category_id: item,
-      })
-      .orWhere('category.father_id = :father_id', { father_id: item })
+      .where('post.status = :status', { status: 1 })
+      .andWhere(
+        '(category.news_category_id = :news_category_id OR category.father_id = :father_id)',
+        {
+          news_category_id: item,
+          father_id: item,
+        },
+      )
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .orderBy('post.id', 'DESC')
@@ -292,10 +296,15 @@ export class PostsService {
     const queryCount = await this.newsPostRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.newsCategory', 'category')
-      .where('category.news_category_id = :news_category_id', {
-        news_category_id: item,
-      })
-      .orWhere('category.father_id = :father_id', { father_id: item })
+      .where('post.status = :status', { status: 1 })
+      .andWhere(
+        '(category.news_category_id = :news_category_id OR category.father_id = :father_id)',
+        {
+          news_category_id: item,
+          father_id: item,
+        },
+      )
+
       .getCount();
     return { query, queryCount };
   }
@@ -309,8 +318,10 @@ export class PostsService {
       .where('post.title LIKE :searchKey', {
         searchKey: `%${searchKey}%`,
       })
+      .andWhere('post.status = :status', { status: 1 })
       .skip((page - 1) * pageSize)
       .take(pageSize)
+      .orderBy('post.id', 'DESC')
       .getMany();
     for (const item of query) {
       const count = await this.commentRepository
@@ -326,6 +337,7 @@ export class PostsService {
       .where('post.title LIKE :searchKey', {
         searchKey: `%${searchKey}%`,
       })
+      .andWhere('post.status = :status', { status: 1 })
       .getCount();
     return { query, queryCount };
   }

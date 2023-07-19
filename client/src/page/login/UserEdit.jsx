@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { BsFillCaretRightFill } from "react-icons/bs";
 import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Buttons/Button";
+import { AuthContext } from "../../context/authContext";
 
 const arrContent = [
   { title: "Cơ bản", slug: "/user/editinfo/basic" },
@@ -12,6 +13,11 @@ const arrContent = [
 ];
 
 const UserEdit = () => {
+  const { currentUser } = useContext(AuthContext);
+  // console.log("currentUser: ", currentUser);
+
+  const newArr =
+    currentUser?.provider !== null ? arrContent.slice(0, 2) : arrContent;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
@@ -31,7 +37,6 @@ const UserEdit = () => {
   };
 
   const logOut = () => {
-    //alert("Tài khoản của bạn sẽ đăng xuất?");
     localStorage.setItem("user", null);
     window.location.reload();
   };
@@ -41,7 +46,7 @@ const UserEdit = () => {
     <div>
       <h3 className="mt-5 mb-4 font-bold text-[19px]">Thiết lập tài khoản</h3>
       <ul className="flex flex-wrap">
-        {arrContent.map((item, idx) => (
+        {newArr.map((item, idx) => (
           <li
             className={`${
               item.slug === pathCurrent

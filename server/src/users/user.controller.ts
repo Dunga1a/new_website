@@ -61,6 +61,13 @@ export class UsersController {
     return this.userService.findByUsername(username);
   }
 
+  @Post('username')
+  async findByUsernameGoogle(@Body() user: any) {
+    // console.log('username: ', user.username);
+
+    return this.userService.findByUsernameGoogle(user);
+  }
+
   @Put('edit')
   async editUser(@Body() editUser: editUser): Promise<User> {
     return this.userService.editUser(editUser);
@@ -188,6 +195,10 @@ export class UsersController {
     return await this.userService.registerUser(createUser);
   }
 
+  @Post('registerUserGoogle')
+  async registerUserGoogle(@Body() createUserGoogle: any) {
+    return await this.userService.registerUserGoogle(createUserGoogle);
+  }
 
   @Patch(':id/remove-image')
   async removeImage(@Param('id') userId: string) {
