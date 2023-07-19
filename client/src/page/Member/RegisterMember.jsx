@@ -75,14 +75,15 @@ const RegisterMember = () => {
 
   const onSubmit = async (data) => {
     try {
+      // Kiểm tra ảnh người đại diện và ảnh doanh nghiệp
       if (!imageUrl.firstImg) {
         return toast.error("Vui lòng chọn ảnh người đại diện");
       }
       if (!imageUrl.secondImg) {
         return toast.error("Vui lòng chọn ảnh doanh nghiệp");
       }
-      // console.log("imageUrl.firstImg: ", imageUrl.firstImg);
-      // console.log("imageUrl.secondImg: ", imageUrl.secondImg);
+
+      // Kiểm tra lỗi từ phía máy chủ
       const valueCheck = {
         email: data.email,
         name_company: data.name_company,
@@ -91,107 +92,82 @@ const RegisterMember = () => {
       await axios.post(`${DOMAIN}/api/member/checkError`, valueCheck, {
         withCredentials: true,
       });
+
+      // Kiểm tra lĩnh vực kinh doanh
       if (!idBusinessAreas) {
-        //console.log(idBusinessAreas);
         return toast.error("Vui Lòng Chọn Lĩnh Vực Kinh Doanh");
       }
-      // const formData = new FormData();
-      // const formDataTwo = new FormData();
+
+      // Tạo slug
       const slug = slugify(data.name_company, {
-        replacement: "-", // replace spaces with replacement character, defaults to `-`
-        remove: undefined, // remove characters that match regex, defaults to `undefined`
-        lower: true, // convert to lower case, defaults to `false`
-        strict: false, // strip special characters except replacement, defaults to `false`
-        locale: "vi", // language code of the locale to use
-        trim: true, // trim leading and trailing replacement chars, defaults to `true`
+        replacement: "-",
+        remove: undefined,
+        lower: true,
+        strict: false,
+        locale: "vi",
+        trim: true,
       });
+
       let image_person = null;
       let image_company = null;
 
+      // Kiểm tra và gửi yêu cầu tải lên ảnh
       if (imageUrl.firstImg && imageUrl.secondImg) {
-        const imagePromises = [];
-
-        // Tạo và gắn dữ liệu vào formData
         const formData1 = new FormData();
         formData1.append("image", imageUrl.firstImg);
-        imagePromises.push(uploadImage(formData1));
 
         const formData2 = new FormData();
         formData2.append("image", imageUrl.secondImg);
-        imagePromises.push(uploadImage(formData2));
 
         try {
-          // Gửi các yêu cầu tải lên cùng một lúc
-          const [responseImgPerson, responseImgCompany] = await Promise.all(
-            imagePromises
-          );
+          // Gửi các yêu cầu tải lên ảnh cùng một lúc
+          const [responseImgPerson, responseImgCompany] = await Promise.all([
+            uploadImage(formData1),
+            uploadImage(formData2),
+          ]);
 
           image_person = responseImgPerson;
           image_company = responseImgCompany;
-          const values = {
-            ...data,
-            id_business_areas: idBusinessAreas,
-            id_role_associations: idRoleAssociations,
-            slug: slug,
-            intro,
-
-            image_person: image_person,
-            image_company: image_company,
-          };
-
-          await axios
-            .post(`${DOMAIN}/api/member/createMember`, values, {
-              withCredentials: true,
-            })
-            .then(() => {
-              toast.success(
-                "Đăng ký hội viên thành công, vui lòng chờ xét duyệt"
-              );
-
-              reset();
-              setSelectedImages({
-                firstImg: null,
-                secondImg: null,
-              });
-              setImageUrl({
-                firstImg: null,
-                secondImg: null,
-              });
-              setIntro("");
-              // setIdBusinessAreas(null);
-            })
-            .catch(() => {
-              toast.error("Lỗi ảnh");
-            });
         } catch (error) {
-          // Xử lý lỗi tải lên
+          // Xử lý lỗi tải lên ảnh
           console.error("Image upload error:", error);
-          // Thực hiện các hành động cần thiết khi xảy ra lỗi
+          throw error;
         }
-
-        // formData.append("image", imageUrl.firstImg);
-        // const responseImgPerson = await axios.post(
-        //   `${DOMAIN}/api/member/uploadFileImageMember`,
-        //   formData,
-        //   {
-        //     headers: {
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   }
-        // );
-        // image_person = responseImgPerson.data.imageUrl;
-        // formDataTwo.append("image", imageUrl.secondImg);
-        // const responseImgCompany = await axios.post(
-        //   `${DOMAIN}/api/member/uploadFileImageMember`,
-        //   formDataTwo,
-        //   {
-        //     headers: {
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   }
-        // );
-        // image_company = responseImgCompany.data.imageUrl;
       }
+
+      const values = {
+        ...data,
+        id_business_areas: idBusinessAreas,
+        id_role_associations: idRoleAssociations,
+        slug: slug,
+        intro,
+        image_person: image_person,
+        image_company: image_company,
+      };
+
+      // Gửi yêu cầu tạo thành viên
+      await axios
+        .post(`${DOMAIN}/api/member/createMember`, values, {
+          withCredentials: true,
+        })
+        .then(() => {
+          toast.success("Đăng ký hội viên thành công, vui lòng chờ xét duyệt");
+
+          reset();
+          setSelectedImages({
+            firstImg: null,
+            secondImg: null,
+          });
+          setImageUrl({
+            firstImg: null,
+            secondImg: null,
+          });
+          setIntro("");
+          // setIdBusinessAreas(null);
+        })
+        .catch(() => {
+          toast.error("Lỗi ảnh");
+        });
     } catch (error) {
       toast.error(error.response.data.message);
     }

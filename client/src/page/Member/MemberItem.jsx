@@ -77,7 +77,7 @@ const MemberItem = ({ member, stt }) => {
     //   </div>
     // </div>
     <tbody>
-      <tr className="cursor-pointer" onClick={handleItemClick}>
+      <tr className="cursor-pointer" onClick={() => handleItemClick(member)}>
         <td class="flex items-start text-center font-semibold p-1">
           {stt + 1}
         </td>
