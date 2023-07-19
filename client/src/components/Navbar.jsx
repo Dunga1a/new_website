@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import NavbarArr from "./NavbarArr";
-import { IoHome } from "react-icons/io5";
+import { IoHome, IoSearch } from "react-icons/io5";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -59,7 +59,7 @@ const contentArr = [
         slug: "editinfo",
       },
       {
-        title: "Danh sách thành viên",
+        title: "Thành viên",
         slug: "",
       },
 
@@ -83,6 +83,7 @@ const Navbar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const [count, setCount] = useState();
+  const [keysearch, setKeySearch] = useState("");
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -164,6 +165,23 @@ const Navbar = () => {
 
   const handleSubItemClick = (subItem) => {
     navigate(`/news/${subItem.slug}`, { state: { item: subItem } });
+  };
+
+  const handleSearch = () => {
+    if (keysearch) {
+      navigate(`/search?keyword=${keysearch}`);
+      setIsOpen(false);
+      setKeySearch("");
+    } else {
+      window.confirm("Vui lòng nhập từ khóa tìm kiếm!");
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // Nếu người dùng nhấn phím Enter
+      handleSearch();
+    }
   };
   return (
     <div className="max-w-[1080px] m-auto">
@@ -354,14 +372,14 @@ const Navbar = () => {
               <span>Liên hệ</span>
             </div>
           </li>
-          <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+          {/* <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/search")}
             >
               <span>Tìm kiếm</span>
             </div>
-          </li>
+          </li> */}
 
           {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
           {currentUser && currentUser.member && (
@@ -388,6 +406,50 @@ const Navbar = () => {
               </li>
             )}
         </ul>
+        <div className="relative cursor-pointer">
+          <span
+            className="block p-[10px] pl-[13px] text-[#fff] border-l-[2px] text-[18px] hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]  border-l-[#085798]"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            <IoSearch />
+          </span>
+          {isOpen && (
+            <div
+              class="w-[400px] bg-gradient-to-l from-[#30cfd0] to-[#330867] rounded-lg absolute drop-shadow-new group-active:block left-[-360px] bottom-[-60px] py-[12px] px-[10px]"
+              ref={inputRef}
+            >
+              <div class="sm:col-span-12">
+                <div className="relative">
+                  <input
+                    onChange={(e) => {
+                      setKeySearch(e.target.value);
+                      //console.log(e.target.value);
+                    }}
+                    onKeyDown={handleKeyPress}
+                    value={keysearch}
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    autocomplete="given-name"
+                    className="block w-full text-[#0c0c0c] rounded-md font-normal text-[15px] border-0 bg-gradient-to-l from-[rgba(84,212,228,1)-0.2%] to-[rgba(170,221,241,1)-100%] py-1 pr-8 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[#66afe9]"
+                  />
+                  {/* background-color: #8EC5FC;
+background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); */}
+                  {/* background-image: linear-gradient( 111.4deg,  rgba(7,7,9,1) 6.5%,   ); */}
+                  {/* background-image: linear-gradient(to top, #30cfd0 0%, #330867
+                  100%); */}
+                  {/* background-image: linear-gradient( 270.3deg,
+                  rgba(84,212,228,1) 0.2%, 100% ); */}
+                  <span className=" absolute right-[10px] top-[8px] text-[18px] font-bold text-black">
+                    <IoSearch onClick={handleSearch} />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <div className=" laptop:hidden desktop:hidden phone:block tablet:block">
         <SideBar props={contentArr} />
