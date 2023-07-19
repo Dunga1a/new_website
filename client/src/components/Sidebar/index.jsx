@@ -340,7 +340,7 @@ const SideBar = ({ props }) => {
                   className="hidden py-2 space-y-2"
                 >
                   {arr.map((item, idx) => (
-                    <li key={idx}>
+                    <li key={item.id}>
                       <button
                         type="button"
                         aria-controls="dropdown-li"
