@@ -40,7 +40,8 @@ export class UserService implements IUserService {
     };
 
     const newUser = await this.userRepository.create(params);
-
+    const userRole = await this.roleRepository.findOne({ name: 'user' });
+    newUser.roles = [userRole];
     const savedUser = await this.userRepository.save(newUser);
 
     return savedUser;
@@ -310,6 +311,17 @@ export class UserService implements IUserService {
       ...createUserGoogle,
       password,
     });
+
+    const userRole = await this.roleRepository.findOne({
+      where: {
+        name: 'user',
+      },
+    });
+    // await this.editUser({
+    //   username: createUserGoogle.username,
+    //   roleId: String(userRole.id),
+    // });
+    registerUser['roles'] = [userRole];
     const savedUser = await this.userRepository.save(registerUser);
     return savedUser;
   }

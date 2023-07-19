@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { auth, provider } from "./config";
-import { signInWithPopup, signOut } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import LayoutLoginPage from "../../Layout/LayoutLoginPage";
 import { FaUserAlt } from "react-icons/fa";
 import { MdKey } from "react-icons/md";
@@ -76,9 +76,9 @@ const LoginPage = ({ className }) => {
           .post(`${DOMAIN}/api/users/registerUserGoogle`, values, {
             withCredentials: true,
           })
-          .then(() => {
-            setUser({ ...data.user, provider: data.user.providerId });
-            login({ ...data.user, provider: data.user.providerId });
+          .then((response) => {
+            setUser({ ...response.data, provider: data.user.providerId });
+            login({ ...response.data, provider: data.user.providerId });
           });
       } catch (error) {
         try {
