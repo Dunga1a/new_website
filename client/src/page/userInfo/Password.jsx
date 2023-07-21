@@ -91,7 +91,7 @@ const Password = () => {
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
           <span
-            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            className="absolute top-[50%] desktop:right-[30%] laptop:right-[30%] tablet:right-[30%] phone:right-[7%] translate-y-[-30%]"
             onClick={() => setSeePassOld(!seePassOld)}
           >
             {seePassOld ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -119,7 +119,7 @@ const Password = () => {
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
           <span
-            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            className="absolute top-[50%] desktop:right-[30%] laptop:right-[30%] tablet:right-[30%] phone:right-[7%] translate-y-[-30%]"
             onClick={() => setSeePassNew(!seePassNew)}
           >
             {seePassNew ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -150,7 +150,7 @@ const Password = () => {
             // defaultValue={currentUser ? currentUser.displayName : ""}
           />
           <span
-            className="absolute top-[50%] left-[68%] translate-y-[-30%]"
+            className="absolute top-[50%] desktop:right-[30%] laptop:right-[30%] tablet:right-[30%] phone:right-[7%] translate-y-[-30%]"
             onClick={() => setSeePassConfirm(!seePassConfirm)}
           >
             {seePassConfirm ? <AiFillEyeInvisible /> : <AiFillEye />}
