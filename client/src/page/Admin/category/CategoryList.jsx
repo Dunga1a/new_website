@@ -92,7 +92,7 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
           <div className="ml-4">
             {comment.children.map((child) => (
               <CategoryItem
-                key={child.id}
+                key={child.news_category_id}
                 comment={child}
                 setOpen={setOpen}
                 open={open}
@@ -135,7 +135,7 @@ const CategoryList = ({ comments, setOpen, open, fetchData }) => {
     <div className={`p-[10px] border border-gray-300`}>
       {comments.map((comment) => (
         <CategoryItem
-          key={comment.id}
+          key={comment.news_category_id}
           comment={comment}
           setOpen={setOpen}
           open={open}
