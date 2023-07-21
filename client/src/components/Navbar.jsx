@@ -212,7 +212,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li className="block">
                 {" "}
                 <div
@@ -263,7 +263,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li
                 className="block cursor-pointer"
                 onClick={() => navigate("/member")}
@@ -304,7 +304,7 @@ const Navbar = () => {
               </span>
             </div>
             {/* <NavbarArr arr={arr} /> */}
-            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
               {arr &&
                 arr.map((item, idx) => {
                   return (
