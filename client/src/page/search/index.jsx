@@ -80,7 +80,7 @@ const SearchPage = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-4 px-6 mt-6 ">
-        <div className="col-span-3 phone:col-span-4 tablet:col-span-4 desktop:col-span-3 laptop:col-span-3 mb-8">
+        <div className="col-span-3 phone:col-span-4 tablet:col-span-3 desktop:col-span-3 laptop:col-span-3 mb-8">
           <div className="border-2 rounded-lg px-4 pb-4">
             <h3 className="text-center my-4 text-[14px] text-[#333] font-bold">
               Tìm kiếm tin tức mà bạn muốn!
@@ -176,7 +176,7 @@ const SearchPage = () => {
             <PaginationV2
               total={count}
               onChange={handlePageChange}
-              pageSize={4}
+              pageSize={8}
               current={searchParams.get("page") || 1}
             />
           )}

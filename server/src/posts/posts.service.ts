@@ -148,7 +148,7 @@ export class PostsService {
     return updatedPost;
   }
 
-  async searchByKeyword(keyword: string, page: number = 1, limit: number = 4) {
+  async searchByKeyword(keyword: string, page: number = 1, limit: number = 8) {
     try {
       const query = await this.newsPostRepository
         .createQueryBuilder('newsPost')
