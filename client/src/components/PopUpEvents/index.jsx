@@ -17,7 +17,7 @@ const PopupEvent = () => {
     }
     setTimeout(() => {
       localStorage.removeItem("hasShownPopup");
-    }, 86000);
+    }, 8600 * 1000);
   }, []);
 
   const handleClosePopup = () => {

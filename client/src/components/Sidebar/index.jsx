@@ -211,7 +211,7 @@ const SideBar = ({ props }) => {
                       //   document.querySelector("[drawer-backdrop]").remove();
                       // }}
                       onClick={() => handleNav("introduction")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Giới thiệu hiệp hội
                     </div>
@@ -224,7 +224,7 @@ const SideBar = ({ props }) => {
                       //   document.querySelector("[drawer-backdrop]").remove();
                       // }}
                       onClick={() => handleNav("regulations")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Điều lệ hoạt động
                     </div>
@@ -235,7 +235,7 @@ const SideBar = ({ props }) => {
                       //   navigate("/ban-chap-hanh-hiep-hoi");
                       // }}
                       onClick={() => handleNav("ban-chap-hanh-hiep-hoi")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Ban chấp hành hiệp hội
                     </div>
@@ -246,7 +246,7 @@ const SideBar = ({ props }) => {
                       //   navigate("/solution");
                       // }}
                       onClick={() => handleNav("solution")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Phương hướng hoạt động
                     </div>
@@ -257,7 +257,7 @@ const SideBar = ({ props }) => {
               <li>
                 <button
                   type="button"
-                  className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  className="flex cursor-pointer items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   aria-controls="dropdown-sales"
                   data-collapse-toggle="dropdown-sales"
                 >
@@ -284,7 +284,7 @@ const SideBar = ({ props }) => {
                     <div
                       // onClick={() => navigate("/member")}
                       onClick={() => handleNav("member")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Danh sách hội viên
                     </div>
@@ -293,7 +293,7 @@ const SideBar = ({ props }) => {
                     <div
                       // onClick={() => navigate("/quyen-loi-hoi-vien")}
                       onClick={() => handleNav("quyen-loi-hoi-vien")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Quyền lợi hội viên
                     </div>
@@ -302,7 +302,7 @@ const SideBar = ({ props }) => {
                     <div
                       // onClick={() => navigate("/dang-ky-hoi-vien")}
                       onClick={() => handleNav("dang-ky-hoi-vien")}
-                      className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      className="flex cursor-pointer items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     >
                       Đăng ký hội viên
                     </div>
@@ -340,7 +340,7 @@ const SideBar = ({ props }) => {
                   className="hidden py-2 space-y-2"
                 >
                   {arr.map((item, idx) => (
-                    <li key={idx}>
+                    <li key={item.id}>
                       <button
                         type="button"
                         aria-controls="dropdown-li"
@@ -478,8 +478,7 @@ const SideBar = ({ props }) => {
               <li>
                 <div
                   onClick={() => {
-                    navigate("/search");
-                    window.location.reload();
+                    handleNav("search");
                   }}
                   className=" cursor-pointer flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >

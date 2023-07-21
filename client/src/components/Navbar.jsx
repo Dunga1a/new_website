@@ -8,6 +8,7 @@ import { AiFillCaretDown } from "react-icons/ai";
 import SideBar from "./Sidebar";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
+import { toast } from "react-toastify";
 
 const contentArr = [
   [
@@ -173,7 +174,9 @@ const Navbar = () => {
       setIsOpen(false);
       setKeySearch("");
     } else {
-      window.confirm("Vui lòng nhập từ khóa tìm kiếm!");
+      toast.warn("Vui lòng nhập từ khóa tìm kiếm", {
+        autoClose: 3000,
+      });
     }
   };
 
