@@ -67,9 +67,9 @@ const Basic = () => {
             *
           </span>
         </div>
-        {errors.lastName && (
+        {errors.lastname && (
           <p className="text-sm text-center text-red-500">
-            {errors.lastName.message}
+            {errors.lastname.message}
           </p>
         )}
         <div className="flex items-center ">
@@ -112,16 +112,14 @@ const Basic = () => {
         </div>
 
         <div className="flex items-center relative">
-          <p className="w-[23%] text-end mr-2 text-[13.5px]">
-            Ngày tháng năm sinh
-          </p>
+          <p className="text-end mr-2 text-[13.5px]">Ngày tháng năm sinh</p>
 
           <input
             type="date"
             {...register("birthday", {
               required: "Trường này không được để trống",
             })}
-            className={`desktop:w-[27%] laptop:w-[27%] tablet:w-[27%] phone:w-[65%] outline-none h-full px-3 py-1 bg-gray-100 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
+            className={` outline-none h-full px-3 py-1 bg-gray-100 mt-2 my-[8px] text-[13px] border-[1px] border-[#ccc] rounded-sm shadow-lg`}
             defaultValue={
               currentUser.birthday
                 ? dayjs(currentUser.birthday).format("YYYY-MM-DD")
