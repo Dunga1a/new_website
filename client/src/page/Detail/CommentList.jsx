@@ -105,7 +105,7 @@ const CommentItem = ({
                       )}
 
                       {(currentUser.id === comment.user.id ||
-                        currentUser.roles.some(
+                        currentUser?.roles.some(
                           (item) => item.name === "admin"
                         )) && (
                         <button onClick={() => handleDelete(comment)}>
