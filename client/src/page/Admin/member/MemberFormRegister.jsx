@@ -382,7 +382,7 @@ const MemberFormRegister = ({
                     src={
                       selectedImages.firstImg
                         ? `${selectedImages.firstImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
+                        : "/assets/images/logo-107x107.png"
                     }
                     alt="Selected Img One"
                   />
@@ -408,7 +408,7 @@ const MemberFormRegister = ({
                     src={
                       selectedImages.secondImg
                         ? `${selectedImages.secondImg}`
-                        : "https://doanhnhanthanhhoahanoi.com/uploads/logo-107x107.png"
+                        : "/assets/images/logo-107x107.png"
                     }
                     alt="Selected Img One"
                   />
