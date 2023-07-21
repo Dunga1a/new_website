@@ -126,8 +126,8 @@ const Card = () => {
   return (
     <>
       <div className="grid grid-cols-4 gap-2 p-6 bg-white rounded-xl">
-        <div className="col-span-3 phone:col-span-4 laptop:col-span-3 desktop:col-span-3 border-t-[1px] border-t-solid border-t-gray-400 mt-[25px]">
-          <div className="bgr_card phone:hidden laptop:block desktop:block">
+        <div className="col-span-3 phone:col-span-4 laptop:col-span-3 desktop:col-span-3 tablet:col-span-3 border-t-[1px] border-t-solid border-t-gray-400 mt-[25px]">
+          <div className="bgr_card phone:hidden tablet:block laptop:block desktop:block">
             <ul className="flex items-center justify-around text-[20px]">
               <div>
                 {loading ? (
@@ -182,7 +182,7 @@ const Card = () => {
               </li>
             </ul>
           </div>
-          <div className="laptop:border-b-[1px] desktop:border-b-[1px]  border-b-solid border-b-gray-400 mb-[25px] phone:hidden laptop:block desktop:block phone:border-none">
+          <div className="laptop:border-b-[1px] desktop:border-b-[1px]  border-b-solid border-b-gray-400 mb-[25px] phone:hidden laptop:block desktop:block tablet:block phone:border-none">
             <div className="pb-8">
               {loading ? (
                 <LoadingPage />
@@ -260,7 +260,7 @@ const Card = () => {
               )}
             </div>
           </div>
-          <div className="grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-1 phone:grid-cols-1 gap-3 pb-8 border-b-[1px] bobder-b-solid border-b-gray-400 ">
+          <div className="grid laptop:grid-cols-2 desktop:grid-cols-2 tablet:grid-cols-2 phone:grid-cols-1 gap-3 pb-8 border-b-[1px] bobder-b-solid border-b-gray-400 ">
             {arrNew.map((item) => {
               return (
                 <div
@@ -306,7 +306,7 @@ const Card = () => {
             })}
           </div>
         </div>
-        <div className="p-3 pt-6 laptop:block desktop:block phone:hidden">
+        <div className="p-3 pt-6">
           <RightBar />
         </div>
       </div>
