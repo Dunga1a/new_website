@@ -89,7 +89,7 @@ const Member = () => {
             <LoadingPage />
           ) : (
             <>
-              <div className="px-5 mt-2 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3 phone:col-span-4">
+              <div className="mt-2 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3 phone:col-span-4">
                 {memberGroup.length ? (
                   memberGroup.map((memberGroupItem) => {
                     const title = memberGroupItem[0].id_role_associations.name;

@@ -340,18 +340,14 @@ const SideBar = ({ props }) => {
                   className="hidden py-2 space-y-2"
                 >
                   {arr.map((item, idx) => (
-                    <li key={item.id}>
+                    <li key={idx}>
                       <button
                         type="button"
                         aria-controls="dropdown-li"
                         data-collapse-toggle="dropdown-li"
                         className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                       >
-                        {item ? (
-                          <span className="flex-1 ml-3 text-left whitespace-nowrap">
-                            {item.name}
-                          </span>
-                        ) : (
+                        {item && item.children.length === 0 ? (
                           <span
                             className="flex-1 ml-3 text-left whitespace-nowrap"
                             onClick={(e) => {
@@ -359,7 +355,17 @@ const SideBar = ({ props }) => {
                               handleSubItemClick(item);
                             }}
                           >
-                            {item.title}
+                            {item.name}
+                          </span>
+                        ) : (
+                          <span
+                            className="flex-1 ml-3 text-left whitespace-nowrap"
+                            // onClick={(e) => {
+                            //   e.stopPropagation();
+                            //   handleSubItemClick(item);
+                            // }}
+                          >
+                            {item.name}
                           </span>
                         )}
                         {item.children && item.children.length !== 0 && (
