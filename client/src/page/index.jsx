@@ -13,15 +13,15 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 const slides = [
   {
     id: 1,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 2,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 3,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
 ];
 
@@ -127,7 +127,7 @@ const HomePage = () => {
               className="flex items-center "
             >
               <img
-                src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-tittle-map.png"
+                src="/assets/images/bg-tittle-map.png"
                 alt=""
               />
               <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>
