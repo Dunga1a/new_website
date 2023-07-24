@@ -25,7 +25,7 @@ const NavbarArr = ({ arr }) => {
     window.location.reload();
   };
   return (
-    <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+    <ul className="bg-[#fff] w-[200px]  drop-shadow-xl absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
       {arr[1].map((item, idx) => {
         return (
           <li

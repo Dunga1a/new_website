@@ -148,7 +148,7 @@ export class PostsService {
     return updatedPost;
   }
 
-  async searchByKeyword(keyword: string, page: number = 1, limit: number = 4) {
+  async searchByKeyword(keyword: string, page: number = 1, limit: number = 8) {
     try {
       const query = await this.newsPostRepository
         .createQueryBuilder('newsPost')
@@ -228,7 +228,11 @@ export class PostsService {
       queryBuilder.andWhere('NewsPost.status = :status', { status });
     }
 
-    if (user.roles.find((role) => role.name === 'admin')) {
+    if (
+      user.roles.find(
+        (role) => role.name === 'admin' || role.name === 'contentManager',
+      )
+    ) {
     } else {
       queryBuilder.andWhere('User.id = :id', { id: id });
     }

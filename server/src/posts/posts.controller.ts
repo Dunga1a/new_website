@@ -100,7 +100,7 @@ export class PostsController {
   async searchByKeyword(
     @Query('keyword') keyword: string,
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 4,
+    @Query('limit') limit: number = 8,
   ) {
     const searchResult = await this.newsPostsService.searchByKeyword(
       keyword,

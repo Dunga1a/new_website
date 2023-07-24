@@ -49,11 +49,11 @@ const PaginationV2 = ({
 
   return (
     <div
-      className={`pg-pagination bg-transparent px-4 py-6 flex items-center justify-between  border-gray-200 sm:px-6 ${
+      className={`pg-pagination bg-transparent px-4 phone:px-0 tablet:px-4 laptop:px-4 desktop:px-4 py-6 flex items-center justify-between border-gray-200${
         className ? className : ""
       }`}
     >
-      <div className="pg-paginate-mobile flex-1 flex justify-between sm:hidden">
+      <div className="pg-paginate-mobile flex-1 flex justify-between phone:hidden tablet:block laptop:block desktop:block">
         {/* <button
           onClick={prevPage}
           className="pg-paginate-prev-btn relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
@@ -82,7 +82,7 @@ const PaginationV2 = ({
           Sau
         </button> */}
       </div>
-      <div className="sm:flex-1 sm:flex sm:items-center sm:justify-center">
+      <div className=" block laptop:block tablet:block desktop:block laptop:flex-none desktop:flex-none tablet:flex-none phone:flex-1 phone:flex phone:items-center phone:justify-center">
         <div className="flex items-center gap-2">
           <nav
             className="pg-paginate-pc relative z-0 inline-flex rounded-full space-x-2"
@@ -90,7 +90,7 @@ const PaginationV2 = ({
           >
             <button
               onClick={prevPage}
-              className="pg-paginate-prev-btn relative inline-flex items-center px-2 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className="pg-paginate-prev-btn relative inline-flex items-center px-2 phone:px-0 laptop:px-2 desktop:px-2 tablet:px-2 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
               <span className="sr-only">Trước</span>
               <HiChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -131,7 +131,7 @@ const PaginationV2 = ({
             {/* Current: "z-10 bg-green-50 border-green-500 text-primaryColor", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
             <button
               onClick={nextPage}
-              className="pg-paginate-next-btn relative inline-flex items-center px-2 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className="pg-paginate-next-btn relative inline-flex items-center px-2 phone:px-0 laptop:px-2 desktop:px-2 tablet:px-2 py-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
               <span className="sr-only">Sau</span>
               <HiChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -150,14 +150,14 @@ const Page = ({ current, page, onChangePage, pageUrl }) => {
     <button
       onClick={() => onChangePage(page)}
       aria-current="page"
-      className={`bg-red-500 pg-page-item pg-page-item-${page} font-semibold rounded-full max-w-[38px] z-10 bg-cyan-50 border-cyan-500 text-primaryColor flex items-center justify-center px-4 py-2 border text-sm`}
+      className={`bg-red-500 pg-page-item pg-page-item-${page} font-semibold rounded-full max-w-[38px] z-10 bg-cyan-50 border-cyan-500 text-primaryColor flex items-center justify-center px-4 phone:px-2 laptop:px-4 tablet:px-4 desktop:px-4 py-2 border text-sm`}
     >
       {page}
     </button>
   ) : (
     <button
       onClick={() => onChangePage(page)}
-      className={`pg-page-item pg-page-item-${page} font-semibold text-black bg-white max-w-[38px] rounded-full border-gray-300  hover:bg-gray-50  flex items-center justify-center px-4 py-2 border text-sm`}
+      className={`pg-page-item pg-page-item-${page} phone:px-2 font-semibold text-black bg-white max-w-[38px] rounded-full border-gray-300  hover:bg-gray-50  flex items-center justify-center px-4 laptop:px-4 tablet:px-4 desktop:px-4 py-2 border text-sm`}
     >
       {page}
     </button>
@@ -165,7 +165,7 @@ const Page = ({ current, page, onChangePage, pageUrl }) => {
 };
 
 const PageBreak = () => (
-  <span className="pg-paginate-page-break relative inline-flex items-center px-6 py-2 mx-2 border-gray-300 bg-white text-sm font-medium text-gray-700">
+  <span className="pg-paginate-page-break relative inline-flex items-center px-6 phone:px-1 tablet:px-5 laptop:px-6 desktop:px-6 py-2 mx-2 border-gray-300 bg-white text-sm font-medium text-gray-700">
     . . .
   </span>
 );

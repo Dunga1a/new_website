@@ -82,14 +82,16 @@ const Member = () => {
       <Breadcrumbs title={"Hội viên"} />
 
       {currentUser &&
-      (currentUser.roles.some((item) => item.name === "admin") ||
+      (currentUser.roles.some(
+        (item) => item.name === "admin" || item.name === "contentManager"
+      ) ||
         currentUser.member) ? (
         <div className=" pb-14 grid grid-cols-4 gap-3 pt-4 px-6">
           {loading ? (
             <LoadingPage />
           ) : (
             <>
-              <div className="px-5 mt-2 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3 phone:col-span-4">
+              <div className="mt-2 desktop:col-span-3 laptop:col-span-3 tablet:col-span-3 phone:col-span-4">
                 {memberGroup.length ? (
                   memberGroup.map((memberGroupItem) => {
                     const title = memberGroupItem[0].id_role_associations.name;

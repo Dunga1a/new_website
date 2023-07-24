@@ -77,16 +77,17 @@ const MemberItem = ({ member, stt }) => {
     //   </div>
     // </div>
     <tbody>
-      <tr className="cursor-pointer" onClick={() => handleItemClick(member)}>
-        <td class="flex items-start text-center font-semibold p-1">
-          {stt + 1}
-        </td>
-        <td class="border border-slate-700 w-[13%] p-1">
-          <div className="h-[170px] overflow-hidden">
+      <tr
+        className="cursor-pointer hover:bg-gray-100 border"
+        onClick={() => handleItemClick(member)}
+      >
+        <td class=" text-center font-semibold p-1">{stt + 1}</td>
+        <td class="border w-[13%] tablet:w-[13%] phone:w-[50%] p-1">
+          <div className="overflow-hidden">
             <div className="line-clamp-[8] ">{member.name_company}</div>
           </div>
         </td>
-        <td class="border border-slate-700 w-[60%] p-1">
+        <td class="max-w-full p-1 tablet:block phone:hidden laptop:block desktop:block">
           <p>Người đại điện: {member.representative}</p>
           <p>Chức vụ: {member.role_name}</p>
           <p>Số điện thoại: {member.phone}</p>
@@ -94,9 +95,13 @@ const MemberItem = ({ member, stt }) => {
           <p>Lĩnh vực hoạt động: {member.role_name}</p>
           <p>Website: {member?.website}</p>
           <p>Địa chỉ: {member.address}</p>
-          <p className="line-clamp-1">Mô tả: {member.intro}</p>
+          <p className="line-clamp-1 ">
+            Mô tả: Ocean Studio - không gian sáng tạo đa dạng từ phòng vô cực,
+            phông key, trường quay ảo cho đến các Concept được decor, thay đổi
+            liên tục mang đến những trải nghiệm và cảm hứng sáng tạo thú vị nhất
+          </p>
         </td>
-        <td className="border border-slate-700">
+        <td className="border w-[26%] tablet:w-[26%] phone:w-[40%]">
           <div className="bg-gray-200">
             <img
               className="w-full object-contain rounded-md h-[170px]  "

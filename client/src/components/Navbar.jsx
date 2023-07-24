@@ -188,13 +188,13 @@ const Navbar = () => {
   };
   return (
     <div className="max-w-[1080px] m-auto">
-      <div className=" laptop:flex desktop:flex tablet:hidden phone:hidden relative bg-[#0083eb] flex items-center justify-between z-30">
+      <div className=" laptop:flex desktop:flex tablet:flex phone:hidden relative bg-[#0083eb] flex items-center justify-between z-30">
         <div className="menu-conner-left drop-shadow-xl"></div>
         <div className="menu-conner-right drop-shadow-xl tablet:hidden laptop:hidden desktop:block"></div>
-        <ul className="flex items-center  text-[#fff] uppercase desktop:text-[12px] laptop:text-[12px] tablet:text-[7px] font-bold">
-          <li className="block hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA] tablet:text-[12px]">
+        <ul className="flex items-center  text-[#fff] uppercase desktop:text-[12px] laptop:text-[12px] tablet:text-[10px] font-bold">
+          <li className="block hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA] tablet:text-[16px]">
             <div
-              className="laptop:h-[44px] laptop:text-[16px] laptop:px-4 desktop:px-4 desktop:text-[18px] tablet:h-[40px] px-[14px] tablet:px-[8px] flex items-center"
+              className="laptop:h-[44px] laptop:text-[16px] laptop:px-4 desktop:px-4 desktop:text-[18px] tablet:h-[40px] tablet:px-3 laptop:px-6 px-[14px] tablet:px-2 flex items-center"
               onClick={() => navigate("/")}
             >
               <span>
@@ -205,14 +205,14 @@ const Navbar = () => {
           <li className="block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/introduction")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
             >
               <span>Giới thiệu</span>
               <span className="text-[12px] ml-[3px]">
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li className="block">
                 {" "}
                 <div
@@ -255,7 +255,7 @@ const Navbar = () => {
           <li className="block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               href="#"
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
               onClick={() => navigate("/member")}
             >
               <span>Hội Viên</span>
@@ -263,7 +263,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li
                 className="block cursor-pointer"
                 onClick={() => navigate("/member")}
@@ -296,7 +296,7 @@ const Navbar = () => {
           <li className="cursor-pointer block group/item relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/news")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
             >
               <span>Điểm tin</span>
               <span className="text-[12px] ml-[3px]">
@@ -304,7 +304,7 @@ const Navbar = () => {
               </span>
             </div>
             {/* <NavbarArr arr={arr} /> */}
-            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
               {arr &&
                 arr.map((item, idx) => {
                   return (
@@ -348,7 +348,7 @@ const Navbar = () => {
 
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/events-page")}
             >
               <span>Sự kiện</span>
@@ -357,7 +357,7 @@ const Navbar = () => {
           <li className="block group/item cursor-pointer relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               href="#"
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/user")}
             >
               <span>Thành Viên</span>
@@ -370,14 +370,14 @@ const Navbar = () => {
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/contact-page")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
             >
               <span>Liên hệ</span>
             </div>
           </li>
           {/* <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/search")}
             >
               <span>Tìm kiếm</span>
@@ -385,29 +385,33 @@ const Navbar = () => {
           </li> */}
 
           {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
-          {currentUser && currentUser.member && (
+          {currentUser &&
+          currentUser.roles &&
+          currentUser.roles.some((item) => item.name === "staff") ? (
             <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
               <div
-                className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
                 onClick={() => navigate("/memberManager/newsPost")}
               >
                 <span>Quản lí bài viết</span>
               </div>
             </li>
-          )}
+          ) : null}
 
           {currentUser &&
-            currentUser.roles &&
-            currentUser.roles.some((item) => item.name === "admin") && (
-              <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
-                <div
-                  className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
-                  onClick={() => navigate("/admin")}
-                >
-                  <span>Quản lí site</span>
-                </div>
-              </li>
-            )}
+          currentUser.roles &&
+          currentUser.roles.some(
+            (item) => item.name === "admin" || item.name === "contentManager"
+          ) ? (
+            <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+              <div
+                className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                onClick={() => navigate("/admin")}
+              >
+                <span>Quản lí site</span>
+              </div>
+            </li>
+          ) : null}
         </ul>
         <div className="relative cursor-pointer">
           <span
@@ -454,7 +458,7 @@ background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); */}
           )}
         </div>
       </div>
-      <div className=" laptop:hidden desktop:hidden phone:block tablet:block">
+      <div className=" laptop:hidden desktop:hidden phone:block tablet:hidden">
         <SideBar props={contentArr} />
       </div>
     </div>
