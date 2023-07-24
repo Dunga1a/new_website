@@ -228,7 +228,11 @@ export class PostsService {
       queryBuilder.andWhere('NewsPost.status = :status', { status });
     }
 
-    if (user.roles.find((role) => role.name === 'admin')) {
+    if (
+      user.roles.find(
+        (role) => role.name === 'admin' || role.name === 'contentManager',
+      )
+    ) {
     } else {
       queryBuilder.andWhere('User.id = :id', { id: id });
     }

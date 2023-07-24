@@ -82,7 +82,9 @@ const Member = () => {
       <Breadcrumbs title={"Hội viên"} />
 
       {currentUser &&
-      (currentUser.roles.some((item) => item.name === "admin") ||
+      (currentUser.roles.some(
+        (item) => item.name === "admin" || item.name === "contentManager"
+      ) ||
         currentUser.member) ? (
         <div className=" pb-14 grid grid-cols-4 gap-3 pt-4 px-6">
           {loading ? (

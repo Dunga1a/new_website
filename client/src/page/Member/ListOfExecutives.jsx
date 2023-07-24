@@ -124,7 +124,9 @@ const ListOfExecutives = () => {
       <Breadcrumbs title={"Ban chấp hành hiệp hội"} />
       <div className=" pb-14 grid grid-cols-4 gap-3 pt-4 px-6">
         {currentUser &&
-        (currentUser.roles.some((item) => item.name === "admin") ||
+        (currentUser.roles.some(
+          (item) => item.name === "admin" || item.name === "contentManager"
+        ) ||
           currentUser.member) ? (
           <div className="pt-4 col-span-3 phone:col-span-4 laptop:col-span-3 tablet:col-span-3 desktop:col-span-3 ">
             {memberGroup.map((item) => {

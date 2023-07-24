@@ -15,6 +15,7 @@ async function main() {
     // Tạo vai trò mặc định
     const defaultRoles = [
       { name: 'admin' },
+      { name: 'contentManager' },
       { name: 'staff' },
       { name: 'user' },
     ];
@@ -25,17 +26,22 @@ async function main() {
     }
 
     // Tạo người dùng mặc định
-    const defaultUser = {
-      username: 'admin',
-      password: 'admin',
-    };
+    const defaultUser = [
+      {
+        username: 'admin',
+        password: 'admin',
+      },
+      {
+        username: 'contentManager',
+        password: 'contentManager',
+      },
+    ];
 
-    await userService.createAdminUser(
-      defaultUser.username,
-      defaultUser.password,
-    );
-
-    console.log('Người dùng admin đã được tạo');
+    for (const user of defaultUser) {
+      console.log('user', user);
+      await userService.createAdminUser(user.username, user.password);
+    }
+    console.log('Quản trị viên admin và contentManager đã được tạo');
   } catch (error) {
     console.error('Lỗi khi tạo vai trò và người dùng mặc định:', error);
   }

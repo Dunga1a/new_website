@@ -241,7 +241,7 @@ const Card = () => {
                                   {item.subcontent}
                                 </p>
                                 <div onClick={() => nav(`/${item.slug}`)}>
-                                  <span className=" bg-[#10bcff] text-[12px] text-white p-1">
+                                  <span className=" cursor-pointer bg-[#10bcff] text-[12px] text-white p-1 hover:bg-black">
                                     Chi tiết
                                   </span>
                                 </div>

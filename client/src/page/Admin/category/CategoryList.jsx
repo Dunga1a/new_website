@@ -92,7 +92,7 @@ const CategoryItem = ({ comment, setOpen, open, fetchData }) => {
           <div className="ml-4">
             {comment.children.map((child) => (
               <CategoryItem
-                key={child.id}
+                key={child.news_category_id}
                 comment={child}
                 setOpen={setOpen}
                 open={open}

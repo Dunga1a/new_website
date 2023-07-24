@@ -13,15 +13,15 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 const slides = [
   {
     id: 1,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 2,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 3,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
 ];
 
@@ -95,7 +95,7 @@ const HomePage = () => {
               data.slice(0, 3).map((item) => (
                 <li
                   key={item.id}
-                  className=" cursor-pointer h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
+                  className=" cursor-pointer hover:bg-gray-100 h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
                 >
                   <div
                     onClick={() => navigate(`/${item.slug}`)}

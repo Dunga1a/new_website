@@ -212,7 +212,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li className="block">
                 {" "}
                 <div
@@ -263,7 +263,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li
                 className="block cursor-pointer"
                 onClick={() => navigate("/member")}
@@ -304,7 +304,7 @@ const Navbar = () => {
               </span>
             </div>
             {/* <NavbarArr arr={arr} /> */}
-            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
               {arr &&
                 arr.map((item, idx) => {
                   return (
@@ -385,7 +385,9 @@ const Navbar = () => {
           </li> */}
 
           {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
-          {currentUser && currentUser.member && (
+          {currentUser &&
+          currentUser.roles &&
+          currentUser.roles.some((item) => item.name === "staff") ? (
             <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
               <div
                 className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
@@ -394,20 +396,22 @@ const Navbar = () => {
                 <span>Quản lí bài viết</span>
               </div>
             </li>
-          )}
+          ) : null}
 
           {currentUser &&
-            currentUser.roles &&
-            currentUser.roles.some((item) => item.name === "admin") && (
-              <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
-                <div
-                  className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
-                  onClick={() => navigate("/admin")}
-                >
-                  <span>Quản lí site</span>
-                </div>
-              </li>
-            )}
+          currentUser.roles &&
+          currentUser.roles.some(
+            (item) => item.name === "admin" || item.name === "contentManager"
+          ) ? (
+            <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+              <div
+                className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                onClick={() => navigate("/admin")}
+              >
+                <span>Quản lí site</span>
+              </div>
+            </li>
+          ) : null}
         </ul>
         <div className="relative cursor-pointer">
           <span
