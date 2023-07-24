@@ -51,7 +51,7 @@ const UserInfo = () => {
                   : "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg")
               }
               alt=""
-              className="h-[90px] w-[90px] border"
+              className="h-[90px] w-[90px] object-cover border"
             />
             <p className="absolute bottom-0 text-center left-0 right-0 py-[1px] text-[12px] text-white bg-[#357edb]">
               Hình đại diện
