@@ -111,4 +111,13 @@ export class OrganizeMembershipTitleService
       console.log('Không tìm thấy bản ghi hoặc xóa thất bại.');
     }
   }
+
+  async getByName(name: string) {
+    const role = await this.organizeMembershipTitleRepository.findOne({
+      where: { name },
+    });
+    if (!role)
+      throw new HttpException('Quyền không tồn tại ', HttpStatus.NOT_FOUND);
+    return role;
+  }
 }
