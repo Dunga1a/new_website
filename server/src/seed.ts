@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { RoleService } from './role/role.service';
 import { UserService } from './users/user.service';
 import { OrganizeMembershipTitleService } from './organize-membership-title/organize-membership-title.service';
+import { HttpStatus } from '@nestjs/common';
 
 async function main() {
   const app = await NestFactory.create(AppModule);
@@ -15,27 +16,43 @@ async function main() {
     // Tạo vai trò mặc định
     const defaultRoles = [
       { name: 'admin' },
+      { name: 'contentManager' },
       { name: 'staff' },
       { name: 'user' },
     ];
 
     for (const role of defaultRoles) {
-      await roleService.createRole(role);
-      `Vai trò đã được tạo: ${role.name}`;
+      try {
+        const existingRole = await roleService.getByName(role.name);
+        console.log(`Chức vụ "${role.name}" đã tồn tại.`);
+      } catch (error) {
+        // Nếu chức vụ chưa tồn tại, tiến hành tạo chức vụ
+        if (error.status === HttpStatus.NOT_FOUND) {
+          await roleService.createRole(role);
+          console.log(`Chức vụ đã được tạo: ${role.name}`);
+        } else {
+          console.error('Lỗi khi kiểm tra chức vụ:', error);
+        }
+      }
     }
 
     // Tạo người dùng mặc định
-    const defaultUser = {
-      username: 'admin',
-      password: 'admin',
-    };
+    const defaultUser = [
+      {
+        username: 'admin',
+        password: 'admin',
+      },
+      {
+        username: 'contentManager',
+        password: 'contentManager',
+      },
+    ];
 
-    await userService.createAdminUser(
-      defaultUser.username,
-      defaultUser.password,
-    );
-
-    console.log('Người dùng admin đã được tạo');
+    for (const user of defaultUser) {
+      console.log('user', user);
+      await userService.createAdminUser(user.username, user.password);
+    }
+    console.log('Quản trị viên admin và contentManager đã được tạo');
   } catch (error) {
     console.error('Lỗi khi tạo vai trò và người dùng mặc định:', error);
   }
@@ -44,8 +61,18 @@ async function main() {
     const defaultRoleOrganization = [{ name: 'Hội Viên' }];
 
     for (const role of defaultRoleOrganization) {
-      await organizate.createOrganizations(role);
-      console.log(`Vai trò đã được tạo: ${role.name}`);
+      try {
+        const existingRole = await organizate.getByName(role.name);
+        console.log(`Chức vụ "${role.name}" đã tồn tại.`);
+      } catch (error) {
+        // Nếu chức vụ chưa tồn tại, tiến hành tạo chức vụ
+        if (error.status === HttpStatus.NOT_FOUND) {
+          await organizate.createOrganizations(role);
+          console.log(`Chức vụ đã được tạo: ${role.name}`);
+        } else {
+          console.error('Lỗi khi kiểm tra chức vụ:', error);
+        }
+      }
     }
   } catch (error) {
     console.error('Lỗi khi tạo vai trò :', error);

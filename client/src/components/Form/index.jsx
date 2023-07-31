@@ -96,7 +96,10 @@ const Form = ({ formFields, onSubmit }) => {
     if (field.type === "react-quill") {
       return (
         <>
-          <span className=" font-semibold text-sm ">{field.label}</span>
+          <span className=" font-semibold text-sm ">
+            {field.label}
+            <span className="text-red-600 text-[16px] ml-1">*</span>
+          </span>
           <ReactQuillEditor
             {...register(field.name)}
             defaultValue={field.value}
@@ -116,7 +119,10 @@ const Form = ({ formFields, onSubmit }) => {
     if (field.type === "select") {
       return (
         <>
-          <span className=" font-semibold text-sm ">{field.label}</span>
+          <span className=" font-semibold text-sm ">
+            {field.label}
+            <span className="text-red-600 text-[16px] ml-1">*</span>
+          </span>
           <Select
             options={field.options}
             onChange={(selectedOption) =>
@@ -134,7 +140,10 @@ const Form = ({ formFields, onSubmit }) => {
       return (
         <div className={field.col_span ? "col-span-2" : ""} key={field.name}>
           <label>
-            <span className="block font-semibold text-sm">{field.label}</span>
+            <span className="block font-semibold text-sm">
+              {field.label}
+              <span className="text-red-600 text-[16px] ml-1">*</span>
+            </span>
 
             {imageDeputy.firstImage ? (
               <div>
@@ -215,18 +224,18 @@ const Form = ({ formFields, onSubmit }) => {
     // Hiển thị các trường khác
     return (
       <label key={field.name}>
-        <span className="block font-semibold text-sm ">{field.label}</span>
+        <span className="block font-semibold text-sm ">
+          {field.label}
+          <span className="text-red-600 text-[16px] ml-1">*</span>
+        </span>
         <div className=" relative">
           <input
             type={field.type}
             {...register(field.name)}
             defaultValue={field.value}
-            className="w-full relative rounded h-[36px] border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+            className="w-full rounded h-[36px] border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
             required
           />
-          <span className=" absolute text-red-600 font-medium text-[14px] top-2 right-2">
-            *
-          </span>
         </div>
       </label>
     );

@@ -13,15 +13,15 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 const slides = [
   {
     id: 1,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 2,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
   {
     id: 3,
-    img: "https://doanhnhanthanhhoahanoi.com/uploads/banners/slider1.jpg",
+    img: "/assets/images/slider.jpg",
   },
 ];
 
@@ -56,12 +56,12 @@ const HomePage = () => {
   return (
     <div className="max-w-[1080px] m-auto drop-shadow-new">
       <SliderPage slides={slides} />
-      <div className="rounded-b-xl bg-white grid grid-cols-5 relative top-[-5px] gap-3 px-[14px] py-8">
+      <div className="rounded-b-xl bg-white grid grid-cols-5 laptop:grid-cols-5 tablet:grid-cols-5 desktop:grid-cols-5 phone:grid-cols-1 relative top-[-5px] gap-3 px-[14px] py-8">
         {data &&
           data.length > 0 &&
           data.slice(0, 1).map((item) => (
             <div
-              className="col-span-2 desktop:col-span-2 tablet:col-span-3 phone:col-span-5 laptop:col-span-2 cursor-pointer"
+              className=" desktop:col-span-2 tablet:col-span-3 phone:col-span-1 laptop:col-span-2 cursor-pointer"
               key={item.id}
               onClick={() => navigate(`/${item.slug}`)}
             >
@@ -80,7 +80,7 @@ const HomePage = () => {
               </div>
             </div>
           ))}
-        <div className="col-span-2 desktop:col-span-2 px-3 tablet:block phone:hidden laptop:col-span-2 desktop:block laptop:block">
+        <div className=" desktop:col-span-2 px-3 tablet:col-span-2 phone:col-span-1 laptop:col-span-2 desktop:block laptop:block">
           <div className="flex items-center bg-blue-500 text-white text-xl p-2 mb-3">
             <AiFillStar />
             <h3 className="font-bold ml-2">TIN NỔI BẬT</h3>
@@ -95,7 +95,7 @@ const HomePage = () => {
               data.slice(0, 3).map((item) => (
                 <li
                   key={item.id}
-                  className=" cursor-pointer h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
+                  className=" cursor-pointer hover:bg-gray-100 h-[85px] border-b-[1px] border-solid border-[#dadada] last:border-none mb-3"
                 >
                   <div
                     onClick={() => navigate(`/${item.slug}`)}
@@ -127,7 +127,7 @@ const HomePage = () => {
               className="flex items-center "
             >
               <img
-                src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/bg-tittle-map.png"
+                src="/assets/images/bg-tittle-map.png"
                 alt=""
               />
               <h3 className="font-bold ml-2">BẢN ĐỒ HÀNH CHÍNH</h3>

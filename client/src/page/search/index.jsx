@@ -5,16 +5,21 @@ import { BsPinFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import Highlighter from "react-highlight-words";
 import PaginationV2 from "../../components/Pagination/PaginationV2";
 import EmptyState from "../../components/EmptyState/EmptyState";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const SearchPage = () => {
+  const location = useLocation();
+  const searchParam = new URLSearchParams(location.search);
+  const keysearch = searchParam.get("keyword");
+  console.log("key nè", keysearch);
   const [data, setData] = useState([]);
   const [count, setCount] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [keyword, setKeyword] = useState(null);
+  const [keyword, setKeyword] = useState("");
   const page = searchParams.get("page") || 1;
   // const [page, setPage] = useState(searchParams.get("page") || 1);
   const searchkey = searchParams.get("keyword") || null;
@@ -38,7 +43,7 @@ const SearchPage = () => {
       const search = data.keyword || searchkey;
       //console.log(search);
       const res = await axios.get(
-        `${DOMAIN}/api/posts/search?keyword=${search}&page=${sheet}`
+        `${DOMAIN}/api/posts/search?keyword=${search.trim()}&page=${sheet}`
       );
       if (data.keyword) {
         setSearchParams({ ...searchParams, keyword: search, page: sheet });
@@ -67,6 +72,7 @@ const SearchPage = () => {
     // setPage(page);
     //navigate(`/admin/search?page=${page}`);
   };
+
   return (
     <div className="bg-white pt-6">
       <div>
@@ -74,7 +80,7 @@ const SearchPage = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-4 px-6 mt-6 ">
-        <div className="col-span-3 phone:col-span-4 tablet:col-span-4 desktop:col-span-3 laptop:col-span-3 mb-8">
+        <div className="col-span-3 phone:col-span-4 tablet:col-span-3 desktop:col-span-3 laptop:col-span-3 mb-8">
           <div className="border-2 rounded-lg px-4 pb-4">
             <h3 className="text-center my-4 text-[14px] text-[#333] font-bold">
               Tìm kiếm tin tức mà bạn muốn!
@@ -93,6 +99,7 @@ const SearchPage = () => {
                   className={`w-full rounded-md h-[32px] text-[13px] ${
                     errors.keyword ? "border-red-500 focus:!border-red-500" : ""
                   }`}
+                  defaultValue={keysearch ? keysearch : ""}
                   placeholder="Từ tìm kiếm"
                 />
                 <ErrorMessage
@@ -144,9 +151,19 @@ const SearchPage = () => {
                   >
                     <div onClick={() => navigate(`/${item.slug}`)}>
                       <h3 className="text-[14px] text-[#424141] font-bold mt-4 mb-2">
-                        {item.title}
+                        <Highlighter
+                          searchWords={[keyword.trim()]}
+                          autoEscape={true}
+                          textToHighlight={item.title}
+                        />
                       </h3>
-                      <p className="text-sm">{item.subcontent}</p>
+                      <p className="text-sm">
+                        <Highlighter
+                          searchWords={[keyword.trim()]}
+                          autoEscape={true}
+                          textToHighlight={item.subcontent}
+                        />
+                      </p>
                     </div>
                   </div>
                 );
@@ -159,7 +176,7 @@ const SearchPage = () => {
             <PaginationV2
               total={count}
               onChange={handlePageChange}
-              pageSize={2}
+              pageSize={8}
               current={searchParams.get("page") || 1}
             />
           )}

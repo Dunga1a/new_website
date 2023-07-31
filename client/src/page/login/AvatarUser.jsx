@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/authContext";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const defaltImg =
-  "https://doanhnhanthanhhoahanoi.com/themes/default/images/users/no_avatar.png?fbclid=IwAR338fL6RIzbS6D7bPRRwrwdTnvJbePi4du2t5x47ei63BYmnz4CM_-VRfo";
+  "/assets/images/default-avatar-profile-icon-of-social-media-user-vector.jpg";
 export default function AvatarUser() {
   const {
     register,

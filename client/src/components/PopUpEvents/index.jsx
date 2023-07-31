@@ -17,7 +17,7 @@ const PopupEvent = () => {
     }
     setTimeout(() => {
       localStorage.removeItem("hasShownPopup");
-    }, 86000);
+    }, 8600 * 1000);
   }, []);
 
   const handleClosePopup = () => {
@@ -61,11 +61,7 @@ const PopupEvent = () => {
               setShowPopup(false);
             }}
           >
-            <img
-              src="https://doanhnhanthanhhoahanoi.com/uploads/news/2022_11/dom00292_2.jpg"
-              className="img-event"
-              alt=""
-            />
+            <img src="/assets/images/slider.jpg" className="img-event" alt="" />
             {/* {eventList &&
               eventList.length &&
               eventList.map((item) => (

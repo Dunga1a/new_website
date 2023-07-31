@@ -22,7 +22,7 @@ const prevHref = "/admin";
 
 const navigation = [
   {
-    name: "Dashboard",
+    name: "Trang chủ",
     href: `${prevHref}`,
     icon: AiFillDashboard,
     current: true,
@@ -83,6 +83,45 @@ const navigation = [
   },
 ];
 
+const navigationContent = [
+  {
+    name: "Trang chủ",
+    href: `${prevHref}`,
+    icon: AiFillDashboard,
+    current: true,
+  },
+  {
+    name: "Quản Lý Tin Tức",
+    href: `${prevHref}/news`,
+    icon: BiNews,
+    current: false,
+  },
+  {
+    name: "Quản Lý Hội Viên",
+    href: `${prevHref}/member`,
+    icon: HiUserGroup,
+    current: false,
+  },
+  {
+    name: "Quản Lý Người Dùng",
+    href: `${prevHref}/user`,
+    icon: FaUserAlt,
+    current: false,
+  },
+  {
+    name: "Quản Lý Sự Kiện",
+    href: `${prevHref}/event`,
+    icon: TbTimelineEventText,
+    current: false,
+  },
+  {
+    name: "Quản Lý Liên Hệ",
+    href: `${prevHref}/contact`,
+    icon: MdOutlineConnectWithoutContact,
+    current: false,
+  },
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -93,6 +132,7 @@ export default function LayoutAdmin() {
   const [openUser, setOpenUser] = useState(false);
   const url = window.location.href;
   const path = new URL(url).pathname;
+  console.log(path);
   const [pathCurrent, setPathCurrent] = useState(path);
   const { currentUser } = useContext(AuthContext);
 
@@ -136,26 +176,49 @@ export default function LayoutAdmin() {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        <button
-                          onClick={() => handleClick(item)}
-                          href={item.href}
-                          className={classNames(
-                            item.href === pathCurrent
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:text-white hover:bg-gray-800",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
-                          )}
-                        >
-                          <item.icon
-                            className="h-6 w-6 shrink-0"
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </button>
-                      </li>
-                    ))}
+                    {currentUser &&
+                    currentUser.roles &&
+                    currentUser.roles.some((item) => item.name === "admin")
+                      ? navigation.map((item) => (
+                          <li key={item.name}>
+                            <button
+                              onClick={() => handleClick(item)}
+                              href={item.href}
+                              className={classNames(
+                                item.href === pathCurrent
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
+                              )}
+                            >
+                              <item.icon
+                                className="h-6 w-6 shrink-0"
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </button>
+                          </li>
+                        ))
+                      : navigationContent.map((item) => (
+                          <li key={item.name}>
+                            <button
+                              onClick={() => handleClick(item)}
+                              href={item.href}
+                              className={classNames(
+                                item.href === pathCurrent
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
+                              )}
+                            >
+                              <item.icon
+                                className="h-6 w-6 shrink-0"
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </button>
+                          </li>
+                        ))}
                   </ul>
                 </li>
 

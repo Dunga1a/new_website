@@ -30,10 +30,7 @@ const Breadcrumbs = ({ title, subtitle, link, sublink }) => {
           ""
         )}
 
-        <img
-          src="https://doanhnhanthanhhoahanoi.com/themes/egov/images/breadcrumb.png"
-          className="absolute top-0 right-[-19px] h-[38px]"
-        />
+        <span className="bread-cum"></span>
       </div>
     </div>
   );

@@ -96,7 +96,9 @@ const AppLayout = ({ currentUser }) => {
   if (
     currentUser &&
     currentUser.roles &&
-    currentUser.roles.some((item) => item.name === "admin")
+    currentUser.roles.some(
+      (item) => item.name === "admin" || item.name === "contentManager"
+    )
   ) {
     return (
       <Routes>

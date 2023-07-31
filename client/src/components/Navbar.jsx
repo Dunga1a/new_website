@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import NavbarArr from "./NavbarArr";
-import { IoHome } from "react-icons/io5";
+import { IoHome, IoSearch } from "react-icons/io5";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { AiFillCaretDown } from "react-icons/ai";
 import SideBar from "./Sidebar";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
+import { toast } from "react-toastify";
 
 const contentArr = [
   [
@@ -59,7 +60,7 @@ const contentArr = [
         slug: "editinfo",
       },
       {
-        title: "Danh sách thành viên",
+        title: "Thành viên",
         slug: "",
       },
 
@@ -83,6 +84,7 @@ const Navbar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const [count, setCount] = useState();
+  const [keysearch, setKeySearch] = useState("");
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -165,15 +167,34 @@ const Navbar = () => {
   const handleSubItemClick = (subItem) => {
     navigate(`/news/${subItem.slug}`, { state: { item: subItem } });
   };
+
+  const handleSearch = () => {
+    if (keysearch) {
+      navigate(`/search?keyword=${keysearch}`);
+      setIsOpen(false);
+      setKeySearch("");
+    } else {
+      toast.warn("Vui lòng nhập từ khóa tìm kiếm", {
+        autoClose: 3000,
+      });
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // Nếu người dùng nhấn phím Enter
+      handleSearch();
+    }
+  };
   return (
     <div className="max-w-[1080px] m-auto">
-      <div className=" laptop:flex desktop:flex tablet:hidden phone:hidden relative bg-[#0083eb] flex items-center justify-between z-30">
+      <div className=" laptop:flex desktop:flex tablet:flex phone:hidden relative bg-[#0083eb] flex items-center justify-between z-30">
         <div className="menu-conner-left drop-shadow-xl"></div>
         <div className="menu-conner-right drop-shadow-xl tablet:hidden laptop:hidden desktop:block"></div>
-        <ul className="flex items-center  text-[#fff] uppercase desktop:text-[12px] laptop:text-[12px] tablet:text-[7px] font-bold">
-          <li className="block hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA] tablet:text-[12px]">
+        <ul className="flex items-center  text-[#fff] uppercase desktop:text-[12px] laptop:text-[12px] tablet:text-[10px] font-bold">
+          <li className="block hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA] tablet:text-[16px]">
             <div
-              className="laptop:h-[44px] laptop:text-[16px] laptop:px-4 desktop:px-4 desktop:text-[18px] tablet:h-[40px] px-[14px] tablet:px-[8px] flex items-center"
+              className="laptop:h-[44px] laptop:text-[16px] laptop:px-4 desktop:px-4 desktop:text-[18px] tablet:h-[40px] tablet:px-3 laptop:px-6 px-[14px] tablet:px-2 flex items-center"
               onClick={() => navigate("/")}
             >
               <span>
@@ -184,14 +205,14 @@ const Navbar = () => {
           <li className="block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/introduction")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
             >
               <span>Giới thiệu</span>
               <span className="text-[12px] ml-[3px]">
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li className="block">
                 {" "}
                 <div
@@ -234,7 +255,7 @@ const Navbar = () => {
           <li className="block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               href="#"
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center cursor-pointer"
               onClick={() => navigate("/member")}
             >
               <span>Hội Viên</span>
@@ -242,7 +263,7 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <ul className="bg-[#fff] w-[200px] drop-shadow-xl top-[44px] absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px] drop-shadow-xl absolute hidden text-black group-hover:block transition duration-350 ease-in-out">
               <li
                 className="block cursor-pointer"
                 onClick={() => navigate("/member")}
@@ -275,7 +296,7 @@ const Navbar = () => {
           <li className="cursor-pointer block group/item relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/news")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
             >
               <span>Điểm tin</span>
               <span className="text-[12px] ml-[3px]">
@@ -283,7 +304,7 @@ const Navbar = () => {
               </span>
             </div>
             {/* <NavbarArr arr={arr} /> */}
-            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl top-[44px] absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
+            <ul className="bg-[#fff] w-[200px]  drop-shadow-xl absolute hidden text-black group-hover/item:block transition duration-350 ease-in-out">
               {arr &&
                 arr.map((item, idx) => {
                   return (
@@ -327,7 +348,7 @@ const Navbar = () => {
 
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/events-page")}
             >
               <span>Sự kiện</span>
@@ -336,7 +357,7 @@ const Navbar = () => {
           <li className="block group/item cursor-pointer relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               href="#"
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/user")}
             >
               <span>Thành Viên</span>
@@ -349,47 +370,95 @@ const Navbar = () => {
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
               onClick={() => navigate("/contact-page")}
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px] px-6 flex items-center"
             >
               <span>Liên hệ</span>
             </div>
           </li>
-          <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+          {/* <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div
-              className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+              className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
               onClick={() => navigate("/search")}
             >
               <span>Tìm kiếm</span>
             </div>
-          </li>
+          </li> */}
 
           {/* Nếu là hội viên thì hiển thị "Đăng bài viết" */}
-          {currentUser && currentUser.member && (
+          {currentUser &&
+          currentUser.roles &&
+          currentUser.roles.some((item) => item.name === "staff") ? (
             <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
               <div
-                className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
                 onClick={() => navigate("/memberManager/newsPost")}
               >
                 <span>Quản lí bài viết</span>
               </div>
             </li>
-          )}
+          ) : null}
 
           {currentUser &&
-            currentUser.roles &&
-            currentUser.roles.some((item) => item.name === "admin") && (
-              <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
-                <div
-                  className="laptop:h-[44px] tablet:h-[40px] desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
-                  onClick={() => navigate("/admin")}
-                >
-                  <span>Quản lí site</span>
-                </div>
-              </li>
-            )}
+          currentUser.roles &&
+          currentUser.roles.some(
+            (item) => item.name === "admin" || item.name === "contentManager"
+          ) ? (
+            <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
+              <div
+                className="laptop:h-[44px] tablet:h-[40px] tablet:px-3 laptop:px-6 desktop:text-[14px] laptop:text-[14px]  px-6 flex items-center"
+                onClick={() => navigate("/admin")}
+              >
+                <span>Quản lí site</span>
+              </div>
+            </li>
+          ) : null}
         </ul>
+        <div className="relative cursor-pointer">
+          <span
+            className="block p-[10px] pl-[13px] text-[#fff] border-l-[2px] text-[18px] hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]  border-l-[#085798]"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            <IoSearch />
+          </span>
+          {isOpen && (
+            <div
+              class="w-[400px] bg-gradient-to-l from-[#30cfd0] to-[#330867] rounded-lg absolute drop-shadow-new group-active:block left-[-360px] bottom-[-60px] py-[12px] px-[10px]"
+              ref={inputRef}
+            >
+              <div class="sm:col-span-12">
+                <div className="relative">
+                  <input
+                    onChange={(e) => {
+                      setKeySearch(e.target.value);
+                      //console.log(e.target.value);
+                    }}
+                    onKeyDown={handleKeyPress}
+                    value={keysearch}
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    autocomplete="given-name"
+                    className="block w-full text-[#0c0c0c] rounded-md font-normal text-[15px] border-0 bg-gradient-to-l from-[rgba(84,212,228,1)-0.2%] to-[rgba(170,221,241,1)-100%] py-1 pr-8 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-[#66afe9]"
+                  />
+                  {/* background-color: #8EC5FC;
+background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%); */}
+                  {/* background-image: linear-gradient( 111.4deg,  rgba(7,7,9,1) 6.5%,   ); */}
+                  {/* background-image: linear-gradient(to top, #30cfd0 0%, #330867
+                  100%); */}
+                  {/* background-image: linear-gradient( 270.3deg,
+                  rgba(84,212,228,1) 0.2%, 100% ); */}
+                  <span className=" absolute right-[10px] top-[8px] text-[18px] font-bold text-black">
+                    <IoSearch onClick={handleSearch} />
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-      <div className=" laptop:hidden desktop:hidden phone:block tablet:block">
+      <div className=" laptop:hidden desktop:hidden phone:block tablet:hidden">
         <SideBar props={contentArr} />
       </div>
     </div>
