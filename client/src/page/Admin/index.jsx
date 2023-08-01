@@ -122,7 +122,10 @@ const HomePage = () => {
       <div className=" h-64 relative bg-children rounded-2xl drop-shadow-2xl">
         {dataRole.length ? <Pei data={dataRole} /> : <EmptyState />}
         <h1
-          onClick={() => navigate("/admin/role")}
+          onClick={() => {
+            navigate("/admin/role");
+            window.location.reload();
+          }}
           className=" absolute bottom-7 left-5 flex items-center font-semibold text-base hover:text-blue-500 cursor-pointer"
         >
           {" "}
@@ -133,7 +136,10 @@ const HomePage = () => {
       <div className=" h-64 relative bg-children rounded-2xl">
         {dataPost.length ? <Pei data={post} /> : <EmptyState />}
         <h1
-          onClick={() => navigate("/admin/news")}
+          onClick={() => {
+            navigate("/admin/news");
+            window.location.reload();
+          }}
           className=" absolute bottom-7 left-5 flex items-center font-semibold text-base hover:text-blue-500 cursor-pointer"
         >
           {" "}
@@ -144,7 +150,10 @@ const HomePage = () => {
       <div className=" h-64 relative bg-children rounded-2xl">
         {dataMember.length ? <Pei data={member} /> : <EmptyState />}
         <h1
-          onClick={() => navigate("/admin/member")}
+          onClick={() => {
+            navigate("/admin/member");
+            window.location.reload();
+          }}
           className=" absolute bottom-7 left-5 flex items-center font-semibold text-base hover:text-blue-500 cursor-pointer"
         >
           {" "}
@@ -153,7 +162,10 @@ const HomePage = () => {
         </h1>
       </div>
       <div
-        onClick={() => navigate("/admin/contact")}
+        onClick={() => {
+          navigate("/admin/contact");
+          window.location.reload();
+        }}
         className="h-64 relative bg-children rounded-2xl"
       >
         {dataContact.length ? <Pei data={contact} /> : <EmptyState />}

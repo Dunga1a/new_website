@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -12,6 +12,7 @@ import OrganizeEdit from "./OrganizeEdit";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../context/authContext";
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import { HiHome } from "react-icons/hi";
 
 const Organize = () => {
   // const { url } = useContext(AuthContext);
@@ -169,8 +170,19 @@ const Organize = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
       <Button
         title="Thêm Mới"
         colorBgr="bg-blue-500"

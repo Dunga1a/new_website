@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableV2 from "../../../components/Table/TableV2";
 import Card from "../../../components/Card/Card";
-import { HiOutlineMail, HiOutlineMailOpen } from "react-icons/hi";
+import { HiHome, HiOutlineMail, HiOutlineMailOpen } from "react-icons/hi";
 import { BiTrash } from "react-icons/bi";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import Button from "../../../components/Buttons/Button";
@@ -138,6 +138,15 @@ const ContactManager = () => {
 
   return (
     <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
       <Card title={"Danh sách liên hệ"}>
         <Card.Content>
           <table className="border border-blue-400 w-full mt-10 bg-white overflow-y-auto relative">

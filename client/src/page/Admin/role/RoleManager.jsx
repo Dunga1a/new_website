@@ -10,6 +10,8 @@ import axios from "axios";
 import Modal from "../../../components/Modal/Modal";
 import ListUserByRole from "./ListUserByRole";
 import FormEditRole from "./FormEditRole";
+import { useNavigate } from "react-router-dom";
+import { HiHome } from "react-icons/hi";
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const RoleManager = () => {
@@ -58,10 +60,22 @@ const RoleManager = () => {
       console.log(error.message);
     }
   };
+
+  const navigate = useNavigate();
   return (
-    <Card title={"Quản Lý Chức Vụ"} className="overflow-visible">
-      <Card.Content>
-        {/* <div className="grid grid-cols-5 gap-4">
+    <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
+      <Card title={"Quản Lý Chức Vụ"} className="overflow-visible">
+        <Card.Content>
+          {/* <div className="grid grid-cols-5 gap-4">
           <Select
             options={options}
             className="col-span-2"
@@ -76,45 +90,45 @@ const RoleManager = () => {
             Tìm kiếm
           </button>
         </div> */}
-        {roleList ? (
-          <table className="border border-blue-400 w-full bg-white">
-            <thead>
-              <tr>
-                <th className="border border-blue-400">Tên Chức Vụ</th>
-                <th className="border border-blue-400">Số lượng account</th>
-                <th className="border border-blue-400">Chức năng</th>
-              </tr>
-            </thead>
-            <tbody>
-              {roleList.map((item) => {
-                return (
-                  <tr key={item.id}>
-                    <td className="text-center">{item.name}</td>
-                    <td className="text-center">{item.count}</td>
+          {roleList ? (
+            <table className="border border-blue-400 w-full bg-white">
+              <thead>
+                <tr>
+                  <th className="border border-blue-400">Tên Chức Vụ</th>
+                  <th className="border border-blue-400">Số lượng account</th>
+                  <th className="border border-blue-400">Chức năng</th>
+                </tr>
+              </thead>
+              <tbody>
+                {roleList.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      <td className="text-center">{item.name}</td>
+                      <td className="text-center">{item.count}</td>
 
-                    <td className="flex items-center justify-center p-2">
-                      <Button
-                        onClick={() => handleClickInfo(item)}
-                        icon={<FiAlertCircle className="text-[18px]" />}
-                        colorBgr={
-                          "bg-yellow-400 text-white hover:bg-yellow-800"
-                        }
-                      />
-                      <Button
-                        onClick={() => handleOpenFormEdit(item)}
-                        colorText={"text-white"}
-                        colorBgr={"bg-blue-600"}
-                        colorHover={"bg-blue-700"}
-                        icon={<TbEdit className="text-[18px]" />}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : null}
-        {/* <table className="border border-blue-400 w-full mt-10">
+                      <td className="flex items-center justify-center p-2">
+                        <Button
+                          onClick={() => handleClickInfo(item)}
+                          icon={<FiAlertCircle className="text-[18px]" />}
+                          colorBgr={
+                            "bg-yellow-400 text-white hover:bg-yellow-800"
+                          }
+                        />
+                        <Button
+                          onClick={() => handleOpenFormEdit(item)}
+                          colorText={"text-white"}
+                          colorBgr={"bg-blue-600"}
+                          colorHover={"bg-blue-700"}
+                          icon={<TbEdit className="text-[18px]" />}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : null}
+          {/* <table className="border border-blue-400 w-full mt-10">
           <thead>
             <tr>
               <th scope="col" className="p-4 border border-blue-400">
@@ -179,7 +193,7 @@ const RoleManager = () => {
           </tbody>
         </table> */}
 
-        {/* <div className="mt-5">
+          {/* <div className="mt-5">
           <button
             onClick={handleOpen}
             type="button"
@@ -238,50 +252,53 @@ const RoleManager = () => {
             </form>
           )}
         </div> */}
-      </Card.Content>
+        </Card.Content>
 
-      {userByRole && (
-        <Modal
-          open={openUserByRole}
-          setOpen={setOpenUserByRole}
-          classNameChildren={"w-[1000px]"}
-        >
-          <table className="border border-blue-400 w-full bg-white">
-            <thead>
-              <tr>
-                <th className="border border-blue-400">Tên Người Dùng</th>
-                <th className="border border-blue-400">Email</th>
-                <th className="border border-blue-400">Ảnh Đại Diện</th>
-                <th className="border border-blue-400">Trạng Thái Tài Khoản</th>
-              </tr>
-            </thead>
+        {userByRole && (
+          <Modal
+            open={openUserByRole}
+            setOpen={setOpenUserByRole}
+            classNameChildren={"w-[1000px]"}
+          >
+            <table className="border border-blue-400 w-full bg-white">
+              <thead>
+                <tr>
+                  <th className="border border-blue-400">Tên Người Dùng</th>
+                  <th className="border border-blue-400">Email</th>
+                  <th className="border border-blue-400">Ảnh Đại Diện</th>
+                  <th className="border border-blue-400">
+                    Trạng Thái Tài Khoản
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {userByRole.map((item) => {
-                return <ListUserByRole item={item} />;
-              })}
-            </tbody>
-          </table>
-          {/* {userByRole.map((item) => (
+              <tbody>
+                {userByRole.map((item) => {
+                  return <ListUserByRole item={item} />;
+                })}
+              </tbody>
+            </table>
+            {/* {userByRole.map((item) => (
           ))} */}
-        </Modal>
-      )}
+          </Modal>
+        )}
 
-      {roleItem && (
-        <Modal
-          open={openEditForm}
-          setOpen={setOpenEditForm}
-          // title="Sửa chức vụ"
-          displayButtonCancel={false}
-        >
-          <FormEditRole
-            item={roleItem}
-            fetchData={fetchDataStatic}
+        {roleItem && (
+          <Modal
+            open={openEditForm}
             setOpen={setOpenEditForm}
-          />
-        </Modal>
-      )}
-    </Card>
+            // title="Sửa chức vụ"
+            displayButtonCancel={false}
+          >
+            <FormEditRole
+              item={roleItem}
+              fetchData={fetchDataStatic}
+              setOpen={setOpenEditForm}
+            />
+          </Modal>
+        )}
+      </Card>
+    </>
   );
 };
 

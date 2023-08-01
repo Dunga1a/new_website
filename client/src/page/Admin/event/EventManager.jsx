@@ -11,11 +11,12 @@ import FormEdit from "./FormEdit";
 import FormDelete from "./FormDelete";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import LoadingPage from "../../../components/LoadingPage";
 import { toast } from "react-toastify";
+import { HiHome } from "react-icons/hi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const EventManager = () => {
   const [loading, setLoading] = useState(false);
@@ -190,9 +191,19 @@ const EventManager = () => {
       toast.error(error.message);
     }
   };
+  const navigate = useNavigate();
 
   return (
     <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
       <Button
         title="Thêm Mới"
         colorBgr="bg-blue-500"
