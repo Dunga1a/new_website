@@ -14,8 +14,34 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.use(bodyParser.json({ limit: '100mb' }));
-  app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+  app.use(
+    bodyParser.json({
+      limit: '100mb',
+    }),
+  );
+  app.use(
+    bodyParser.urlencoded({
+      limit: '100mb',
+      extended: true,
+    }),
+  );
+  // Parse JSON with UTF-8 encoding
+  // app.use(
+  //   bodyParser.json({
+  //     limit: '100mb',
+  //     type: 'application/json; charset=utf-8',
+  //   }),
+  // );
+
+  // // Parse URL-encoded with UTF-8 encoding
+  // app.use(
+  //   bodyParser.urlencoded({
+  //     limit: '100mb',
+  //     extended: true,
+  //     type: 'application/x-www-form-urlencoded; charset=utf-8',
+  //   }),
+  // );
+
   try {
     await app.listen(PORT, () => {
       console.log(`Running on Port ${PORT}`);

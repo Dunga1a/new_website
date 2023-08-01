@@ -67,13 +67,16 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
         // file_pdf = result.data.join(", ");
 
         // choose_file = [...chooseFile, file_pdf].join(",");
+        console.log("selectedPdf: ", selectedPdf);
+        console.log("formData: ", formData);
+
         await axios
           .post(`${DOMAIN}/api/event/pdfs`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data;charset=utf-8" },
           })
           .then((response) => {
             file_pdf = response.data.join(", ");
-
+            console.log("reponse: ", response);
             choose_file = [...chooseFile, file_pdf];
             onSave({
               ...data,
