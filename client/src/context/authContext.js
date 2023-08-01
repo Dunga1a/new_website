@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
         localStorage.setItem("user", null);
         localStorage.removeItem("hasShownPopup");
         window.location.href = "/";
-      }, 86000 * 1000);
+      }, 8600 * 1000);
     }
   }, []);
 

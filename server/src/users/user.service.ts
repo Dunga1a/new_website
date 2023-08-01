@@ -53,8 +53,10 @@ export class UserService implements IUserService {
       username,
       password: pass,
     });
-    const adminRole = await this.roleRepository.findOne({ name: 'admin' });
+    const adminRole = await this.roleRepository.findOne({ name: username });
     adminUser.roles = [adminRole];
+    console.log('admin role: ' + adminRole);
+
     return this.userRepository.save(adminUser);
   }
 

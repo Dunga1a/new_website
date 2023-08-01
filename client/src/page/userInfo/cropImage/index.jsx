@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import { canvasPreview } from "./canvasPreview";
@@ -45,6 +45,7 @@ export default function ImageCrop({
   const [rotate, setRotate] = useState(0);
   const [aspect, setAspect] = useState(16 / 9);
   const { currentUser } = useContext(AuthContext);
+
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
       setCrop(undefined); // Makes crop preview update between images.
@@ -62,24 +63,6 @@ export default function ImageCrop({
       setCrop(centerAspectCrop(width, height, aspect));
     }
   }
-
-  // function onDownloadCropClick() {
-  //   if (!previewCanvasRef.current) {
-  //     throw new Error("Crop canvas does not exist");
-  //   }
-
-  //   previewCanvasRef.current.toBlob((blob) => {
-  //     if (!blob) {
-  //       throw new Error("Failed to create blob");
-  //     }
-  //     if (blobUrlRef.current) {
-  //       URL.revokeObjectURL(blobUrlRef.current);
-  //     }
-  //     blobUrlRef.current = URL.createObjectURL(blob);
-  //     hiddenAnchorRef.current.href = blobUrlRef.current;
-  //     hiddenAnchorRef.current.click();
-  //   });
-  // }
 
   useDebounceEffect(
     async () => {
@@ -132,7 +115,7 @@ export default function ImageCrop({
     const file = dataURLtoFile(dataUrl, `${Date.now()}-avatar.png`);
     const formData = new FormData();
     formData.append("image", file);
-    //const values = { ...currentUser, ...formData };
+
     try {
       // Send a POST request to upload the image
       const response = await axios.post(
@@ -146,10 +129,11 @@ export default function ImageCrop({
       );
       toast.success("Thay đổi ảnh đại diện thành công");
 
-      localStorage.setItem("user", JSON.stringify(response.data));
+      const values = { ...currentUser, image: response.data.image };
+      localStorage.setItem("user", JSON.stringify(values));
 
       setOpen(false);
-      //window.location.reload();
+      window.location.reload();
       //console.log(response.data); // The response from the server after uploading
     } catch (error) {
       console.error(error);

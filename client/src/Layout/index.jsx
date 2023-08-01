@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
       </main>
 
       <Footer />
-      <div>{/* <PopupEvent /> */}</div>
+      <div>{<PopupEvent />}</div>
       <ToastContainer />
     </div>
   );

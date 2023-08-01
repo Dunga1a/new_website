@@ -148,13 +148,13 @@ export class PostsService {
     return updatedPost;
   }
 
-  async searchByKeyword(keyword: string, page: number = 1, limit: number = 2) {
+  async searchByKeyword(keyword: string, page: number = 1, limit: number = 8) {
     try {
       const query = await this.newsPostRepository
         .createQueryBuilder('newsPost')
         .where('newsPost.status = :status', { status: true })
         .andWhere(
-          '(newsPost.title LIKE :keyword OR newsPost.content LIKE :keyword OR newsPost.subcontent LIKE :keyword)',
+          '(newsPost.title LIKE :keyword OR newsPost.subcontent LIKE :keyword)',
           { keyword: `%${keyword}%` },
         )
         .skip((page - 1) * limit)
@@ -164,7 +164,7 @@ export class PostsService {
       const countMany = await this.newsPostRepository
         .createQueryBuilder('newsPost')
         .where(
-          '(newsPost.title LIKE :keyword OR newsPost.content LIKE :keyword OR newsPost.subcontent LIKE :keyword)',
+          '(newsPost.title LIKE :keyword OR newsPost.subcontent LIKE :keyword)',
           { keyword: `%${keyword}%` },
         )
         .andWhere('newsPost.status = :status', { status: true });
@@ -228,7 +228,11 @@ export class PostsService {
       queryBuilder.andWhere('NewsPost.status = :status', { status });
     }
 
-    if (user.roles.find((role) => role.name === 'admin')) {
+    if (
+      user.roles.find(
+        (role) => role.name === 'admin' || role.name === 'contentManager',
+      )
+    ) {
     } else {
       queryBuilder.andWhere('User.id = :id', { id: id });
     }

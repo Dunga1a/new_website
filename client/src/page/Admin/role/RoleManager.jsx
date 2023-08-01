@@ -88,7 +88,7 @@ const RoleManager = () => {
             <tbody>
               {roleList.map((item) => {
                 return (
-                  <tr>
+                  <tr key={item.id}>
                     <td className="text-center">{item.name}</td>
                     <td className="text-center">{item.count}</td>
 

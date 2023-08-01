@@ -167,9 +167,7 @@ const ContentDetail = () => {
             <div className="flex justify-end items-center gap-3 mt-5 border-t-[1px] border-b-[1px] border-[#ccc] py-4">
               Chia sẻ:
               <ShareFaceBook
-                url={
-                  "http://dntpthanhhoa.vn/trung-tam-nghien-cuu-khoa-hoc-va-xet-nghiem-cong-nghe-cao-hstc.html"
-                }
+                url={"http://doanhnhan.bkt.net.vn/bai-viet-2..html"}
                 icon={<BsFacebook className="text-[20px] text-blue-500" />}
               />
               <ShareTwitter

@@ -123,7 +123,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
     },
     {
       name: "categoryId",
-      label: "Category",
+      label: "Lựa chọn danh mục",
       type: "select",
       options: listCategory,
     },

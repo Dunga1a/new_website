@@ -4,10 +4,7 @@ import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
-import {
-  AiOutlinePlusCircle,
-  AiOutlineCheckCircle,
-} from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { ImWarning } from "react-icons/im";
 import { TbEdit } from "react-icons/tb";
 import Button from "../../../components/Buttons/Button";
@@ -136,13 +133,11 @@ const NewsManager = () => {
 
   const handleChangeSelect = (selectOne) => {
     setSelectOne(selectOne);
-
   };
   const handleChangeSelectTwo = (selectedTwo) => {
     setSelectTwo(selectedTwo);
     searchParams.set("page", 1);
     setSearchParams(searchParams);
-
   };
 
   const handleSetStatus = async () => {
@@ -336,12 +331,16 @@ const NewsManager = () => {
 
         <div className="mt-5">
           <div className="flex">
-            <Button
-              onClick={() => setOpenInsertModal(true)}
-              icon={<AiOutlinePlusCircle className="text-[18px]" />}
-              title={"Thêm bài viết"}
-              colorBgr={"border border-gray-700 hover:bg-gray-200"}
-            />
+            {currentUser &&
+            currentUser.roles &&
+            currentUser.roles.some((role) => role.name === "admin") ? (
+              <Button
+                onClick={() => setOpenInsertModal(true)}
+                icon={<AiOutlinePlusCircle className="text-[18px]" />}
+                title={"Thêm bài viết"}
+                colorBgr={"border border-gray-700 hover:bg-gray-200"}
+              />
+            ) : null}
             <Button
               onClick={() => {
                 if (isCheckedItems.length === 0) {
@@ -365,7 +364,7 @@ const NewsManager = () => {
                   setOpenModalStatus(true);
                 }
               }}
-              title={"Duyệt các lựa chọn"}
+              title={"Duyệt các bài viết"}
               colorBgr={"bg-yellow-400 hover:bg-yellow-600"}
               colorText={"text-white"}
               icon={<AiOutlineCheckCircle className="text-[18px]" />}
