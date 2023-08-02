@@ -166,7 +166,13 @@ const ContentDetail = () => {
             <div className="mb-5">
               {postItem.image ? <img src={`${postItem.image}`} alt="" /> : null}
             </div>
-            <div dangerouslySetInnerHTML={{ __html: postItem.content }}></div>
+            <div
+              style={{
+                "max-height": "unset",
+              }}
+              className="ql-editor"
+              dangerouslySetInnerHTML={{ __html: postItem.content }}
+            ></div>
 
             <div className="flex justify-end items-center gap-3 mt-5 border-t-[1px] border-b-[1px] border-[#ccc] py-4">
               Chia sẻ:
