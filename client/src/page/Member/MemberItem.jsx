@@ -1,13 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 const MemberItem = ({ member, stt }) => {
-  console.log(member);
   const navigate = useNavigate();
 
   const handleItemClick = (item) => {
     navigate(`/member/${item.id}`, { state: item });
   };
+  // console.log("searchKey: ", searchKey);
   return (
     // <div
     //   key={member.id}
@@ -87,18 +86,23 @@ const MemberItem = ({ member, stt }) => {
             <div className="line-clamp-[8] ">{member.name_company}</div>
           </div>
         </td>
+
         <td class="max-w-full p-1 tablet:block phone:hidden laptop:block desktop:block">
           <p>Người đại điện: {member.representative}</p>
           <p>Chức vụ: {member.role_name}</p>
           <p>Số điện thoại: {member.phone}</p>
           <p>Email: {member.email}</p>
-          <p>Lĩnh vực hoạt động: {member.role_name}</p>
+          <p>Lĩnh vực hoạt động: {member.id_business_areas.name}</p>
           <p>Website: {member?.website}</p>
           <p>Địa chỉ: {member.address}</p>
-          <p className="line-clamp-1 ">
-            Mô tả: Ocean Studio - không gian sáng tạo đa dạng từ phòng vô cực,
-            phông key, trường quay ảo cho đến các Concept được decor, thay đổi
-            liên tục mang đến những trải nghiệm và cảm hứng sáng tạo thú vị nhất
+          <p className="flex">
+            <p className="min-w-[11%]">Mô tả:</p>
+            <div
+              className="max-w-[90%] line-clamp-1"
+              dangerouslySetInnerHTML={{
+                __html: member.intro ? `${member.intro}` : "",
+              }}
+            ></div>
           </p>
         </td>
         <td className="border w-[26%] tablet:w-[26%] phone:w-[40%]">
