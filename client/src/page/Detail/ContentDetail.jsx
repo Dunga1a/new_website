@@ -138,6 +138,10 @@ const ContentDetail = () => {
     fetchDataCmt();
   }, [postItem]);
 
+  const currentURL = window.location.href;
+  // const parsedURL = new URL(currentURL);
+  // const baseDomain = parsedURL.origin;
+  // console.log(currentURL);
   // TODO fetch data ở đây
   return (
     <div className="bg-white pt-6">
@@ -166,8 +170,9 @@ const ContentDetail = () => {
 
             <div className="flex justify-end items-center gap-3 mt-5 border-t-[1px] border-b-[1px] border-[#ccc] py-4">
               Chia sẻ:
+              {/* Lấy theo url hiện tại để share, Cổng localhost:3000 lỗi */}
               <ShareFaceBook
-                url={"http://doanhnhan.bkt.net.vn/bai-viet-2..html"}
+                url={`${currentURL}`}
                 icon={<BsFacebook className="text-[20px] text-blue-500" />}
               />
               <ShareTwitter
