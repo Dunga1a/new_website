@@ -7,9 +7,6 @@ import {
   Get,
   Put,
   ParseIntPipe,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
   Query,
   Delete,
   UseInterceptors,
@@ -126,6 +123,8 @@ export class MemberController {
 
   @Get()
   async getAllMembers(@Query() queryParams: any) {
+    // console.log('here: ', queryParams);
+
     const memberList = await this.memberService.getAllMembers(queryParams);
     return memberList;
   }

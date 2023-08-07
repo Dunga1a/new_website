@@ -11,10 +11,11 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const NewsInsert = ({ fetchData, setOpen }) => {
   const { currentUser } = useContext(AuthContext);
-
+  const [loading, setLoading] = useState(false);
   const handleFormSubmit = async (data) => {
     // Xử lý logic khi submit form
     try {
+      setLoading(true);
       const slug = slugify(data.title, {
         replacement: "-",
         remove: undefined,
@@ -31,7 +32,7 @@ const NewsInsert = ({ fetchData, setOpen }) => {
         formData.append("image", data.image[0]);
 
         // Sử dụng axios để gửi yêu cầu không đồng bộ
-        axios
+        await axios
           .post(`${DOMAIN}/api/member/uploadFileImage`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -60,13 +61,16 @@ const NewsInsert = ({ fetchData, setOpen }) => {
             // Xử lý lỗi trong quá trình tải lên
             console.error("Upload error:", error);
           });
+        setLoading(false);
       } else {
         const value = { ...data, slug, image, userId: currentUser.id };
-        axios
+        await axios
           .post(`${DOMAIN}/api/posts/`, value)
           .then(() => {
             // Cập nhật dữ liệu mới nhất tại đây
-            toast.success("Thêm Bài Viết Thành Công");
+            loading
+              ? toast.error("Thêm Bài Viết Thành Công")
+              : toast.success("Thêm Bài Viết Thành Công");
 
             fetchData();
             setOpen(false);
