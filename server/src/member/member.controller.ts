@@ -55,9 +55,9 @@ export class MemberController {
     // const originalName = path.parse(file.originalname).name;
 
     const filename =
-      Array(4)
+      Array(8)
         .fill(null)
-        .map(() => Math.round(Math.random() * 4).toString(16))
+        .map(() => Math.round(Math.random() * 8).toString(16))
         .join('') + extname(file.originalname);
     // //hehe
     // //console.log(filename);

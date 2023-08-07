@@ -47,6 +47,7 @@ const ContentDetail = () => {
       // const groupedComments = groupCommentsByFatherId(result.data);
       // console.log("vao day: ", groupedComments);
       setPostItem(res.data);
+
       // setArr(groupedComments);
     } catch (error) {
       console.log(error.message);
@@ -117,26 +118,26 @@ const ContentDetail = () => {
     return topLevelComments;
   };
 
-  const fetchDataCmt = async () => {
-    try {
-      const result = await axios.get(
-        `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
-        {
-          withCredentials: true,
-        }
-      );
-      const groupedComments = groupCommentsByFatherId(result.data);
-      // console.log("vao day: ", groupedComments);
-      setArr(groupedComments);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const fetchDataCmt = async () => {
+  //   try {
+  //     const result = await axios.get(
+  //       `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     const groupedComments = groupCommentsByFatherId(result.data);
+  //     // console.log("vao day: ", groupedComments);
+  //     setArr(groupedComments);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    // fetchDataTwo();
-    fetchDataCmt();
-  }, [postItem]);
+  // useEffect(() => {
+  //   // fetchDataTwo();
+  //   fetchDataCmt();
+  // }, [postItem]);
 
   const currentURL = window.location.href;
   // const parsedURL = new URL(currentURL);
@@ -169,6 +170,7 @@ const ContentDetail = () => {
             <div
               style={{
                 "max-height": "unset",
+                height: "auto",
               }}
               className="ql-editor"
               dangerouslySetInnerHTML={{ __html: postItem.content }}
