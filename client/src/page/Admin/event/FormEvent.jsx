@@ -67,13 +67,16 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
         // file_pdf = result.data.join(", ");
 
         // choose_file = [...chooseFile, file_pdf].join(",");
+        console.log("selectedPdf: ", selectedPdf);
+        console.log("formData: ", formData);
+
         await axios
           .post(`${DOMAIN}/api/event/pdfs`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data;charset=utf-8" },
           })
           .then((response) => {
             file_pdf = response.data.join(", ");
-
+            console.log("reponse: ", response);
             choose_file = [...chooseFile, file_pdf];
             onSave({
               ...data,
@@ -122,6 +125,9 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Tiêu Đề
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2">
                   <input
@@ -145,9 +151,6 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-                  *
-                </span>
               </div>
 
               <div className="col-span-1 relative">
@@ -156,6 +159,9 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Ngày bắt đầu
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2">
                   <input
@@ -174,9 +180,6 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[30px] translate-y-[-30%]">
-                  *
-                </span>
               </div>
 
               <div className="col-span-1">
@@ -204,6 +207,9 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Thời gian
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2">
                   <input
@@ -222,9 +228,6 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-                  *
-                </span>
               </div>
 
               <div className="col-span-2 relative">
@@ -233,6 +236,9 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Người Chủ Trì
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2">
                   <input
@@ -252,9 +258,6 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-                  *
-                </span>
               </div>
 
               <div className="col-span-2 relative">
@@ -263,6 +266,9 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Địa Điểm
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2">
                   <input
@@ -282,9 +288,6 @@ const FormEvent = ({ initValue, onSave, setOpen }) => {
                     </span>
                   )}
                 </div>
-                <span className=" text-red-600 text-[18px] absolute top-[65%] right-[10px] translate-y-[-30%]">
-                  *
-                </span>
               </div>
 
               <div className="col-span-2">

@@ -23,12 +23,15 @@ const OrganizeForm = ({ value, onSave, setOpen }) => {
         <div className="space-y-6">
           <div className="border-b border-gray-900/10 pb-4">
             <div className="mt-10 grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="col-span-2">
+              <div className="col-span-2 relative">
                 <label
                   htmlFor="title"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Tên gọi chức vụ trong hội
+                  <span className=" text-red-600 text-[18px] absolute top-[6%] ml-[5px]">
+                    *
+                  </span>
                 </label>
                 <div className="mt-2 relative">
                   <input
@@ -47,9 +50,7 @@ const OrganizeForm = ({ value, onSave, setOpen }) => {
                     defaultValue={value.name}
                     onChange={() => setIsEdit(true)}
                   />
-                  <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
-                    *
-                  </span>
+
                   {errors.title && (
                     <span className="text-sm text-red-500">
                       {errors.title.message}

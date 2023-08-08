@@ -31,10 +31,12 @@ export class EventController {
         destination: '../client/public/uploads/pdf', // Đường dẫn thư mục lưu trữ file
         filename: (req, file, callback) => {
           const randomName = Date.now();
-          const originalName = file.originalname;
-          // const extension = extname(originalName);
+          const originalName = Buffer.from(
+            file.originalname,
+            'latin1',
+          ).toString('utf8');
+          console.log('originalName: ', file);
           const fileName = randomName + '-' + originalName;
-          // const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9);
           callback(null, fileName); // Tên file được lưu
         },
       }),

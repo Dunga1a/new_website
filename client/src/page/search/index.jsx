@@ -15,7 +15,6 @@ const SearchPage = () => {
   const location = useLocation();
   const searchParam = new URLSearchParams(location.search);
   const keysearch = searchParam.get("keyword");
-  console.log("key nè", keysearch);
   const [data, setData] = useState([]);
   const [count, setCount] = useState();
   const [searchParams, setSearchParams] = useSearchParams();

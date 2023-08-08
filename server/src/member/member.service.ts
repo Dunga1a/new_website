@@ -3,7 +3,7 @@ import { IMemberService } from './member';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getRepository } from 'typeorm';
 import { Member, OrganizeMembershipTitle, Role, User } from 'src/utils/typeorm';
-import { CreateMemberDetails, CreateUserDetails } from 'src/utils/types';
+import { CreateMemberDetails } from 'src/utils/types';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/users/users';
 
@@ -77,6 +77,7 @@ export class MemberService implements IMemberService {
     const roleAssociationParam = Number(queryParams.roleAssociationParam);
     const businessIdParam = Number(queryParams.businessIdParam);
     const memberStatus = queryParams.memberStatus;
+    const searchKey = String(queryParams.searchKey);
 
     const query = this.memberRepository
       .createQueryBuilder('member')
@@ -109,6 +110,22 @@ export class MemberService implements IMemberService {
       });
     }
 
+    if (searchKey) {
+      query.andWhere(
+        'member.name_company LIKE :searchKey ' +
+          'OR member.email LIKE :searchKey ' +
+          'OR member.phone LIKE :searchKey ' +
+          'OR member.representative LIKE :searchKey ' +
+          'OR member.role_name LIKE :searchKey ' +
+          'OR member.address LIKE :searchKey ' +
+          'OR role_association.name LIKE :searchKey ' +
+          'OR business_area.name LIKE :searchKey',
+        {
+          searchKey: `%${searchKey}%`,
+        },
+      );
+    }
+
     const queryCount = this.memberRepository
       .createQueryBuilder('member')
       .leftJoinAndSelect('member.id_role_associations', 'role_association')
@@ -135,6 +152,22 @@ export class MemberService implements IMemberService {
       queryCount.andWhere('member.status = :status', {
         status: memberStatus,
       });
+    }
+
+    if (searchKey) {
+      queryCount.andWhere(
+        'member.name_company LIKE :searchKey ' +
+          'OR member.email LIKE :searchKey ' +
+          'OR member.phone LIKE :searchKey ' +
+          'OR member.representative LIKE :searchKey ' +
+          'OR member.role_name LIKE :searchKey ' +
+          'OR member.address LIKE :searchKey ' +
+          'OR role_association.name LIKE :searchKey ' +
+          'OR business_area.name LIKE :searchKey',
+        {
+          searchKey: `%${searchKey}%`,
+        },
+      );
     }
 
     const memberList = await query.getMany();

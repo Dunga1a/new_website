@@ -240,7 +240,7 @@ const Navbar = () => {
                   Ban chấp hành hiệp hội
                 </div>{" "}
               </li>
-              <li>
+              {/* <li>
                 {" "}
                 <div
                   className="cursor-pointer block py-[6px] pl-[8px] font-light hover:bg-yellow-300 hover:text-[#fff] hover:font-bold transition duration-0 hover:duration-150 ease-in-out"
@@ -248,7 +248,7 @@ const Navbar = () => {
                 >
                   Phương hướng hoạt động
                 </div>{" "}
-              </li>
+              </li> */}
             </ul>
           </li>
 
