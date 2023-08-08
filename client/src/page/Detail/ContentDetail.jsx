@@ -47,6 +47,7 @@ const ContentDetail = () => {
       // const groupedComments = groupCommentsByFatherId(result.data);
       // console.log("vao day: ", groupedComments);
       setPostItem(res.data);
+
       // setArr(groupedComments);
     } catch (error) {
       console.log(error.message);
@@ -169,6 +170,7 @@ const ContentDetail = () => {
             <div
               style={{
                 "max-height": "unset",
+                height: "auto",
               }}
               className="ql-editor"
               dangerouslySetInnerHTML={{ __html: postItem.content }}
