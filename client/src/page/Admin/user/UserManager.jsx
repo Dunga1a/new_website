@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { ImWarning } from "react-icons/im";
 import ModalV1 from "../../../components/Modal/ModalV1";
+import { HiHome } from "react-icons/hi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_post = [
@@ -146,6 +147,15 @@ const UserManager = () => {
 
   return (
     <div>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
       <Card title={"Thông tin chung"} className="overflow-visible">
         <Card.Content>
           <div className="grid grid-cols-3 gap-5">

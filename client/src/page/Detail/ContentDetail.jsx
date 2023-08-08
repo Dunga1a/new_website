@@ -180,6 +180,8 @@ const ContentDetail = () => {
               <ShareFaceBook
                 url={`${currentURL}`}
                 icon={<BsFacebook className="text-[20px] text-blue-500" />}
+                description={postItem.subcontent}
+                image={postItem.image}
               />
               <ShareTwitter
                 url={

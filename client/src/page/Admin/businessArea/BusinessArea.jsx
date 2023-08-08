@@ -10,13 +10,14 @@ import FormBusinessAreaNew from "./FormBusinessAreaNew";
 import FormBusinessAreaEdit from "./FormBusinessAreaEdit";
 import FormBusinessAreaDelete from "./FormBusinessAreaDelete";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import { toast } from "react-toastify";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import Loading from "../../../components/Loading/Loading";
 import LoadingPage from "../../../components/LoadingPage";
+import { HiHome } from "react-icons/hi";
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 const BusinessArea = () => {
@@ -40,6 +41,7 @@ const BusinessArea = () => {
     page,
     searchKey,
   };
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -51,7 +53,6 @@ const BusinessArea = () => {
       setBusinessAreaList(result.data.businessAreas);
       setCount(result.data.countBusinessAreas);
       setLoading(false);
-
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -80,7 +81,6 @@ const BusinessArea = () => {
   }, [businessAreaList, isCheckedItems]);
 
   const handleCheckAll = (event) => {
-
     const isChecked = event.target.checked;
     setIsCheckedAll(isChecked);
 
@@ -144,7 +144,6 @@ const BusinessArea = () => {
     } catch (error) {
       toast.error("Cập nhật trạng thái thất bại");
     }
-
   };
 
   const handleChangeStatusOff = async (items) => {
@@ -171,6 +170,15 @@ const BusinessArea = () => {
 
   return (
     <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
       <Button
         title="Thêm Mới"
         colorBgr="bg-blue-500"

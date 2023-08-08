@@ -9,11 +9,12 @@ import axios from "axios";
 import Modal from "../../../components/Modal/Modal";
 import MemberEdit from "./MemberEdit";
 import ConfirmMemberForm from "./ConfirmMemberForm";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PaginationV2 from "../../../components/Pagination/PaginationV2";
 
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import LoadingPage from "../../../components/LoadingPage";
+import { HiHome } from "react-icons/hi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const options_status = [
@@ -267,160 +268,174 @@ const MemberManager = () => {
     setSelectedRoleAssociation(null);
     setSelectedStatus(null);
   };
-  return (
-    <div className="relative transition-all ease-linear">
-      <div className="bg-white p-4 rounded-xl drop-shadow-new transition-all ease-linear">
-        <div className="grid grid-cols-7 gap-4">
-          <Select
-            options={roleAssociations}
-            className="col-span-2"
-            placeholder={
-              selectedOptionRole
-                ? `------ Tìm theo ${selectedOptionRole.label} ------`
-                : `------ Lọc theo chức vụ trong hội ------`
-            }
-            value={selectedRoleAssociation}
-            onChange={(e) => handleChangeRoleAssociations(e.value)}
-          />
-          <Select
-            options={options_status}
-            className="col-span-2"
-            placeholder={
-              selectedChooseStatus
-                ? `------ Lọc theo ${selectedChooseStatus.label} ------`
-                : "------ Lọc theo trạng thái hội viên ------"
-            }
-            onChange={(e) => handleChangeStatusMember(e.value)}
-            value={selectedStatus}
-          />
-          <Select
-            options={businessAreas}
-            className="col-span-2"
-            placeholder={
-              selectedOption
-                ? `------ Lọc theo ${selectedOption.label} ------`
-                : "----- Lọc theo lĩnh vực kinh doanh -----"
-            }
-            onChange={(e) => handleChangeBusinessIdParam(e.value)}
-            value={selectedOptionBusiness}
-          />
-          <button
-            className="py-2 px-4 font-semibold text-base bg-gray-500 rounded text-white hover:bg-primaryColor"
-            onClick={handleResetQuery}
-          >
-            Đặt lại
-          </button>
-        </div>
-        {loading ? (
-          <LoadingPage />
-        ) : member.length ? (
-          <table className="border border-blue-400 w-full mt-10 bg-white overflow-y-auto relative">
-            <thead>
-              <tr>
-                <th scope="col" className="p-4 border border-blue-400">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-all-search"
-                      type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      checked={isCheckedAll}
-                      onChange={handleCheckAll}
-                    />
-                    <label htmlFor="checkbox-all-search" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </th>
-                <th className="border border-blue-400">Tên doanh nghiệp</th>
-                <th className="border border-blue-400">Người đại diện</th>
-                <th className="border border-blue-400">Chức vụ</th>
-                <th className="border border-blue-400">Mô tả</th>
-                <th className="border border-blue-400">Số điện thoại</th>
-                <th className="border border-blue-400">Lĩnh vực hoạt động</th>
-                <th className="border border-blue-400">Trạng thái</th>
-                <th className="border border-blue-400">Chức năng</th>
-              </tr>
-            </thead>
-            <tbody>
-              {member.map((item) => {
-                return (
-                  <tr>
-                    <td className="w-4 p-4 text-center">
-                      <div className="flex items-center">
-                        <input
-                          checked={isCheckedItems.includes(item.id)}
-                          onChange={(event) => handleCheckItem(event, item.id)}
-                          id={`checkbox-table-search-${item.id}`}
-                          type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label
-                          htmlFor="checkbox-table-search-1"
-                          className="sr-only"
-                        >
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="text-center line-clamp-1 w-[100px]">
-                      {item.name_company}
-                    </td>
-                    <td className="text-center">{item.representative}</td>
-                    <td className="text-center">{item.role_name}</td>
-                    <td className="text-center line-clamp-1 w-[200px]">
-                      <div dangerouslySetInnerHTML={{ __html: item.intro }} />
-                    </td>
-                    <td className="text-center">{item.phone}</td>
-                    <td className="text-center">
-                      {item.id_business_areas
-                        ? item.id_business_areas.name
-                        : ""}
-                    </td>
-                    <td className="text-center text-[12px]">
-                      {item.status === 0
-                        ? "Chưa Kích Hoạt"
-                        : item.status === 1
-                        ? "Đã Kích Hoạt"
-                        : "Đã Khóa"}
-                    </td>
-                    <td className="flex items-center justify-center p-2">
-                      {item.status === 0 && (
-                        <Button
-                          onClick={() => handleConfirmMember(item)}
-                          icon={<FiAlertCircle className="text-[18px]" />}
-                          colorBgr={
-                            "bg-yellow-400 text-white hover:bg-yellow-800"
-                          }
-                        />
-                      )}
-                      {item.status !== 0 && (
-                        <Button
-                          colorText={"text-white"}
-                          colorBgr={"bg-blue-600"}
-                          colorHover={"bg-blue-700"}
-                          icon={<TbEdit className="text-[18px]" />}
-                          onClick={() => handleEditMember(item.id)}
-                        />
-                      )}
 
-                      {/* <Button
+  const navigate = useNavigate();
+  return (
+    <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
+      <div className="relative transition-all ease-linear">
+        <div className="bg-white p-4 rounded-xl drop-shadow-lg transition-all ease-linear">
+          <div className="grid grid-cols-7 gap-4">
+            <Select
+              options={roleAssociations}
+              className="col-span-2"
+              placeholder={
+                selectedOptionRole
+                  ? `------ Tìm theo ${selectedOptionRole.label} ------`
+                  : `------ Lọc theo chức vụ trong hội ------`
+              }
+              value={selectedRoleAssociation}
+              onChange={(e) => handleChangeRoleAssociations(e.value)}
+            />
+            <Select
+              options={options_status}
+              className="col-span-2"
+              placeholder={
+                selectedChooseStatus
+                  ? `------ Lọc theo ${selectedChooseStatus.label} ------`
+                  : "------ Lọc theo trạng thái hội viên ------"
+              }
+              onChange={(e) => handleChangeStatusMember(e.value)}
+              value={selectedStatus}
+            />
+            <Select
+              options={businessAreas}
+              className="col-span-2"
+              placeholder={
+                selectedOption
+                  ? `------ Lọc theo ${selectedOption.label} ------`
+                  : "----- Lọc theo lĩnh vực kinh doanh -----"
+              }
+              onChange={(e) => handleChangeBusinessIdParam(e.value)}
+              value={selectedOptionBusiness}
+            />
+            <button
+              className="py-2 px-4 font-semibold text-base bg-gray-500 rounded text-white hover:bg-primaryColor"
+              onClick={handleResetQuery}
+            >
+              Đặt lại
+            </button>
+          </div>
+          {loading ? (
+            <LoadingPage />
+          ) : member.length ? (
+            <table className="border border-blue-400 w-full mt-10 bg-white overflow-y-auto relative">
+              <thead>
+                <tr>
+                  <th scope="col" className="p-4 border border-blue-400">
+                    <div className="flex items-center">
+                      <input
+                        id="checkbox-all-search"
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        checked={isCheckedAll}
+                        onChange={handleCheckAll}
+                      />
+                      <label htmlFor="checkbox-all-search" className="sr-only">
+                        checkbox
+                      </label>
+                    </div>
+                  </th>
+                  <th className="border border-blue-400">Tên doanh nghiệp</th>
+                  <th className="border border-blue-400">Người đại diện</th>
+                  <th className="border border-blue-400">Chức vụ</th>
+                  <th className="border border-blue-400">Mô tả</th>
+                  <th className="border border-blue-400">Số điện thoại</th>
+                  <th className="border border-blue-400">Lĩnh vực hoạt động</th>
+                  <th className="border border-blue-400">Trạng thái</th>
+                  <th className="border border-blue-400">Chức năng</th>
+                </tr>
+              </thead>
+              <tbody>
+                {member.map((item) => {
+                  return (
+                    <tr>
+                      <td className="w-4 p-4 text-center">
+                        <div className="flex items-center">
+                          <input
+                            checked={isCheckedItems.includes(item.id)}
+                            onChange={(event) =>
+                              handleCheckItem(event, item.id)
+                            }
+                            id={`checkbox-table-search-${item.id}`}
+                            type="checkbox"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label
+                            htmlFor="checkbox-table-search-1"
+                            className="sr-only"
+                          >
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <td className="text-center line-clamp-1 w-[100px]">
+                        {item.name_company}
+                      </td>
+                      <td className="text-center">{item.representative}</td>
+                      <td className="text-center">{item.role_name}</td>
+                      <td className="text-center line-clamp-1 w-[200px]">
+                        <div dangerouslySetInnerHTML={{ __html: item.intro }} />
+                      </td>
+                      <td className="text-center">{item.phone}</td>
+                      <td className="text-center">
+                        {item.id_business_areas
+                          ? item.id_business_areas.name
+                          : ""}
+                      </td>
+                      <td className="text-center text-[12px]">
+                        {item.status === 0
+                          ? "Chưa Kích Hoạt"
+                          : item.status === 1
+                          ? "Đã Kích Hoạt"
+                          : "Đã Khóa"}
+                      </td>
+                      <td className="flex items-center justify-center p-2">
+                        {item.status === 0 && (
+                          <Button
+                            onClick={() => handleConfirmMember(item)}
+                            icon={<FiAlertCircle className="text-[18px]" />}
+                            colorBgr={
+                              "bg-yellow-400 text-white hover:bg-yellow-800"
+                            }
+                          />
+                        )}
+                        {item.status !== 0 && (
+                          <Button
+                            colorText={"text-white"}
+                            colorBgr={"bg-blue-600"}
+                            colorHover={"bg-blue-700"}
+                            icon={<TbEdit className="text-[18px]" />}
+                            onClick={() => handleEditMember(item.id)}
+                          />
+                        )}
+
+                        {/* <Button
                         colorText={"text-white"}
                         colorBgr={"bg-red-700"}
                         colorHover={"bg-red-800"}
                         icon={<AiOutlineDelete className="text-[18px]" />}
                         onClick={() => handleDeleteMember(item.id)}
                       /> */}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          <EmptyState />
-        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <EmptyState />
+          )}
 
-        {/* <div className="mt-5">
+          {/* <div className="mt-5">
           <div className="flex">
             <Button
               icon={<AiOutlineDelete className="text-[18px]" />}
@@ -433,43 +448,44 @@ const MemberManager = () => {
           </div>
         </div> */}
 
-        <Modal
-          open={openEditForm}
-          setOpen={setOpenEditForm}
-          title={"Chi Tiết Doanh Nghiệp"}
-          classNameChildren={"w-[1000px]"}
-          displayButtonCancel={false}
-        >
-          <MemberEdit
-            memberItem={memberItem}
+          <Modal
+            open={openEditForm}
             setOpen={setOpenEditForm}
-            fetchData={fetchData}
-          />
-        </Modal>
-
-        <Modal
-          open={openConfirmForm}
-          setOpen={setOpenConfirmForm}
-          title={"Cấp Tài Khoản Cho Hội Viên"}
-        >
-          {memberItem && (
-            <ConfirmMemberForm
+            title={"Chi Tiết Doanh Nghiệp"}
+            classNameChildren={"w-[1000px]"}
+            displayButtonCancel={false}
+          >
+            <MemberEdit
               memberItem={memberItem}
-              setOpen={setOpenConfirmForm}
+              setOpen={setOpenEditForm}
               fetchData={fetchData}
             />
-          )}
-        </Modal>
-        {member.length ? (
-          <PaginationV2
-            total={count}
-            current={searchParams.get("page") || 1}
-            pageSize="8"
-            onChange={handleChangePage}
-          />
-        ) : null}
+          </Modal>
+
+          <Modal
+            open={openConfirmForm}
+            setOpen={setOpenConfirmForm}
+            title={"Cấp Tài Khoản Cho Hội Viên"}
+          >
+            {memberItem && (
+              <ConfirmMemberForm
+                memberItem={memberItem}
+                setOpen={setOpenConfirmForm}
+                fetchData={fetchData}
+              />
+            )}
+          </Modal>
+          {member.length ? (
+            <PaginationV2
+              total={count}
+              current={searchParams.get("page") || 1}
+              pageSize="8"
+              onChange={handleChangePage}
+            />
+          ) : null}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

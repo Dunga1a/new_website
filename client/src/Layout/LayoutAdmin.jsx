@@ -6,7 +6,7 @@ import {
   MdCardMembership,
   MdOutlineConnectWithoutContact,
 } from "react-icons/md";
-import { HiUserGroup } from "react-icons/hi";
+import { HiUserGroup, HiHome } from "react-icons/hi";
 import { FaUserAlt } from "react-icons/fa";
 import { TbTimelineEventText } from "react-icons/tb";
 
@@ -386,6 +386,14 @@ export default function LayoutAdmin() {
 
         <main className="py-10 desktop:pl-72">
           <div className="px-4 phone:px-6 desktop:px-8">
+            {/* {navigation.map((navi) =>
+              navi.name === "Trang chủ" ? (
+                ""
+              ) : (
+                
+              )
+            )} */}
+
             <Outlet />
           </div>
         </main>

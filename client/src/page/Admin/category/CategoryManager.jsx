@@ -11,10 +11,11 @@ import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import CategoryList from "./CategoryList";
 import { AuthContext } from "../../../context/authContext";
 import { toast } from "react-toastify";
+import { HiHome } from "react-icons/hi";
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const CategoryManager = () => {
@@ -210,10 +211,22 @@ const CategoryManager = () => {
     //console.log(items);
   };
 
+  const navigate = useNavigate();
+
   return (
-    <Card title={"Quản lý danh mục"} className="overflow-visible">
-      <Card.Content>
-        {/* <div className="grid grid-cols-3 gap-4">
+    <>
+      <h1
+        onClick={() => {
+          navigate("/admin");
+          window.location.reload();
+        }}
+        className="bg-white z-20 hover:bg-gray-100 px-4 py-2 rounded-lg mb-4 cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+      >
+        <HiHome className="mr-1" /> <span>Trang chủ</span>
+      </h1>
+      <Card title={"Quản lý danh mục"} className="overflow-visible">
+        <Card.Content>
+          {/* <div className="grid grid-cols-3 gap-4">
           <Select
             options={options}
             className="col-span-2"
@@ -223,7 +236,7 @@ const CategoryManager = () => {
             Tìm kiếm
           </button>
         </div> */}
-        {/* {newsCategory ? (
+          {/* {newsCategory ? (
           <table className="border border-blue-400 w-full mt-10 bg-white">
             <thead>
               <tr>
@@ -401,78 +414,82 @@ const CategoryManager = () => {
           pageSize="10"
           onChange={handleChangePage}
         /> */}
-        <div className="my-2">
-          <div className="flex">
-            <Button
-              onClick={handleOpen}
-              type="button"
-              title={"Thêm danh mục"}
-              colorText={"text-black border border-gray-600"}
-              colorBgr={"bg-white"}
-              colorHover={"bg-gray-100"}
-              icon={<AiOutlinePlusCircle className="text-[18px]" />}
-            />
-          </div>
-        </div>
-        {open && (
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full my-2">
-            <div className="w-full relative">
-              <input
-                type="text"
-                className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
-                  errors.category ? "border-red-500 border-[1px]" : ""
-                }`}
-                {...register("category", {
-                  required: "Không được bỏ trống trường này",
-                })}
-                placeholder="Thêm danh mục"
+          <div className="my-2">
+            <div className="flex">
+              <Button
+                onClick={handleOpen}
+                type="button"
+                title={"Thêm danh mục"}
+                colorText={"text-black border border-gray-600"}
+                colorBgr={"bg-white"}
+                colorHover={"bg-gray-100"}
+                icon={<AiOutlinePlusCircle className="text-[18px]" />}
               />
-              <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
-                *
-              </span>
             </div>
-            <ErrorMessage
-              errors={errors}
-              name="category"
-              render={({ messages }) => {
-                //console.log("messages", messages);
-                return messages
-                  ? Object.entries(messages).map(([type, message]) => (
-                      <p className="ml-10 text-[14px] text-red-500" key={type}>
-                        {message}
-                      </p>
-                    ))
-                  : null;
-              }}
+          </div>
+          {open && (
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full my-2">
+              <div className="w-full relative">
+                <input
+                  type="text"
+                  className={`block bg-white rounded focus:outline-none w-full h-[32px] text-[13px] leading-[15px] border-[#cccccc] ${
+                    errors.category ? "border-red-500 border-[1px]" : ""
+                  }`}
+                  {...register("category", {
+                    required: "Không được bỏ trống trường này",
+                  })}
+                  placeholder="Thêm danh mục"
+                />
+                <span className=" text-red-600 text-[18px] absolute top-[50%] right-[10px] translate-y-[-30%]">
+                  *
+                </span>
+              </div>
+              <ErrorMessage
+                errors={errors}
+                name="category"
+                render={({ messages }) => {
+                  //console.log("messages", messages);
+                  return messages
+                    ? Object.entries(messages).map(([type, message]) => (
+                        <p
+                          className="ml-10 text-[14px] text-red-500"
+                          key={type}
+                        >
+                          {message}
+                        </p>
+                      ))
+                    : null;
+                }}
+              />
+              <button
+                type="submit"
+                className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
+                Thêm{" "}
+              </button>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  reset();
+                }}
+                type="button"
+                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+              >
+                Hủy
+              </button>
+            </form>
+          )}
+          {arr ? (
+            <CategoryList
+              comments={arr}
+              setOpen={setOpenOne}
+              open={openOne}
+              fetchData={fetchData}
             />
-            <button
-              type="submit"
-              className="text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Thêm{" "}
-            </button>
-            <button
-              onClick={() => {
-                setOpen(false);
-                reset();
-              }}
-              type="button"
-              className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-            >
-              Hủy
-            </button>
-          </form>
-        )}
-        {arr ? (
-          <CategoryList
-            comments={arr}
-            setOpen={setOpenOne}
-            open={openOne}
-            fetchData={fetchData}
-          />
-        ) : null}
-      </Card.Content>
-    </Card>
+          ) : null}
+        </Card.Content>
+      </Card>
+    </>
   );
 };
 
