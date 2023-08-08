@@ -118,26 +118,26 @@ const ContentDetail = () => {
     return topLevelComments;
   };
 
-  // const fetchDataCmt = async () => {
-  //   try {
-  //     const result = await axios.get(
-  //       `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     const groupedComments = groupCommentsByFatherId(result.data);
-  //     // console.log("vao day: ", groupedComments);
-  //     setArr(groupedComments);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  const fetchDataCmt = async () => {
+    try {
+      const result = await axios.get(
+        `${DOMAIN}/api/comment/getCommentByPost/${postItem.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const groupedComments = groupCommentsByFatherId(result.data);
+      // console.log("vao day: ", groupedComments);
+      setArr(groupedComments);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
-  // useEffect(() => {
-  //   // fetchDataTwo();
-  //   fetchDataCmt();
-  // }, [postItem]);
+  useEffect(() => {
+    // fetchDataTwo();
+    fetchDataCmt();
+  }, [postItem]);
 
   const currentURL = window.location.href;
   // const parsedURL = new URL(currentURL);
