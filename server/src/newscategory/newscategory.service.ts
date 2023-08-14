@@ -65,8 +65,8 @@ export class NewsCategoryService implements INewsCategoryService {
       .getCount();
     const newsCategories = await this.newsCategoryRepository
       .createQueryBuilder('category')
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
+      // .skip((page - 1) * pageSize)
+      // .take(pageSize)
       .getMany();
     for (const newsCategory of newsCategories) {
       const count = await this.newsPostRepository.count({

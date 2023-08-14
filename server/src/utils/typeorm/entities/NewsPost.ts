@@ -33,7 +33,7 @@ export class NewsPost {
   @Column({ type: 'longtext' })
   content: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'longtext' })
   image: string;
 
   @Column({ default: 0 })

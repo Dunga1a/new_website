@@ -12,30 +12,28 @@ import { toast } from "react-toastify";
 
 const contentArr = [
   [
-    { href: "/news" },
+    { href: "/user" },
 
     [
       {
-        title: "Tin tức",
-        slug: "tin-tuc",
-        subCategory: [
-          {
-            title: "Tin Hội Viên",
-            slug: "tin-hoi-vien",
-          },
-          {
-            title: "Tin Tức Thanh Hóa",
-            slug: "tin-tuc-thanh-hoa",
-          },
-          {
-            title: "Tin Hoạt Động",
-            slug: "tin-hoat-dong",
-          },
-        ],
+        title: "Đăng nhập",
+        slug: "login",
       },
       {
-        title: "Hoạt động",
-        slug: "hoat-dong",
+        title: "Đăng ký",
+        slug: "register",
+      },
+      {
+        title: "Khôi phục mật khẩu",
+        slug: "lostpass",
+      },
+      {
+        title: "Thiết lập tài khoản",
+        slug: "editinfo",
+      },
+      {
+        title: "Thành viên",
+        slug: "",
       },
     ],
   ],
@@ -78,7 +76,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const [newsCategory, setNewsCategory] = useState([]);
   const [arr, setArr] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -365,7 +362,8 @@ const Navbar = () => {
                 <AiFillCaretDown />
               </span>
             </div>
-            <NavbarArr arr={contentArr[1]} />
+
+            <NavbarArr arr={currentUser ? contentArr[1] : contentArr[0]} />
           </li>
           <li className="cursor-pointer block group relative hover:bg-gradient-to-b from-[#82b2dc] to-[#428BCA]">
             <div

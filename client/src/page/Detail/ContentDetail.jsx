@@ -250,6 +250,7 @@ const ContentDetail = () => {
                         {...register("content", {
                           required: true,
                         })}
+                        placeholder="Viết bình luận tại đây..."
                       />
                     </div>
                   </div>

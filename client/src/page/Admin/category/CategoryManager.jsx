@@ -1,22 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import {
-  AiOutlinePlusCircle,
-  AiOutlineDelete,
-  AiOutlineCheckCircle,
-} from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "../../../components/Buttons/Button";
 import Card from "../../../components/Card/Card";
 import axios from "axios";
 import slugify from "slugify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CategoryList from "./CategoryList";
-import { AuthContext } from "../../../context/authContext";
 import { toast } from "react-toastify";
 import { HiHome } from "react-icons/hi";
-const DOMAIN = process.env.REACT_APP_DOMAIN;
 
 const CategoryManager = () => {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
