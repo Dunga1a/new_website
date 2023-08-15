@@ -78,9 +78,9 @@ export class MemberController {
       storage: diskStorage({
         destination: '../client/public/uploads',
         filename: (req, file, callback) => {
-          const randomName = Array(6)
+          const randomName = Array(8)
             .fill(null)
-            .map(() => Math.round(Math.random() * 6).toString(16))
+            .map(() => Math.round(Math.random() * 8).toString(16))
             .join('');
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
@@ -101,9 +101,9 @@ export class MemberController {
       storage: diskStorage({
         destination: '../client/public/uploads',
         filename: (req, file, callback) => {
-          const randomName = Array(6)
+          const randomName = Array(8)
             .fill(null)
-            .map(() => Math.round(Math.random() * 6).toString(16))
+            .map(() => Math.round(Math.random() * 8).toString(16))
             .join('');
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },

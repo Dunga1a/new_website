@@ -55,7 +55,16 @@ const ReactQuillEditor = ({ content, setContent }) => {
         "pre",
         "br",
       ],
-      ALLOWED_ATTR: ["href", "class", "src", "alt", "style", "spellcheck"],
+      ALLOWED_ATTR: [
+        "href",
+        "class",
+        "src",
+        "alt",
+        "style",
+        "spellcheck",
+        "rel",
+        "target",
+      ],
     });
 
     setContent(sanitizedContent);

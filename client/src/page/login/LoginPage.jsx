@@ -65,7 +65,7 @@ const LoginPage = ({ className }) => {
   const handleLogin = () => {
     signInWithPopup(auth, provider).then(async (data) => {
       // call api
-      console.log(data.user);
+      // console.log(data.user);
       try {
         const values = {
           username: data.user.displayName,
@@ -79,6 +79,7 @@ const LoginPage = ({ className }) => {
           .then((response) => {
             setUser({ ...response.data, provider: data.user.providerId });
             login({ ...response.data, provider: data.user.providerId });
+            toast.success("Đăng nhập thành công");
           });
       } catch (error) {
         try {

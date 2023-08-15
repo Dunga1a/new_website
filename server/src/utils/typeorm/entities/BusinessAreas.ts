@@ -11,7 +11,7 @@ export class BusinessAreas {
   @Column()
   slug: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'longtext' })
   intro: string;
 
   @Column()

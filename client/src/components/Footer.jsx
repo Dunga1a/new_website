@@ -1,9 +1,9 @@
 import React from "react";
-import { TbBrandStackshare } from "react-icons/tb";
-import { BsLaptop } from "react-icons/bs";
-import { AiOutlineMobile } from "react-icons/ai";
+
 import { BiUpArrow } from "react-icons/bi";
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  // console.log("currentYear: ", currentYear);
   return (
     <>
       <footer className=" dark:bg-gray-900 footer pb-4">
@@ -158,8 +158,8 @@ const Footer = () => {
 
             <div className="text-center cursor-pointer">
               <div className="text-center">
-                © 2022&nbsp;- Bản quyền&nbsp;thuộc về Hội Doanh Nhân Thanh Hóa
-                tại Hà Nội.
+                © {currentYear}&nbsp;- Bản quyền&nbsp;thuộc về Hội Doanh Nhân
+                Thanh Hóa tại Hà Nội.
                 <br />
                 <div className="flex items-center justify-center">
                   <div href="">Điều khoản sử dụng</div> |
@@ -169,11 +169,11 @@ const Footer = () => {
             </div>
 
             <div className="text-center">
-              <div>
+              {/* <div>
                 Powered by
                 <p className="inline">NukeViet eGovernment</p>. Designed by
                 <p className="inline">VINADES.,JSC</p>.
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

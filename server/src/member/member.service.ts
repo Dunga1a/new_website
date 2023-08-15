@@ -77,7 +77,7 @@ export class MemberService implements IMemberService {
     const roleAssociationParam = Number(queryParams.roleAssociationParam);
     const businessIdParam = Number(queryParams.businessIdParam);
     const memberStatus = queryParams.memberStatus;
-    const searchKey = String(queryParams.searchKey);
+    const searchKey = queryParams.searchKey;
 
     const query = this.memberRepository
       .createQueryBuilder('member')
